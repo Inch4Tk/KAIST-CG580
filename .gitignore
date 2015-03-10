@@ -191,9 +191,9 @@ $RECYCLE.BIN/
 /stuff
 
 # Keep library binary dlls
-!glew/bin/
-!glew/bin/*
-!glew/bin/**/*
-!glfw/bin/
-!glfw/bin/*
-!glfw/bin/**/*
+!glew/
+!glew/*
+!glew/**/*
+!glfw/
+!glfw/*
+!glfw/**/*
