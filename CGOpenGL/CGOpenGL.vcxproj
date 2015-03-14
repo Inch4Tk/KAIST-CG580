@@ -90,12 +90,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)glfw\lib\win32;$(SolutionDir)glew\lib\Debug\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)glfw\lib\Debug\Win32;$(SolutionDir)glew\lib\Debug\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32d.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Debug\Win32\*" "$(OutDir)" /Y/S
-xcopy "$(SolutionDir)glfw\bin\win32\*" "$(OutDir)" /Y/S
+xcopy "$(SolutionDir)glfw\bin\Debug\Win32\*" "$(OutDir)" /Y/S
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -111,12 +111,12 @@ xcopy "$(SolutionDir)glfw\bin\win32\*" "$(OutDir)" /Y/S
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)glfw\lib\win64;$(SolutionDir)glew\lib\Debug\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)glfw\lib\Debug\x64;$(SolutionDir)glew\lib\Debug\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32d.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Debug\x64\*" "$(OutDir)" /Y/S
-xcopy "$(SolutionDir)glfw\bin\win64\*" "$(OutDir)" /Y/S
+xcopy "$(SolutionDir)glfw\bin\Debug\x64\*" "$(OutDir)" /Y/S
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -136,12 +136,12 @@ xcopy "$(SolutionDir)glfw\bin\win64\*" "$(OutDir)" /Y/S
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)glfw\lib\win32;$(SolutionDir)glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)glfw\lib\Release\Win32;$(SolutionDir)glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\Win32\*" "$(OutDir)" /Y/S
-xcopy "$(SolutionDir)glfw\bin\win32\*" "$(OutDir)" /Y/S
+xcopy "$(SolutionDir)glfw\bin\Release\Win32\*" "$(OutDir)" /Y/S
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -161,17 +161,30 @@ xcopy "$(SolutionDir)glfw\bin\win32\*" "$(OutDir)" /Y/S
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)glfw\lib\win64;$(SolutionDir)glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)glfw\lib\Release\x64;$(SolutionDir)glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\x64\*" "$(OutDir)" /Y/S
-xcopy "$(SolutionDir)glfw\bin\win32\*" "$(OutDir)" /Y/S
+xcopy "$(SolutionDir)glfw\bin\Release\x64\*" "$(OutDir)" /Y/S
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
+    <ClCompile Include="Shader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="StandardIncludes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

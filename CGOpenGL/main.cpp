@@ -7,9 +7,11 @@
 // Include GLM
 #include <glm/glm.hpp>
 
-//Include the standard C++ headers  
-#include <stdio.h>
-#include <stdlib.h>
+#include "StandardIncludes.h"
+
+// Project Includes
+#include "ObjectManager.h"
+#include "Scene.h"
 
 //Define an error callback
 static void error_callback( int error, const char* description )
@@ -75,11 +77,20 @@ int main( void )
 	//Set a background color  
 	glClearColor( 0.0f, 0.0f, 1.0f, 0.0f );
 
+	// Load Scene
+	Scene::Load("");
+
 	//Main Loop  
 	do
 	{
+		// Update all objects
+		ObjectManager::ExecUpdate();
+
 		//Clear color buffer  
 		glClear( GL_COLOR_BUFFER_BIT );
+
+		// Render all objects
+		ObjectManager::ExecRender();
 
 		//Swap buffers  
 		glfwSwapBuffers( window );
@@ -88,6 +99,9 @@ int main( void )
 
 	} //Check if the ESC key had been pressed or if the window had been closed  
 	while( !glfwWindowShouldClose( window ) );
+
+	// Unload scene
+	Scene::Unload();
 
 	//Close OpenGL window and terminate GLFW  
 	glfwDestroyWindow( window );
