@@ -20,11 +20,11 @@ void Debug::Log( const std::string& msg, LogType::LogType type )
 	if( msg.empty() )
 		return;
 	if( type == LogType::None )
-		printf( "%s\n", msg );
+		printf( "%s\n", msg.c_str() );
 	else if( type == LogType::Info )
-		printf( "Info: %s\n", msg );
+		printf( "Info: %s\n", msg.c_str() );
 	else if( type == LogType::Warning )
-		printf( "Warning: %s\n", msg );
+		printf( "Warning: %s\n", msg.c_str() );
 	else if( type == LogType::Error )
-		printf( "Error: %s\n", msg );
+		printf( "Error: %s\n", msg.c_str() );
 }

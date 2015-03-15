@@ -11,3 +11,4 @@
 
 // Valuable macros
 #define SDELETE(p) {if(p){delete p; p = nullptr;}}
+#define GLUBYTETOSTR(str) std::string( reinterpret_cast<const char*>(str) )
