@@ -172,6 +172,7 @@ xcopy "$(SolutionDir)glfw\bin\Release\x64\*" "$(OutDir)" /Y/S
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -180,6 +181,7 @@ xcopy "$(SolutionDir)glfw\bin\Release\x64\*" "$(OutDir)" /Y/S
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />

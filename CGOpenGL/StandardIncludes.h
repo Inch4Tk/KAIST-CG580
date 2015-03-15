@@ -5,8 +5,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include <vector>
 #include <list>
+#include <string>
+#include <vector>
 
 // Valuable macros
 #define SDELETE(p) {if(p){delete p; p = nullptr;}}

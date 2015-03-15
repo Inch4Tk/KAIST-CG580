@@ -15,7 +15,12 @@ Scene::~Scene()
 {
 }
 
-int Scene::Load(std::string name)
+/// <summary>
+/// Loads the scene with the specified name.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <returns></returns>
+int Scene::Load( const std::string& name )
 {
 	// Potentially unload a loaded scene beforehand
 	Unload();
@@ -26,6 +31,9 @@ int Scene::Load(std::string name)
 	return 0;
 }
 
+/// <summary>
+/// Unloads this instance.
+/// </summary>
 void Scene::Unload()
 {
 	if( loaded )

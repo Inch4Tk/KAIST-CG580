@@ -9,7 +9,7 @@ class SceneObject;
 class Scene
 {
 public:
-	static int Load(std::string name);
+	static int Load( const std::string& name );
 	static void Unload();
 
 private:
