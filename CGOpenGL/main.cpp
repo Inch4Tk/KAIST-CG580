@@ -66,7 +66,8 @@ int main( void )
 	//Sets the key callback  
 	glfwSetKeyCallback( window, key_callback );
 
-	//Initialize GLEW  
+	//Initialize GLEW 
+	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 
 	//If GLEW hasn't initialized  
@@ -82,7 +83,7 @@ int main( void )
 	Debug::Log( "Starting Program with OpenGL version: " + glVer, LogType::Info );
 
 	//Set a background color  
-	glClearColor( 0.0f, 0.0f, 1.0f, 0.0f );
+	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 
 	// Load Scene
 	Scene::Load("");

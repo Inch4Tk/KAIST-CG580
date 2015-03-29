@@ -8,6 +8,7 @@ class SceneObject
 {
 public:
 	SceneObject();
+	SceneObject( Mesh* geometry, ShaderProgram* shader );
 	~SceneObject();
 
 	virtual void Update();

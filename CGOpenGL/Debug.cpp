@@ -17,7 +17,7 @@ Debug::~Debug()
 /// <param name="type">The type.</param>
 void Debug::Log( const std::string& msg, LogType::LogType type )
 {
-	if( msg.empty() )
+	if( msg.empty() || msg[0] == '\0' )
 		return;
 	if( type == LogType::None )
 		printf( "%s\n", msg.c_str() );

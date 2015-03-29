@@ -7,6 +7,11 @@ SceneObject::SceneObject()
 {
 }
 
+SceneObject::SceneObject(Mesh* geometry, ShaderProgram* shader) : geometry(geometry), shader(shader)
+{
+
+}
+
 
 SceneObject::~SceneObject()
 {

@@ -36,6 +36,11 @@ GLuint ShaderProgram::LoadShader( const std::string& filename, GLenum type )
 			shaderCode += "\n" + line;
 		shaderStream.close();
 	}
+	else
+	{
+		Debug::Log( "Could not find shader with path: " + filename );
+		return 0;
+	}
 
 	GLint result = GL_FALSE;
 	int infoLogLength;
@@ -51,7 +56,7 @@ GLuint ShaderProgram::LoadShader( const std::string& filename, GLenum type )
 	glGetShaderiv( shaderID, GL_INFO_LOG_LENGTH, &infoLogLength );
 	std::vector<char> shaderErrorMessage( infoLogLength );
 	glGetShaderInfoLog( shaderID, infoLogLength, NULL, &shaderErrorMessage[0] );
-	Debug::Log( std::string( shaderErrorMessage.begin(), shaderErrorMessage.end() ), LogType::Error );
+	Debug::Log( trim( std::string( shaderErrorMessage.begin(), shaderErrorMessage.end() ) ), LogType::Error );
 
 	return shaderID;
 }
@@ -64,6 +69,8 @@ GLuint ShaderProgram::LoadShader( const std::string& filename, GLenum type )
 /// <returns></returns>
 int ShaderProgram::LoadProgram( const InitConfig& config )
 {
+	if( initialized )
+		return 1;
 	// Create the program
 	programID = glCreateProgram();
 
@@ -81,27 +88,27 @@ int ShaderProgram::LoadProgram( const InitConfig& config )
 	}
 	if( !config.tcsPath.empty() )
 	{
-		tcshader = LoadShader( config.vsPath, GL_TESS_CONTROL_SHADER );
+		tcshader = LoadShader( config.tcsPath, GL_TESS_CONTROL_SHADER );
 		glAttachShader( programID, tcshader );
 	}
 	if( !config.tesPath.empty() )
 	{
-		teshader = LoadShader( config.vsPath, GL_TESS_EVALUATION_SHADER );
+		teshader = LoadShader( config.tesPath, GL_TESS_EVALUATION_SHADER );
 		glAttachShader( programID, teshader );
 	}
 	if( !config.gsPath.empty() )
 	{
-		gshader = LoadShader( config.vsPath, GL_GEOMETRY_SHADER );
+		gshader = LoadShader( config.gsPath, GL_GEOMETRY_SHADER );
 		glAttachShader( programID, gshader );
 	}
 	if( !config.fsPath.empty() )
 	{
-		fshader = LoadShader( config.vsPath, GL_FRAGMENT_SHADER );
+		fshader = LoadShader( config.fsPath, GL_FRAGMENT_SHADER );
 		glAttachShader( programID, fshader );
 	}
 	if( !config.csPath.empty() )
 	{
-		cshader = LoadShader( config.vsPath, GL_COMPUTE_SHADER );
+		cshader = LoadShader( config.csPath, GL_COMPUTE_SHADER );
 		glAttachShader( programID, cshader );
 	}
 
@@ -115,7 +122,7 @@ int ShaderProgram::LoadProgram( const InitConfig& config )
 	glGetProgramiv( programID, GL_INFO_LOG_LENGTH, &infoLogLength );
 	std::vector<char> programErrorMessage( std::max( infoLogLength, int( 1 ) ) );
 	glGetProgramInfoLog( programID, infoLogLength, NULL, &programErrorMessage[0] );
-	Debug::Log( std::string( programErrorMessage.begin(), programErrorMessage.end() ), LogType::Error );
+	Debug::Log( trim( std::string( programErrorMessage.begin(), programErrorMessage.end() ) ), LogType::Error );
 	
 	// Cleanup loaded shader
 	glDeleteShader( vshader );
@@ -125,6 +132,7 @@ int ShaderProgram::LoadProgram( const InitConfig& config )
 	glDeleteShader( fshader );
 	glDeleteShader( cshader );
 
+	initialized = true;
 	return 0;
 }
 

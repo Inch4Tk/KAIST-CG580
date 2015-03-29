@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Mesh.h"
+#include "ObjectManager.h"
 #include "SceneObject.h"
 #include "ShaderProgram.h"
 
@@ -45,6 +46,13 @@ void Scene::Unload()
 	{
 		for( SceneObject* so : sceneObjects )
 			SDELETE( so );
+		for( std::pair<std::string, Mesh*> m : meshes )
+			SDELETE( m.second );
+		for( std::pair<std::string, ShaderProgram*> sp : shaders )
+			SDELETE( sp.second );
+		sceneObjects.clear();
+		meshes.clear();
+		shaders.clear();
 		loaded = false;
 	}
 }
@@ -54,5 +62,26 @@ void Scene::Unload()
 /// </summary>
 void Scene::LoadTestScene()
 {
+	// Load a shader
+	ShaderProgram* testShader = new ShaderProgram();
+	ShaderProgram::InitConfig shaderConfig;
+	shaderConfig.vsPath = "Shader/testVshader.glsl";
+	shaderConfig.fsPath = "Shader/testFshader.glsl";
+	testShader->LoadProgram(shaderConfig);
+	shaders["TestShader"] = testShader;
 
+	// Create a random triangle mesh
+	glm::vec3 tris[3];
+	tris[0] = { 0.0f, 1.0f, 0.0f };
+	tris[1] = { 0.0f, 0.0f, 0.0f };
+	tris[2] = { 1.0f, 0.0f, 0.0f };
+
+	Mesh* triangleMesh = new Mesh();
+	triangleMesh->Initialize( VertexFormatManager::Get3F(), tris, 36, GL_TRIANGLES);
+	meshes["TriangleMesh"] = triangleMesh;
+	
+	// Create a scene object containing the mesh and the test shader
+	SceneObject* tri = new SceneObject( triangleMesh, testShader );
+	ObjectManager::SubscribeRender( tri );
+	sceneObjects.push_back( tri );
 }

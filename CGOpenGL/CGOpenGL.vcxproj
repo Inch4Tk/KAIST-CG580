@@ -68,15 +68,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -96,6 +100,7 @@
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Debug\Win32\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Debug\Win32\*" "$(OutDir)" /Y/S
+xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -117,7 +122,8 @@ xcopy "$(SolutionDir)glfw\bin\Debug\Win32\*" "$(OutDir)" /Y/S
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Debug\x64\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Debug\x64\*" "$(OutDir)" /Y/S
-</Command>
+mkdir "$(OutDir)Shader"
+xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,7 +148,7 @@ xcopy "$(SolutionDir)glfw\bin\Debug\x64\*" "$(OutDir)" /Y/S
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\Win32\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Release\Win32\*" "$(OutDir)" /Y/S
-</Command>
+xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,7 +173,7 @@ xcopy "$(SolutionDir)glfw\bin\Release\Win32\*" "$(OutDir)" /Y/S
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\x64\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Release\x64\*" "$(OutDir)" /Y/S
-</Command>
+xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -191,6 +197,10 @@ xcopy "$(SolutionDir)glfw\bin\Release\x64\*" "$(OutDir)" /Y/S
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="StandardIncludes.h" />
     <ClInclude Include="VertexFormatManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testFshader.glsl" />
+    <None Include="testVshader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -29,6 +29,6 @@ private:
 
 	bool initialized = false;
 	InitConfig config;
-	GLuint programID;
+	GLuint programID = 0;
 };
 

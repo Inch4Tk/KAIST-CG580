@@ -47,5 +47,5 @@ void ObjectManager::SubscribeUpdate( SceneObject* sub )
 /// <param name="sub">The sub.</param>
 void ObjectManager::SubscribeRender( SceneObject* sub )
 {
-	subsUpdate.push_back( sub );
+	subsRender.push_back( sub );
 }

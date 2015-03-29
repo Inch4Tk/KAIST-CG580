@@ -32,5 +32,5 @@ const VertexFormat& VertexFormatManager::Get3F()
 	form.normalized.push_back( false );
 
 	formats["3F"] = form;
-	return form;
+	return formats["3F"];
 }

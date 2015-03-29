@@ -19,8 +19,8 @@ public:
 private:
 	bool initialized = false;
 
-	GLuint vaoID;
-	GLuint vboID;
+	GLuint vaoID = 0;
+	GLuint vboID = 0;
 
 	VertexFormat vbFormat;
 
