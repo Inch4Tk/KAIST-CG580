@@ -1,5 +1,9 @@
 #pragma once
 
+// Forwards
+class Mesh;
+class ShaderProgram;
+
 class SceneObject
 {
 public:
@@ -8,5 +12,9 @@ public:
 
 	virtual void Update();
 	virtual void Render();
+
+protected:
+	Mesh* geometry = nullptr;
+	ShaderProgram* shader = nullptr;
 };
 

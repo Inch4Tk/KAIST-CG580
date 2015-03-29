@@ -4,7 +4,9 @@
 
 // Forwards
 class Camera;
+class Mesh;
 class SceneObject;
+class ShaderProgram;
 
 class Scene
 {
@@ -19,5 +21,9 @@ private:
 	static bool loaded;
 	static Camera* activeCamera;
 	static std::list<SceneObject*> sceneObjects;
+	static std::unordered_map<std::string, Mesh*> meshes;
+	static std::unordered_map<std::string, ShaderProgram*> shaders;
+
+	static void LoadTestScene();
 };
 

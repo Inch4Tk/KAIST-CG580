@@ -8,5 +8,7 @@ class Camera :
 public:
 	Camera();
 	~Camera();
+
+	void Render();
 };
 

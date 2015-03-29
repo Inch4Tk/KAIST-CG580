@@ -8,6 +8,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 // Valuable macros
 #define SDELETE(p) {if(p){delete p; p = nullptr;}}

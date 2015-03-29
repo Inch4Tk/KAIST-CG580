@@ -12,6 +12,7 @@ ShaderProgram::ShaderProgram()
 
 ShaderProgram::~ShaderProgram()
 {
+	glDeleteProgram( programID );
 }
 
 /// <summary>
@@ -125,4 +126,16 @@ int ShaderProgram::LoadProgram( const InitConfig& config )
 	glDeleteShader( cshader );
 
 	return 0;
+}
+
+/// <summary>
+/// Binds the shader.
+/// </summary>
+/// <returns></returns>
+const void ShaderProgram::BindShader()
+{
+	if( !initialized )
+		return;
+
+	glUseProgram( programID );
 }

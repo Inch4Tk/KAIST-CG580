@@ -11,7 +11,21 @@ public:
 	Mesh();
 	~Mesh();
 
-	int Initialize(VertexFormat format, void* data, uint32_t datasize);
+	int Initialize( const VertexFormat& format, void* data, uint32_t datasize,
+					GLenum primitiveType );
 
+	const void Draw();
+
+private:
+	bool initialized = false;
+
+	GLuint vaoID;
+	GLuint vboID;
+
+	VertexFormat vbFormat;
+
+	GLenum primitiveType;
+	uint32_t numVertices;
+	uint32_t numIndices;
 };
 

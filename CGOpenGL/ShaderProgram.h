@@ -22,6 +22,8 @@ public:
 
 	int LoadProgram( const InitConfig& config );
 
+	const void BindShader();
+
 private:
 	GLuint LoadShader( const std::string& filename, GLenum type );
 

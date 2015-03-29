@@ -9,15 +9,18 @@
 
 struct VertexFormat
 {
+	uint32_t bytesize;
 	std::vector<GLint> sizes;
 	std::vector<GLenum> types;
+	std::vector<uint32_t> offsets;
+	std::vector<bool> asInt; // Do not cast to a float but use glVertexAttribIPointer 
 	std::vector<bool> normalized;
 };
 
 class VertexFormatManager
 {
 public:
-	static VertexFormat Get3F();
+	static const VertexFormat& Get3F();
 private:
 	VertexFormatManager();
 	~VertexFormatManager();
