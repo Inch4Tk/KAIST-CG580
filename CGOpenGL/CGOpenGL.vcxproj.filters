@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{41627ede-df25-4594-98d7-2d58bc9af49e}</UniqueIdentifier>
     </Filter>
@@ -13,6 +9,9 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{dc973a86-6d46-4995-a453-b5b3de50cd1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{2a9e98a2-d0f4-4a1a-9529-b900d1f6a152}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +42,9 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="tiny_obj_loader.cc">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">
@@ -71,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="tiny_obj_loader.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

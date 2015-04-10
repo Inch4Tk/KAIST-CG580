@@ -6,6 +6,9 @@
 #include "SceneObject.h"
 #include "ShaderProgram.h"
 
+// Include tiny object loader module
+#include "tiny_obj_loader.h"
+
 bool Scene::loaded = false;
 Camera* Scene::activeCamera = nullptr;
 std::list<SceneObject*> Scene::sceneObjects = std::list<SceneObject*>();
@@ -69,6 +72,11 @@ void Scene::LoadTestScene()
 	shaderConfig.fsPath = "Shader/testFshader.glsl";
 	testShader->LoadProgram(shaderConfig);
 	shaders["TestShader"] = testShader;
+
+	// Load a cube
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	tinyobj::LoadObj( shapes, materials, "Resources/cube.obj" );
 
 	// Create a random triangle mesh
 	glm::vec3 tris[3];

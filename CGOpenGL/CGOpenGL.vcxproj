@@ -102,7 +102,9 @@
 xcopy "$(SolutionDir)glfw\bin\Debug\Win32\*" "$(OutDir)" /Y/S
 mkdir "$(OutDir)Shader"
 xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
-</Command>
+mkdir "$(OutDir)Resources"
+xcopy "$(ProjectDir)Resources\*.obj" "$(OutDir)Resources" /Y/S
+xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,7 +126,10 @@ xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
       <Command>xcopy "$(SolutionDir)glew\bin\Debug\x64\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Debug\x64\*" "$(OutDir)" /Y/S
 mkdir "$(OutDir)Shader"
-xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
+xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
+mkdir "$(OutDir)Resources"
+xcopy "$(ProjectDir)Resources\*.obj" "$(OutDir)Resources" /Y/S
+xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -150,7 +155,10 @@ xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\Win32\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Release\Win32\*" "$(OutDir)" /Y/S
 mkdir "$(OutDir)Shader"
-xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
+xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
+mkdir "$(OutDir)Resources"
+xcopy "$(ProjectDir)Resources\*.obj" "$(OutDir)Resources" /Y/S
+xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -176,7 +184,10 @@ xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\x64\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Release\x64\*" "$(OutDir)" /Y/S
 mkdir "$(OutDir)Shader"
-xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
+xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
+mkdir "$(OutDir)Resources"
+xcopy "$(ProjectDir)Resources\*.obj" "$(OutDir)Resources" /Y/S
+xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -188,6 +199,7 @@ xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="tiny_obj_loader.cc" />
     <ClCompile Include="VertexFormatManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +211,7 @@ xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="StandardIncludes.h" />
+    <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="VertexFormatManager.h" />
   </ItemGroup>
   <ItemGroup>
