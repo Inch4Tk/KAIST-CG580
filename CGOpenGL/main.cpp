@@ -15,6 +15,14 @@
 #include "Scene.h"
 #include "VertexFormatManager.h"
 
+// Export Nvidia optimus enablement, to direct app to run from optimus device ón windows if possible
+#ifdef _WIN32
+#include <wtypes.h>
+extern "C" {
+	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
+#endif
+
 //Define an error callback
 static void error_callback( int error, const char* description )
 {

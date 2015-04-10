@@ -100,6 +100,7 @@
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Debug\Win32\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Debug\Win32\*" "$(OutDir)" /Y/S
+mkdir "$(OutDir)Shader"
 xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
 </Command>
     </PostBuildEvent>
@@ -148,6 +149,7 @@ xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\Win32\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Release\Win32\*" "$(OutDir)" /Y/S
+mkdir "$(OutDir)Shader"
 xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -173,6 +175,7 @@ xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\x64\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Release\x64\*" "$(OutDir)" /Y/S
+mkdir "$(OutDir)Shader"
 xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
