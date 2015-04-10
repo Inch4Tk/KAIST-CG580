@@ -24,17 +24,20 @@ Mesh::~Mesh()
 /// <returns></returns>
 int Mesh::Initialize( const VertexFormat& format, void* data, uint32_t datasize, GLenum primitiveType )
 {
+	// Take over primitive type
+	this->primitiveType = primitiveType;
+
 	// Create vertex array object
 	glGenVertexArrays( 1, &vaoID );
 	glBindVertexArray( vaoID );
 
 	// Create vertex buffer object and push data
 	glGenBuffers( 1, &vboID );
-	glBindVertexBuffer( 0, vboID, 0, format.bytesize );
-
-	glBufferData( 0, datasize, data, GL_STATIC_DRAW );
+	glBindBuffer( GL_ARRAY_BUFFER, vboID );
+	glBufferData( GL_ARRAY_BUFFER, datasize, data, GL_STATIC_DRAW );
 
 	// Specify the buffer format
+	glBindVertexBuffer( 0, vboID, 0, format.bytesize );
 	numVertices = datasize / format.bytesize;
 	vbFormat = format;
 	for( uint32_t i = 0; i < format.sizes.size(); ++i )

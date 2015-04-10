@@ -41,7 +41,7 @@ int main( void )
 	}
 
 	//Set the GLFW window creation hints - these are optional  
-	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 ); //Request a specific OpenGL version  
+	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 ); //Request a specific OpenGL version  
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 ); //Request a specific OpenGL version
 	glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
 	glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
