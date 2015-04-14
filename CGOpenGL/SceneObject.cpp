@@ -1,15 +1,14 @@
 #include "SceneObject.h"
 
-#include "Mesh.h"
+#include "Geometry.h"
 #include "ShaderProgram.h"
 
 SceneObject::SceneObject()
 {
 }
 
-SceneObject::SceneObject(Mesh* geometry, ShaderProgram* shader) : geometry(geometry), shader(shader)
+SceneObject::SceneObject(Geometry* geometry, ShaderProgram* shader) : geometry(geometry), shader(shader)
 {
-
 }
 
 

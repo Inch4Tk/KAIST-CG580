@@ -1,21 +1,21 @@
 #pragma once
 
 // Forwards
-class Mesh;
+class Geometry;
 class ShaderProgram;
 
 class SceneObject
 {
 public:
 	SceneObject();
-	SceneObject( Mesh* geometry, ShaderProgram* shader );
+	SceneObject( Geometry* geometry, ShaderProgram* shader );
 	~SceneObject();
 
 	virtual void Update();
 	virtual void Render();
 
 protected:
-	Mesh* geometry = nullptr;
+	Geometry* geometry = nullptr;
 	ShaderProgram* shader = nullptr;
 };
 

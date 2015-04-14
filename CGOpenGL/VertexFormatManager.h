@@ -21,6 +21,8 @@ class VertexFormatManager
 {
 public:
 	static const VertexFormat& Get3F();
+	static const VertexFormat& Get3F3F();
+	static const VertexFormat& Get3F3F2F();
 private:
 	VertexFormatManager();
 	~VertexFormatManager();

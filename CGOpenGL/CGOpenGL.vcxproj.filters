@@ -13,6 +13,9 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{2a9e98a2-d0f4-4a1a-9529-b900d1f6a152}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Geometry">
+      <UniqueIdentifier>{8940f21f-537e-43eb-bc20-b59c6062d37b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -39,11 +42,17 @@
     <ClCompile Include="ShaderProgram.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="tiny_obj_loader.cc">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Core\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Core\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Core\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -71,11 +80,17 @@
     <ClInclude Include="ObjectManager.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="tiny_obj_loader.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Core\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Core\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Core\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

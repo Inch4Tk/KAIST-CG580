@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "Camera.h"
+#include "Material.h"
 #include "Mesh.h"
 #include "ObjectManager.h"
 #include "SceneObject.h"
@@ -12,6 +13,7 @@
 bool Scene::loaded = false;
 Camera* Scene::activeCamera = nullptr;
 std::list<SceneObject*> Scene::sceneObjects = std::list<SceneObject*>();
+std::unordered_map<std::string, Material*> Scene::materials = std::unordered_map<std::string, Material*>();
 std::unordered_map<std::string, Mesh*> Scene::meshes = std::unordered_map<std::string, Mesh*>();
 std::unordered_map<std::string, ShaderProgram*> Scene::shaders = std::unordered_map<std::string, ShaderProgram*>();
 
@@ -51,10 +53,13 @@ void Scene::Unload()
 			SDELETE( so );
 		for( std::pair<std::string, Mesh*> m : meshes )
 			SDELETE( m.second );
+		for( std::pair<std::string, Material*> mat : materials )
+			SDELETE( mat.second );
 		for( std::pair<std::string, ShaderProgram*> sp : shaders )
 			SDELETE( sp.second );
 		sceneObjects.clear();
 		meshes.clear();
+		materials.clear();
 		shaders.clear();
 		loaded = false;
 	}
@@ -76,7 +81,7 @@ void Scene::LoadTestScene()
 	// Load a cube
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	tinyobj::LoadObj( shapes, materials, "Resources/cube.obj" );
+	tinyobj::LoadObj( shapes, materials, "Resources/cube.obj", "Resources/" );
 
 	// Create a random triangle mesh
 	glm::vec3 tris[3];
@@ -89,7 +94,40 @@ void Scene::LoadTestScene()
 	meshes["TriangleMesh"] = triangleMesh;
 	
 	// Create a scene object containing the mesh and the test shader
-	SceneObject* tri = new SceneObject( triangleMesh, testShader );
-	ObjectManager::SubscribeRender( tri );
-	sceneObjects.push_back( tri );
+	//SceneObject* tri = new SceneObject( triangleMesh, testShader );
+	//ObjectManager::SubscribeRender( tri );
+	//sceneObjects.push_back( tri );
+}
+
+/// <summary>
+/// Registers the mesh for auto deletion and for easy global access and memory de-duplication. If name already exists nothing happens.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <param name="mesh">The mesh.</param>
+void Scene::RegisterMesh( const std::string& name, Mesh* mesh )
+{
+	if( meshes.count(name) == 0 )
+		meshes[name] = mesh;
+}
+
+/// <summary>
+/// Registers the material for auto deletion and for easy global access and memory de-duplication. If name already exists nothing happens.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <param name="material">The material.</param>
+void Scene::RegisterMaterial( const std::string& name, Material* material )
+{
+	if( materials.count( name ) == 0 )
+		materials[name] = material;
+}
+
+/// <summary>
+/// Registers the shader for auto deletion and for easy global access and memory de-duplication. If name already exists nothing happens.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <param name="shader">The shader.</param>
+void Scene::RegisterShader( const std::string& name, ShaderProgram* shader )
+{
+	if( shaders.count( name ) == 0 )
+		shaders[name] = shader;
 }

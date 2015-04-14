@@ -21,8 +21,10 @@ Mesh::~Mesh()
 /// <param name="data">The data.</param>
 /// <param name="datasize">The datasize in byte.</param>
 /// <param name="primitiveType">Type of the primitive.</param>
+/// <param name="material">The material.</param>
 /// <returns></returns>
-int Mesh::Initialize( const VertexFormat& format, void* data, uint32_t datasize, GLenum primitiveType )
+int Mesh::Initialize( const VertexFormat& format, void* data, uint32_t datasize, 
+					  GLenum primitiveType, Material* material /*= nullptr*/ )
 {
 	// Take over primitive type
 	this->primitiveType = primitiveType;
@@ -54,6 +56,25 @@ int Mesh::Initialize( const VertexFormat& format, void* data, uint32_t datasize,
 
 	initialized = true;
 	return 0;
+}
+
+/// <summary>
+/// Initializes the vertex array object with the specified format and data with an index buffer.
+/// </summary>
+/// <param name="format">The format.</param>
+/// <param name="vdata">The vdata.</param>
+/// <param name="vdatasize">The vdatasize.</param>
+/// <param name="indices">The indices.</param>
+/// <param name="primitiveType">Type of the primitive.</param>
+/// <param name="material">The material.</param>
+/// <returns></returns>
+int Mesh::Initialize( const VertexFormat& format, void* vdata, uint32_t vdatasize, const std::vector<uint32_t>& indices,
+					  GLenum primitiveType, Material* material /*= nullptr */ )
+{
+	// Init index buffer
+
+	// Init rest
+	Initialize( format, vdata, vdatasize, primitiveType, material );
 }
 
 /// <summary>
