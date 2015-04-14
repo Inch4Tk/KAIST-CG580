@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "Camera.h"
+#include "Geometry.h"
 #include "Material.h"
 #include "Mesh.h"
 #include "ObjectManager.h"
@@ -9,6 +10,7 @@
 
 // Include tiny object loader module
 #include "tiny_obj_loader.h"
+
 
 bool Scene::loaded = false;
 Camera* Scene::activeCamera = nullptr;
@@ -79,9 +81,8 @@ void Scene::LoadTestScene()
 	shaders["TestShader"] = testShader;
 
 	// Load a cube
-	std::vector<tinyobj::shape_t> shapes;
-	std::vector<tinyobj::material_t> materials;
-	tinyobj::LoadObj( shapes, materials, "Resources/cube.obj", "Resources/" );
+	Geometry* g = new Geometry( "cube.obj" );
+	// TODO FIX GEOMETRY LOADING MESHES MULTITIMES
 
 	// Create a random triangle mesh
 	glm::vec3 tris[3];
@@ -94,9 +95,9 @@ void Scene::LoadTestScene()
 	meshes["TriangleMesh"] = triangleMesh;
 	
 	// Create a scene object containing the mesh and the test shader
-	//SceneObject* tri = new SceneObject( triangleMesh, testShader );
-	//ObjectManager::SubscribeRender( tri );
-	//sceneObjects.push_back( tri );
+	SceneObject* tri = new SceneObject( g, testShader );
+	ObjectManager::SubscribeRender( tri );
+	sceneObjects.push_back( tri );
 }
 
 /// <summary>

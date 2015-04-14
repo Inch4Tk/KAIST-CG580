@@ -11,6 +11,7 @@ Mesh::Mesh()
 Mesh::~Mesh()
 {
 	glDeleteBuffers( 1, &vboID );
+	glDeleteBuffers( 1, &iboID );
 	glDeleteVertexArrays( 1, &vaoID );
 }
 
@@ -72,9 +73,13 @@ int Mesh::Initialize( const VertexFormat& format, void* vdata, uint32_t vdatasiz
 					  GLenum primitiveType, Material* material /*= nullptr */ )
 {
 	// Init index buffer
-
+	glGenBuffers( 1, &iboID );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, iboID );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( uint32_t ), &indices[0], GL_STATIC_DRAW );
+	numIndices = indices.size();
+	indexed = true;
 	// Init rest
-	Initialize( format, vdata, vdatasize, primitiveType, material );
+	return Initialize( format, vdata, vdatasize, primitiveType, material );
 }
 
 /// <summary>
@@ -85,7 +90,17 @@ const void Mesh::Draw()
 	if( !initialized )
 		return;
 
-	glBindVertexArray( vaoID );
-	glDrawArrays( primitiveType, 0, numVertices );
-	glBindVertexArray( 0 );
+	if( indexed )
+	{
+		glBindVertexArray( vaoID );
+		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, iboID );
+		glDrawElements( primitiveType, numIndices, GL_UNSIGNED_INT, nullptr );
+		glBindVertexArray( 0 );
+	}
+	else
+	{
+		glBindVertexArray( vaoID );
+		glDrawArrays( primitiveType, 0, numVertices );
+		glBindVertexArray( 0 );
+	}
 }

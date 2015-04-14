@@ -14,6 +14,7 @@ SceneObject::SceneObject(Geometry* geometry, ShaderProgram* shader) : geometry(g
 
 SceneObject::~SceneObject()
 {
+	SDELETE( geometry );
 }
 
 void SceneObject::Update()

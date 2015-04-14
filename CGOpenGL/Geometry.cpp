@@ -34,7 +34,9 @@ Geometry::Geometry( const std::string& objFilename )
 		Mesh* m = new Mesh();
 
 		// Check what kind of data exists
-		bool norm, tex, index;
+		bool norm = false;
+		bool tex = false;
+		bool index = false;
 		Material* mat = nullptr;
 		if( shape.mesh.normals.size() > 0 )
 			norm = true;

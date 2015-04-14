@@ -24,11 +24,13 @@ public:
 
 private:
 	bool initialized = false;
+	bool indexed = false;
 
 	Material* mat;
 
 	GLuint vaoID = 0;
 	GLuint vboID = 0;
+	GLuint iboID = 0;
 
 	VertexFormat vbFormat;
 
