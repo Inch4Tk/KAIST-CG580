@@ -1,5 +1,7 @@
 #pragma once
 
+#include "StandardIncludes.h"
+
 // Forwards
 class Geometry;
 class ShaderProgram;
@@ -14,8 +16,16 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	// Transformation variables
+	glm::vec3 position = { 0, 0, 0 }; // Implies world 
+	glm::quat rotation = { 0, 0, 0, 1 }; // Identity, w = last component
+	glm::vec3 scale = { 1, 1, 1 };
+
 protected:
 	Geometry* geometry = nullptr;
 	const ShaderProgram* shader = nullptr;
+
+	// Uniform locations mapping the shader variables 
+	GLint uniWorldMatrix = -1;
 };
 

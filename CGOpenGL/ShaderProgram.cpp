@@ -158,3 +158,13 @@ void ShaderProgram::BindShader() const
 
 	glUseProgram( programID );
 }
+
+/// <summary>
+/// Gets the uniform location.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <returns></returns>
+GLint ShaderProgram::GetUniformLocation( const std::string& name ) const
+{
+	return glGetUniformLocation( programID, name.c_str() );
+}

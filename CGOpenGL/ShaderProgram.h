@@ -22,6 +22,7 @@ public:
 
 	static const ShaderProgram* LoadProgram( const std::string& programName, const InitConfig& config );
 
+	GLint GetUniformLocation( const std::string& name ) const;
 	void BindShader() const;
 
 private:
