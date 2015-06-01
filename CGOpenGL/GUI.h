@@ -2,12 +2,11 @@
 
 #include "StandardIncludes.h"
 
+#include "AntTweakBar.h"
+
 class GUI
 {
 public:
-	GUI();
-	~GUI();
-
 	static void Initialize( uint32_t windowWidth, uint32_t windowHeight );
 	static void Cleanup();
 	static void Draw();
@@ -18,5 +17,11 @@ public:
 	static int MouseScrollHandler( double yoffset );
 	static int KeyHandler( int key, int action );
 	static int CharHandler( unsigned int codepoint );
+
+private:
+	GUI();
+	~GUI();
+
+	static TwBar* testBar;
 };
 

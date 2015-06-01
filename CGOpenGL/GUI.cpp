@@ -1,7 +1,7 @@
 #include "GUI.h"
 
-#include "AntTweakBar.h"
-
+// Statics
+TwBar* GUI::testBar = nullptr;
 
 GUI::GUI()
 {
@@ -20,8 +20,11 @@ GUI::~GUI()
 void GUI::Initialize( uint32_t windowWidth, uint32_t windowHeight )
 {
 	// Start Tweak Bar
-	TwInit( TW_OPENGL, NULL );
+	TwInit( TW_OPENGL_CORE, NULL );
 	TwWindowSize( windowWidth, windowHeight );
+
+	// For now init the tweak bar here, better to do it separately
+	testBar = TwNewBar( "Testbar" );
 }
 
 /// <summary>

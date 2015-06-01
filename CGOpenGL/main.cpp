@@ -152,6 +152,9 @@ int main( void )
 		// Render all objects
 		ObjectManager::ExecRender();
 
+		// Draw GUI
+		GUI::Draw();
+
 		// Swap buffers  
 		glfwSwapBuffers( window );
 		// Get and organize events, like keyboard and mouse input, window resizing, etc...  
