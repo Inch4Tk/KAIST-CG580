@@ -76,7 +76,7 @@ int Mesh::Initialize( const VertexFormat& format, void* vdata, uint32_t vdatasiz
 	glGenBuffers( 1, &iboID );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, iboID );
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( uint32_t ), &indices[0], GL_STATIC_DRAW );
-	numIndices = indices.size();
+	numIndices = static_cast<uint32_t>(indices.size());
 	indexed = true;
 	// Init rest
 	return Initialize( format, vdata, vdatasize, primitiveType, material );

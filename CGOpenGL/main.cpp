@@ -4,6 +4,7 @@
 
 // Project Includes
 #include "Debug.h"
+#include "GUI.h"
 #include "ObjectManager.h"
 #include "Scene.h"
 #include "VertexFormatManager.h"
@@ -16,44 +17,87 @@ extern "C" {
 }
 #endif
 
-//Define an error callback
-static void error_callback( int error, const char* description )
+// Define an error callback
+static void errorCallback( int error, const char* description )
 {
 	fputs( description, stderr );
 	_fgetchar();
 }
 
-//Define the key input callback  
-static void key_callback( GLFWwindow* window, int key, int scancode, int action, int mods )
+// Defines the callback executed on mouse button events
+void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
 {
+	// Handle AntTweakBar
+	if( GUI::MouseButtonHandler(button, action) )
+		return;
+}
+
+
+// Define the cursor movement callback
+static void cursorPositionCallback( GLFWwindow* window, double xpos, double ypos )
+{
+	// Handle AntTweakBar
+	if( GUI::MouseMoveHandler( xpos, ypos ) )
+		return;
+}
+
+// Define the callback on scrolling
+void scrollCallback( GLFWwindow* window, double xoffset, double yoffset )
+{
+	// Handle AntTweakBar
+	if( GUI::MouseScrollHandler( yoffset ) )
+		return;
+}
+
+// Define the key input callback  
+static void keyCallback( GLFWwindow* window, int key, int scancode, int action, int mods )
+{
+	// Handle AntTweakBar
+	if( GUI::KeyHandler( key, action ) )
+		return;
+
+	// Handle all our key presses
 	if( key == GLFW_KEY_ESCAPE && action == GLFW_PRESS )
 		glfwSetWindowShouldClose( window, GL_TRUE );
+
 }
+
+// Define the unicode input callback
+void characterCallback( GLFWwindow* window, unsigned int codepoint )
+{
+	// Handle AntTweakBar
+	if( GUI::CharHandler( codepoint ) )
+		return;
+}
+
+
 
 int main( void )
 {
-	//Set the error callback  
-	glfwSetErrorCallback( error_callback );
+	// Set the error callback  
+	glfwSetErrorCallback( errorCallback );
 
-	//Initialize GLFW  
+	// Initialize GLFW  
 	if( !glfwInit() )
 	{
 		exit( EXIT_FAILURE );
 	}
 	
-	//Set the GLFW window creation hints - these are optional  
+	// Set the GLFW window creation hints - these are optional  
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 ); //Request a specific OpenGL version  
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 ); //Request a specific OpenGL version
 	glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
 	glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
-	//Declare a window object  
+	// Declare a window object  
 	GLFWwindow* window;
 
-	//Create a window and create its OpenGL context  
-	window = glfwCreateWindow( 800, 600, "Clustered Forward Shading", NULL, NULL );
+	// Create a window and create its OpenGL context
+	uint32_t windowWidth = 800;
+	uint32_t windowHeight = 600;
+	window = glfwCreateWindow( windowWidth, windowHeight, "Clustered Forward Shading", NULL, NULL );
 
-	//If the window couldn't be created  
+	// If the window couldn't be created  
 	if( !window )
 	{
 		Debug::Log( "Failed to open GLFW window.\n", LogType::Error );
@@ -61,17 +105,21 @@ int main( void )
 		exit( EXIT_FAILURE );
 	}
 
-	//This function makes the context of the specified window current on the calling thread.   
+	// This function makes the context of the specified window current on the calling thread.   
 	glfwMakeContextCurrent( window );
 
-	//Sets the key callback  
-	glfwSetKeyCallback( window, key_callback );
+	// Sets glfw callbacks
+	glfwSetMouseButtonCallback( window, mouseButtonCallback );
+	glfwSetCursorPosCallback( window, cursorPositionCallback );
+	glfwSetScrollCallback( window, scrollCallback );
+	glfwSetKeyCallback( window, keyCallback );
+	glfwSetCharCallback( window, characterCallback );
 
-	//Initialize GLEW 
+	// Initialize GLEW 
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 
-	//If GLEW hasn't initialized  
+	// If GLEW hasn't initialized  
 	if( err != GLEW_OK )
 	{
 		Debug::Log( GLUBYTETOSTR( glewGetErrorString( err ) ), LogType::Error );
@@ -83,38 +131,43 @@ int main( void )
 	std::string glVer = GLUBYTETOSTR( glGetString( GL_VERSION ) );
 	Debug::Log( "Starting Program with OpenGL version: " + glVer, LogType::Info );
 
-	//Set a background color  
+	// Init GUI
+	GUI::Initialize( windowWidth, windowHeight );
+
+	// Set a background color  
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 
 	// Load Scene
 	Scene::Load("");
 
-	//Main Loop  
+	// Main Loop  
 	do
 	{
 		// Update all objects
 		ObjectManager::ExecUpdate();
 
-		//Clear color buffer  
+		// Clear color buffer  
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		// Render all objects
 		ObjectManager::ExecRender();
 
-		//Swap buffers  
+		// Swap buffers  
 		glfwSwapBuffers( window );
-		//Get and organize events, like keyboard and mouse input, window resizing, etc...  
+		// Get and organize events, like keyboard and mouse input, window resizing, etc...  
 		glfwPollEvents();
 
-	} //Check if the ESC key had been pressed or if the window had been closed  
+	} // Check if the ESC key had been pressed or if the window had been closed  
 	while( !glfwWindowShouldClose( window ) );
 
 	// Unload scene
 	Scene::Unload();
+	// Cleanup GUI
+	GUI::Cleanup();
 
-	//Close OpenGL window and terminate GLFW  
+	// Close OpenGL window and terminate GLFW  
 	glfwDestroyWindow( window );
-	//Finalize and clean up GLFW  
+	// Finalize and clean up GLFW  
 	glfwTerminate();
 
 	exit( EXIT_SUCCESS );
