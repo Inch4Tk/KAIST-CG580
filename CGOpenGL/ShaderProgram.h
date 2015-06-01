@@ -20,9 +20,9 @@ public:
 	ShaderProgram();
 	~ShaderProgram();
 
-	int LoadProgram( const InitConfig& config );
+	static const ShaderProgram* LoadProgram( const std::string& programName, const InitConfig& config );
 
-	const void BindShader();
+	void BindShader() const;
 
 private:
 	GLuint LoadShader( const std::string& filename, GLenum type );

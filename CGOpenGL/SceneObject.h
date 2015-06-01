@@ -8,7 +8,7 @@ class SceneObject
 {
 public:
 	SceneObject();
-	SceneObject( Geometry* geometry, ShaderProgram* shader );
+	SceneObject( Geometry* geometry, const ShaderProgram* shader );
 	~SceneObject();
 
 	virtual void Update();
@@ -16,6 +16,6 @@ public:
 
 protected:
 	Geometry* geometry = nullptr;
-	ShaderProgram* shader = nullptr;
+	const ShaderProgram* shader = nullptr;
 };
 

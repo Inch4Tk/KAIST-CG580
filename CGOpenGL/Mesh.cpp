@@ -85,7 +85,7 @@ int Mesh::Initialize( const VertexFormat& format, void* vdata, uint32_t vdatasiz
 /// <summary>
 /// Binds the mesh for drawing, then draws the mesh
 /// </summary>
-const void Mesh::Draw()
+void Mesh::Draw() const
 {
 	if( !initialized )
 		return;

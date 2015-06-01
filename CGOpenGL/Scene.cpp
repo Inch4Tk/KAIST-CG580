@@ -73,26 +73,23 @@ void Scene::Unload()
 void Scene::LoadTestScene()
 {
 	// Load a shader
-	ShaderProgram* testShader = new ShaderProgram();
 	ShaderProgram::InitConfig shaderConfig;
 	shaderConfig.vsPath = "Shader/testVshader.glsl";
 	shaderConfig.fsPath = "Shader/testFshader.glsl";
-	testShader->LoadProgram(shaderConfig);
-	shaders["TestShader"] = testShader;
+	const ShaderProgram* testShader = ShaderProgram::LoadProgram( "TestShader", shaderConfig );
 
 	// Load a cube
 	Geometry* g = new Geometry( "cube.obj" );
-	// TODO FIX GEOMETRY LOADING MESHES MULTITIMES
 
 	// Create a random triangle mesh
-	glm::vec3 tris[3];
+	/*glm::vec3 tris[3];
 	tris[0] = { 0.0f, 1.0f, 0.0f };
 	tris[1] = { 0.0f, 0.0f, 0.0f };
 	tris[2] = { 1.0f, 0.0f, 0.0f };
 
 	Mesh* triangleMesh = new Mesh();
 	triangleMesh->Initialize( VertexFormatManager::Get3F(), tris, 36, GL_TRIANGLES);
-	meshes["TriangleMesh"] = triangleMesh;
+	meshes["TriangleMesh"] = triangleMesh;*/
 	
 	// Create a scene object containing the mesh and the test shader
 	SceneObject* tri = new SceneObject( g, testShader );
@@ -131,4 +128,49 @@ void Scene::RegisterShader( const std::string& name, ShaderProgram* shader )
 {
 	if( shaders.count( name ) == 0 )
 		shaders[name] = shader;
+}
+
+/// <summary>
+/// Gets the mesh.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <returns></returns>
+Mesh* Scene::GetMesh( const std::string& name )
+{
+	auto it = meshes.find( name );
+	if( it != meshes.end() )
+	{
+		return it->second;
+	}
+	return nullptr;
+}
+
+/// <summary>
+/// Gets the material.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <returns></returns>
+Material* Scene::GetMaterial( const std::string& name )
+{
+	auto it = materials.find( name );
+	if( it != materials.end() )
+	{
+		return it->second;
+	}
+	return nullptr;
+}
+
+/// <summary>
+/// Gets the shader.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <returns></returns>
+ShaderProgram* Scene::GetShader( const std::string& name )
+{
+	auto it = shaders.find( name );
+	if( it != shaders.end() )
+	{
+		return it->second;
+	}
+	return nullptr;
 }

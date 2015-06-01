@@ -2,9 +2,6 @@
 
 #include "StandardIncludes.h"
 
-#include "GLM/glm.hpp"
-#include "GL/glew.h"
-
 #include <unordered_map>
 
 struct VertexFormat

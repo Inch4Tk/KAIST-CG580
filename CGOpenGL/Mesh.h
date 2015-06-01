@@ -20,7 +20,7 @@ public:
 	int Initialize( const VertexFormat& format, void* vdata, uint32_t vdatasize, const std::vector<uint32_t>& indices,
 					GLenum primitiveType, Material* material = nullptr );
 
-	const void Draw();
+	void Draw() const;
 
 private:
 	bool initialized = false;

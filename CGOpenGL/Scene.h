@@ -19,6 +19,10 @@ public:
 	static void RegisterMaterial( const std::string& name, Material* material );
 	static void RegisterShader( const std::string& name, ShaderProgram* shader );
 
+	static Mesh* GetMesh( const std::string& name );
+	static Material* GetMaterial( const std::string& name );
+	static ShaderProgram* GetShader( const std::string& name );
+
 private:
 	Scene();
 	~Scene();

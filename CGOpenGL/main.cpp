@@ -1,12 +1,5 @@
-//Include GLEW  
-#include <GL/glew.h>
 
-//Include GLFW  
-#include <GLFW/glfw3.h>
-
-// Include GLM
-#include <glm/glm.hpp>
-
+// This also includes all opengl stuff
 #include "StandardIncludes.h"
 
 // Project Includes
@@ -47,7 +40,7 @@ int main( void )
 	{
 		exit( EXIT_FAILURE );
 	}
-
+	
 	//Set the GLFW window creation hints - these are optional  
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 ); //Request a specific OpenGL version  
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 ); //Request a specific OpenGL version
@@ -58,7 +51,7 @@ int main( void )
 	GLFWwindow* window;
 
 	//Create a window and create its OpenGL context  
-	window = glfwCreateWindow( 640, 480, "Test Window", NULL, NULL );
+	window = glfwCreateWindow( 800, 600, "Clustered Forward Shading", NULL, NULL );
 
 	//If the window couldn't be created  
 	if( !window )

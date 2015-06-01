@@ -1,6 +1,7 @@
 #include "ShaderProgram.h"
 
 #include "Debug.h"
+#include "Scene.h"
 
 #include <algorithm>
 #include <fstream>
@@ -65,14 +66,20 @@ GLuint ShaderProgram::LoadShader( const std::string& filename, GLenum type )
 /// Loads the program, empty strings in the config are not loaded or linked shader stages. 
 /// There are no errors for incomplete programs.
 /// </summary>
+/// <param name="programName">Name of the program.</param>
 /// <param name="config">The configuration.</param>
 /// <returns></returns>
-int ShaderProgram::LoadProgram( const InitConfig& config )
+const ShaderProgram* ShaderProgram::LoadProgram( const std::string& programName, const InitConfig& config )
 {
-	if( initialized )
-		return 1;
+	// Check if the shader already exists
+	ShaderProgram* sp = Scene::GetShader( programName );
+	if( sp != nullptr)
+		return sp;
+
 	// Create the program
-	programID = glCreateProgram();
+	sp = new ShaderProgram();
+	sp->config = config;
+	sp->programID = glCreateProgram();
 
 	// Load and attach all the shaders
 	GLuint vshader = 0;
@@ -83,45 +90,45 @@ int ShaderProgram::LoadProgram( const InitConfig& config )
 	GLuint cshader = 0;
 	if( !config.vsPath.empty() )
 	{
-		vshader = LoadShader( config.vsPath, GL_VERTEX_SHADER );
-		glAttachShader( programID, vshader );
+		vshader = sp->LoadShader( config.vsPath, GL_VERTEX_SHADER );
+		glAttachShader( sp->programID, vshader );
 	}
 	if( !config.tcsPath.empty() )
 	{
-		tcshader = LoadShader( config.tcsPath, GL_TESS_CONTROL_SHADER );
-		glAttachShader( programID, tcshader );
+		tcshader = sp->LoadShader( config.tcsPath, GL_TESS_CONTROL_SHADER );
+		glAttachShader( sp->programID, tcshader );
 	}
 	if( !config.tesPath.empty() )
 	{
-		teshader = LoadShader( config.tesPath, GL_TESS_EVALUATION_SHADER );
-		glAttachShader( programID, teshader );
+		teshader = sp->LoadShader( config.tesPath, GL_TESS_EVALUATION_SHADER );
+		glAttachShader( sp->programID, teshader );
 	}
 	if( !config.gsPath.empty() )
 	{
-		gshader = LoadShader( config.gsPath, GL_GEOMETRY_SHADER );
-		glAttachShader( programID, gshader );
+		gshader = sp->LoadShader( config.gsPath, GL_GEOMETRY_SHADER );
+		glAttachShader( sp->programID, gshader );
 	}
 	if( !config.fsPath.empty() )
 	{
-		fshader = LoadShader( config.fsPath, GL_FRAGMENT_SHADER );
-		glAttachShader( programID, fshader );
+		fshader = sp->LoadShader( config.fsPath, GL_FRAGMENT_SHADER );
+		glAttachShader( sp->programID, fshader );
 	}
 	if( !config.csPath.empty() )
 	{
-		cshader = LoadShader( config.csPath, GL_COMPUTE_SHADER );
-		glAttachShader( programID, cshader );
+		cshader = sp->LoadShader( config.csPath, GL_COMPUTE_SHADER );
+		glAttachShader( sp->programID, cshader );
 	}
 
 	// Link program
-	glLinkProgram( programID );
+	glLinkProgram( sp->programID );
 
 	// Check the program
 	GLint result = GL_FALSE;
 	int infoLogLength;
-	glGetProgramiv( programID, GL_LINK_STATUS, &result );
-	glGetProgramiv( programID, GL_INFO_LOG_LENGTH, &infoLogLength );
+	glGetProgramiv( sp->programID, GL_LINK_STATUS, &result );
+	glGetProgramiv( sp->programID, GL_INFO_LOG_LENGTH, &infoLogLength );
 	std::vector<char> programErrorMessage( std::max( infoLogLength, int( 1 ) ) );
-	glGetProgramInfoLog( programID, infoLogLength, NULL, &programErrorMessage[0] );
+	glGetProgramInfoLog( sp->programID, infoLogLength, NULL, &programErrorMessage[0] );
 	Debug::Log( trim( std::string( programErrorMessage.begin(), programErrorMessage.end() ) ), LogType::Error );
 	
 	// Cleanup loaded shader
@@ -132,15 +139,19 @@ int ShaderProgram::LoadProgram( const InitConfig& config )
 	glDeleteShader( fshader );
 	glDeleteShader( cshader );
 
-	initialized = true;
-	return 0;
+	sp->initialized = true;
+
+	// Register with scene
+	Scene::RegisterShader( programName, sp );
+
+	return sp;
 }
 
 /// <summary>
 /// Binds the shader.
 /// </summary>
 /// <returns></returns>
-const void ShaderProgram::BindShader()
+void ShaderProgram::BindShader() const
 {
 	if( !initialized )
 		return;

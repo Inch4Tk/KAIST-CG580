@@ -14,7 +14,7 @@ public:
 	Geometry( const std::vector<Mesh*>& meshes );
 	~Geometry();
 
-	const void Draw();
+	void Draw() const;
 
 private:
 	std::vector<Mesh*> meshes;
