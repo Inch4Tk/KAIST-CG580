@@ -7,6 +7,7 @@ class GUI;
 class Input;
 class ObjectManager;
 class Scene;
+class Time;
 
 class AppManager
 {
@@ -22,6 +23,7 @@ public:
 	static Input* GetInput();
 	static ObjectManager* GetObjectManager();
 	static Scene* GetScene();
+	static Time* GetTime();
 
 private:
 	AppManager();
@@ -34,6 +36,7 @@ private:
 	static Input* input;
 	static ObjectManager* objectManager;
 	static Scene* scene;
+	static Time* time;
 
 };
 

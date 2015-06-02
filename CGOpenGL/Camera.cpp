@@ -2,6 +2,7 @@
 
 #include "AppManager.h"
 #include "Input.h"
+#include "Time.h"
 
 
 Camera::Camera()
@@ -125,7 +126,7 @@ void Camera::UpdateFirstPerson()
 	Input* input = AppManager::GetInput();
 
 	// Delta speed
-	float deltaMS = movementSpeed * 1.0f;
+	float deltaMS = movementSpeed * 1.0f * static_cast<float>(AppManager::GetTime()->GetDelta());
 	// Update the position
 	position += rightDir * (input->GetInputAxisX() * deltaMS);
 	position += viewDir * (input->GetInputAxisY() * deltaMS);

@@ -4,12 +4,14 @@
 #include "Input.h"
 #include "ObjectManager.h"
 #include "Scene.h"
+#include "Time.h"
 
 GLFWwindow* AppManager::window = nullptr;
 GUI* AppManager::gui = nullptr;
 Input* AppManager::input = nullptr;
 ObjectManager* AppManager::objectManager = nullptr;
 Scene* AppManager::scene = nullptr;
+Time* AppManager::time = nullptr;
 std::pair<int, int> AppManager::windowDimensions = std::pair<int, int>( 0, 0 );
 
 AppManager::AppManager()
@@ -41,6 +43,9 @@ void AppManager::Initialize( GLFWwindow* window )
 	// Init ObjectManager
 	objectManager = new ObjectManager();
 
+	// Init Time
+	time = new Time();
+
 	// Load Scene
 	scene = new Scene();
 	scene->LoadScene( "" );
@@ -58,6 +63,7 @@ void AppManager::Terminate()
 	SDELETE( input );
 	SDELETE( objectManager );
 	SDELETE( scene );
+	SDELETE( time );
 }
 
 /// <summary>
@@ -68,6 +74,9 @@ void AppManager::MainLoop()
 	// Main Loop  
 	do
 	{
+		// Update frame time
+		time->NextFrame();
+
 		// Update all objects
 		objectManager->ExecUpdate();
 
@@ -141,4 +150,13 @@ Scene* AppManager::GetScene()
 std::pair<int, int> AppManager::GetWindowDimensions()
 {
 	return windowDimensions;
+}
+
+/// <summary>
+/// Gets the time.
+/// </summary>
+/// <returns></returns>
+Time* AppManager::GetTime()
+{
+	return time;
 }
