@@ -54,8 +54,8 @@ void Input::PostMousePosEvent( double xpos, double ypos )
 
 	// Debatable, whether we should normalize to window dims, or just to multiple of aspect
 	std::pair<int, int> windowDim = AppManager::GetWindowDimensions();
-	mouseDeltaXNorm = (mousePosX - lastMousePosX) / static_cast<double>(windowDim.first);
-	mouseDeltaYNorm = (mousePosY - lastMousePosY) / static_cast<double>(windowDim.second);
+	mouseDeltaXNorm = static_cast<float>(mousePosX - lastMousePosX) / static_cast<float>(windowDim.first);
+	mouseDeltaYNorm = static_cast<float>(mousePosY - lastMousePosY) / static_cast<float>(windowDim.second);
 }
 
 /// <summary>
@@ -140,7 +140,7 @@ bool Input::IsRMBPressed() const
 /// Gets the input axisX.
 /// </summary>
 /// <returns></returns>
-double Input::GetInputAxisX() const
+float Input::GetInputAxisX() const
 {
 	return inputAxisX;
 }
@@ -149,7 +149,7 @@ double Input::GetInputAxisX() const
 /// Gets the input axisY.
 /// </summary>
 /// <returns></returns>
-double Input::GetInputAxisY() const
+float Input::GetInputAxisY() const
 {
 	return inputAxisY;
 }
@@ -158,7 +158,7 @@ double Input::GetInputAxisY() const
 /// Gets the normalized mouse delta x.
 /// </summary>
 /// <returns></returns>
-double Input::GetMouseDeltaX() const
+float Input::GetMouseDeltaX() const
 {
 	return mouseDeltaXNorm;
 }
@@ -167,7 +167,7 @@ double Input::GetMouseDeltaX() const
 /// Gets the normalized mouse delta y.
 /// </summary>
 /// <returns></returns>
-double Input::GetMouseDeltaY() const
+float Input::GetMouseDeltaY() const
 {
 	return mouseDeltaYNorm;
 }

@@ -41,6 +41,8 @@ protected:
 	float turnSpeed = 0;
 	bool lockedToMouse = false;
 
+	void UpdateFirstPerson();
+
 	// Projection related
 	enum ProjectionType
 	{
@@ -62,6 +64,7 @@ protected:
 	// Transformation related
 	glm::vec3 globalUpDir = { 0, 1, 0 };
 	glm::vec3 viewDir = { 1, 0, 0 };
+	glm::vec3 rightDir = { 0, 0, -1 };
 
 	glm::mat4 view;
 	glm::mat4 projection;

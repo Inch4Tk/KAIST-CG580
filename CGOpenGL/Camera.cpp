@@ -1,5 +1,8 @@
 #include "Camera.h"
 
+#include "AppManager.h"
+#include "Input.h"
+
 
 Camera::Camera()
 {
@@ -14,6 +17,10 @@ Camera::~Camera()
 void Camera::Update()
 {
 	// Handle movements
+	if( movementType == MovementType::FirstPerson )
+	{
+		UpdateFirstPerson();
+	}
 
 	// Calculate view/projection matrices
 	view = glm::lookAt( position, position + viewDir, globalUpDir );
@@ -108,4 +115,28 @@ void Camera::MakeFirstPerson( float movementSpeed, float turnSpeed, bool lockedT
 	this->turnSpeed = turnSpeed;
 	this->lockedToMouse = lockedToMouse;
 	movementType = MovementType::FirstPerson;
+}
+
+/// <summary>
+/// Updates the camera like in a first person view.
+/// </summary>
+void Camera::UpdateFirstPerson()
+{
+	Input* input = AppManager::GetInput();
+
+	// Delta speed
+	float deltaMS = movementSpeed * 1.0f;
+	// Update the position
+	position += rightDir * (input->GetInputAxisX() * deltaMS);
+	position += viewDir * (input->GetInputAxisY() * deltaMS);
+
+	//// Rotate the view around the right axis
+	//viewDir = glm::rotate( viewDir, input->GetMouseDeltaY() * (turnSpeed * glm::pi<float>()), rightDir );
+	//// Rotate the view around the global up axis
+	//viewDir = glm::rotate( viewDir, input->GetMouseDeltaX() * (turnSpeed * glm::pi<float>()), globalUpDir );
+	//viewDir = normalize( viewDir );
+
+	//// Re-normalize the right dir vector
+	//rightDir = glm::normalize(glm::cross( globalUpDir, viewDir ));
+	
 }
