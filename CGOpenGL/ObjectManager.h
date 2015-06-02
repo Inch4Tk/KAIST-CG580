@@ -8,17 +8,19 @@ class SceneObject;
 class ObjectManager
 {
 public:
-	static void ExecUpdate();
-	static void ExecRender();
+	friend class AppManager;
 
-	static void SubscribeUpdate( SceneObject* sub );
-	static void SubscribeRender( SceneObject* sub );
+	void SubscribeUpdate( SceneObject* sub );
+	void SubscribeRender( SceneObject* sub );
 
 private:
 	ObjectManager();
 	~ObjectManager();
 
-	static std::list<SceneObject*> subsUpdate;
-	static std::list<SceneObject*> subsRender;
+	void ExecUpdate();
+	void ExecRender();
+
+	std::list<SceneObject*> subsUpdate;
+	std::list<SceneObject*> subsRender;
 };
 

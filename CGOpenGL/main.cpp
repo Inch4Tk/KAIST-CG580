@@ -3,11 +3,10 @@
 #include "StandardIncludes.h"
 
 // Project Includes
+#include "AppManager.h"
 #include "Debug.h"
 #include "GUI.h"
-#include "ObjectManager.h"
-#include "Scene.h"
-#include "VertexFormatManager.h"
+#include "Input.h"
 
 // Export Nvidia optimus enablement, to direct app to run from optimus device ón windows if possible
 #ifdef _WIN32
@@ -25,11 +24,13 @@ static void errorCallback( int error, const char* description )
 }
 
 // Defines the callback executed on mouse button events
-void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
+static void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
 {
 	// Handle AntTweakBar
-	if( GUI::MouseButtonHandler(button, action) )
+	if( AppManager::GetGUI()->MouseButtonHandler( button, action ) )
 		return;
+
+	AppManager::GetInput()->PostMouseButtonEvent( button, action, mods );
 }
 
 
@@ -37,15 +38,17 @@ void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
 static void cursorPositionCallback( GLFWwindow* window, double xpos, double ypos )
 {
 	// Handle AntTweakBar
-	if( GUI::MouseMoveHandler( xpos, ypos ) )
+	if( AppManager::GetGUI()->MouseMoveHandler( xpos, ypos ) )
 		return;
+
+	AppManager::GetInput()->PostMousePosEvent( xpos, ypos );
 }
 
 // Define the callback on scrolling
-void scrollCallback( GLFWwindow* window, double xoffset, double yoffset )
+static void scrollCallback( GLFWwindow* window, double xoffset, double yoffset )
 {
 	// Handle AntTweakBar
-	if( GUI::MouseScrollHandler( yoffset ) )
+	if( AppManager::GetGUI()->MouseScrollHandler( yoffset ) )
 		return;
 }
 
@@ -53,20 +56,22 @@ void scrollCallback( GLFWwindow* window, double xoffset, double yoffset )
 static void keyCallback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
 	// Handle AntTweakBar
-	if( GUI::KeyHandler( key, action ) )
+	if( AppManager::GetGUI()->KeyHandler( key, action ) )
 		return;
 
-	// Handle all our key presses
+	AppManager::GetInput()->PostKeyEvent( key, scancode, action, mods );
+
+	// Quit on escape
 	if( key == GLFW_KEY_ESCAPE && action == GLFW_PRESS )
 		glfwSetWindowShouldClose( window, GL_TRUE );
 
 }
 
 // Define the unicode input callback
-void characterCallback( GLFWwindow* window, unsigned int codepoint )
+static void characterCallback( GLFWwindow* window, unsigned int codepoint )
 {
 	// Handle AntTweakBar
-	if( GUI::CharHandler( codepoint ) )
+	if( AppManager::GetGUI()->CharHandler( codepoint ) )
 		return;
 }
 
@@ -131,42 +136,10 @@ int main( void )
 	std::string glVer = GLUBYTETOSTR( glGetString( GL_VERSION ) );
 	Debug::Log( "Starting Program with OpenGL version: " + glVer, LogType::Info );
 
-	// Init GUI
-	GUI::Initialize( windowWidth, windowHeight );
-
-	// Set a background color  
-	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-
-	// Load Scene
-	Scene::Load( window, "" );
-
-	// Main Loop  
-	do
-	{
-		// Update all objects
-		ObjectManager::ExecUpdate();
-
-		// Clear color buffer  
-		glClear( GL_COLOR_BUFFER_BIT );
-
-		// Render all objects
-		ObjectManager::ExecRender();
-
-		// Draw GUI
-		GUI::Draw();
-
-		// Swap buffers  
-		glfwSwapBuffers( window );
-		// Get and organize events, like keyboard and mouse input, window resizing, etc...  
-		glfwPollEvents();
-
-	} // Check if the ESC key had been pressed or if the window had been closed  
-	while( !glfwWindowShouldClose( window ) );
-
-	// Unload scene
-	Scene::Unload();
-	// Cleanup GUI
-	GUI::Cleanup();
+	// Handle the Applications resources
+	AppManager::Initialize( window );
+	AppManager::MainLoop();
+	AppManager::Terminate();
 
 	// Close OpenGL window and terminate GLFW  
 	glfwDestroyWindow( window );

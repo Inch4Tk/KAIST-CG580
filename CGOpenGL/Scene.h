@@ -11,31 +11,30 @@ class ShaderProgram;
 
 class Scene
 {
+	friend class AppManager;
 public:
-	static int Load( GLFWwindow* window, const std::string& name );
-	static void Unload();
+	void RegisterMesh( const std::string& name, Mesh* mesh );
+	void RegisterMaterial( const std::string& name, Material* material );
+	void RegisterShader( const std::string& name, ShaderProgram* shader );
 
-	static void RegisterMesh( const std::string& name, Mesh* mesh );
-	static void RegisterMaterial( const std::string& name, Material* material );
-	static void RegisterShader( const std::string& name, ShaderProgram* shader );
-
-	static const Camera* GetActiveCamera();
-	static Mesh* GetMesh( const std::string& name );
-	static Material* GetMaterial( const std::string& name );
-	static ShaderProgram* GetShader( const std::string& name );
+	const Camera* GetActiveCamera();
+	Mesh* GetMesh( const std::string& name );
+	Material* GetMaterial( const std::string& name );
+	ShaderProgram* GetShader( const std::string& name );
 
 private:
 	Scene();
 	~Scene();
+	
+	void LoadScene( const std::string& name );
 
-	static bool loaded;
-	static GLFWwindow* currentWindow;
-	static Camera* activeCamera;
-	static std::list<SceneObject*> sceneObjects;
-	static std::unordered_map<std::string, Mesh*> meshes;
-	static std::unordered_map<std::string, Material*> materials;
-	static std::unordered_map<std::string, ShaderProgram*> shaders;
+	bool loaded = false;
+	Camera* activeCamera;
+	std::list<SceneObject*> sceneObjects;
+	std::unordered_map<std::string, Mesh*> meshes;
+	std::unordered_map<std::string, Material*> materials;
+	std::unordered_map<std::string, ShaderProgram*> shaders;
 
-	static void LoadTestScene();
+	void LoadTestScene();
 };
 

@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+#include "AppManager.h"
 #include "Camera.h"
 #include "Geometry.h"
 #include "Material.h"
@@ -11,46 +12,11 @@
 // Include tiny object loader module
 #include "tiny_obj_loader.h"
 
-
-bool Scene::loaded = false;
-Camera* Scene::activeCamera = nullptr;
-GLFWwindow* Scene::currentWindow = nullptr;
-std::list<SceneObject*> Scene::sceneObjects = std::list<SceneObject*>();
-std::unordered_map<std::string, Material*> Scene::materials = std::unordered_map<std::string, Material*>();
-std::unordered_map<std::string, Mesh*> Scene::meshes = std::unordered_map<std::string, Mesh*>();
-std::unordered_map<std::string, ShaderProgram*> Scene::shaders = std::unordered_map<std::string, ShaderProgram*>();
-
 Scene::Scene()
 {
 }
 
 Scene::~Scene()
-{
-}
-
-/// <summary>
-/// Loads the scene with the specified name.
-/// </summary>
-/// <param name="name">The name.</param>
-/// <returns></returns>
-int Scene::Load( GLFWwindow* window, const std::string& name )
-{
-	currentWindow = window;
-
-	// Potentially unload a loaded scene beforehand
-	Unload();
-
-	// Load the correct scene
-	LoadTestScene(); // this has to be set as the else as soon as we try loading a different scene
-
-	loaded = true;
-	return 0;
-}
-
-/// <summary>
-/// Unloads this instance.
-/// </summary>
-void Scene::Unload()
 {
 	if( loaded )
 	{
@@ -70,6 +36,23 @@ void Scene::Unload()
 	}
 }
 
+
+/// <summary>
+/// Loads the scene.
+/// </summary>
+/// <param name="name">The name.</param>
+void Scene::LoadScene( const std::string& name )
+{
+	// Only load unloaded scenes
+	if( loaded )
+		return;
+
+	// Load the correct scene
+	LoadTestScene(); // this has to be set as the else as soon as we try loading a different scene
+	loaded = true;
+}
+
+
 /// <summary>
 /// Loads a test scene.
 /// </summary>
@@ -79,7 +62,7 @@ void Scene::LoadTestScene()
 	activeCamera = new Camera();
 	activeCamera->MakeFirstPerson( 10.0f, 10.0f, false );
 	int winWidth, winHeight;
-	glfwGetWindowSize( currentWindow, &winWidth, &winHeight );
+	glfwGetWindowSize( AppManager::GetWindow(), &winWidth, &winHeight );
 	activeCamera->MakePerspective( 60.0f, static_cast<float>(winWidth)/static_cast<float>(winHeight), 0.1f, 1000.0f );
 
 	// Load a shader
@@ -103,7 +86,7 @@ void Scene::LoadTestScene()
 	
 	// Create a scene object containing the mesh and the test shader
 	SceneObject* tri = new SceneObject( g, testShader );
-	ObjectManager::SubscribeRender( tri );
+	AppManager::GetObjectManager()->SubscribeRender( tri );
 	sceneObjects.push_back( tri );
 }
 

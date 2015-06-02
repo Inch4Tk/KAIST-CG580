@@ -1,23 +1,6 @@
 #include "GUI.h"
 
-// Statics
-TwBar* GUI::testBar = nullptr;
-
-GUI::GUI()
-{
-}
-
-
-GUI::~GUI()
-{
-}
-
-/// <summary>
-/// Initializes the GUI, adapted to the window dimensions
-/// </summary>
-/// <param name="windowWidth">Width of the window.</param>
-/// <param name="windowHeight">Height of the window.</param>
-void GUI::Initialize( uint32_t windowWidth, uint32_t windowHeight )
+GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 {
 	// Start Tweak Bar
 	TwInit( TW_OPENGL_CORE, NULL );
@@ -27,10 +10,8 @@ void GUI::Initialize( uint32_t windowWidth, uint32_t windowHeight )
 	testBar = TwNewBar( "Testbar" );
 }
 
-/// <summary>
-/// Deletes all the GUI elements and de-inits AntTweakBar
-/// </summary>
-void GUI::Cleanup()
+
+GUI::~GUI()
 {
 	TwTerminate();
 }

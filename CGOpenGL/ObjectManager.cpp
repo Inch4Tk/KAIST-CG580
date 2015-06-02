@@ -2,9 +2,6 @@
 
 #include "SceneObject.h"
 
-std::list<SceneObject*> ObjectManager::subsUpdate = std::list<SceneObject*>();
-std::list<SceneObject*> ObjectManager::subsRender = std::list<SceneObject*>();
-
 ObjectManager::ObjectManager()
 {
 }

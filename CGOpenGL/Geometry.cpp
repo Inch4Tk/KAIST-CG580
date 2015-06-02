@@ -6,6 +6,7 @@
 
 // Include tiny object loader module
 #include "tiny_obj_loader.h"
+#include "AppManager.h"
 
 Geometry::Geometry( const std::vector<Mesh*>& meshes ) : meshes( meshes )
 {
@@ -14,6 +15,7 @@ Geometry::Geometry( const std::vector<Mesh*>& meshes ) : meshes( meshes )
 // Load from filename
 Geometry::Geometry( const std::string& objFilename )
 {
+	Scene* scene = AppManager::GetScene();
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	tinyobj::LoadObj( shapes, materials, ("Resources/" + objFilename).c_str(), "Resources/" );
@@ -25,7 +27,7 @@ Geometry::Geometry( const std::string& objFilename )
 	{
 		// Check if the material already exists
 		std::string s = objFilename + mat.name;
-		Material* m = Scene::GetMaterial( s );
+		Material* m = scene->GetMaterial( s );
 		if( m != nullptr )
 		{
 			tmp_mats.push_back( m );
@@ -34,7 +36,7 @@ Geometry::Geometry( const std::string& objFilename )
 		{
 			m = new Material();
 			tmp_mats.push_back( m );
-			Scene::RegisterMaterial( s, m );
+			scene->RegisterMaterial( s, m );
 		}
 	}
 
@@ -43,7 +45,7 @@ Geometry::Geometry( const std::string& objFilename )
 	{
 		// Check if the mesh already exists
 		std::string meshName = objFilename + shape.name;
-		Mesh* m = Scene::GetMesh( meshName );
+		Mesh* m = scene->GetMesh( meshName );
 		if( m != nullptr )
 		{
 			meshes.push_back( m );
@@ -161,7 +163,7 @@ Geometry::Geometry( const std::string& objFilename )
 			}
 
 			meshes.push_back( m );
-			Scene::RegisterMesh( meshName, m );
+			scene->RegisterMesh( meshName, m );
 		}
 	}
 }

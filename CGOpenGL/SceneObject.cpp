@@ -1,5 +1,6 @@
 #include "SceneObject.h"
 
+#include "AppManager.h"
 #include "Camera.h"
 #include "Geometry.h"
 #include "Scene.h"
@@ -39,7 +40,7 @@ void SceneObject::Render()
 		glm::mat4_cast( rotation ) * 
 		glm::scale( glm::mat4(1.0f), scale );
 	glUniformMatrix4fv( uniWorldMatrix, 1, false, &worldMatrix[0][0] );
-	const Camera* cam = Scene::GetActiveCamera();
+	const Camera* cam = AppManager::GetScene()->GetActiveCamera();
 	glUniformMatrix4fv( uniViewMatrix, 1, false, &cam->GetView()[0][0] );
 	glUniformMatrix4fv( uniProjectionMatrix, 1, false, &cam->GetProjection()[0][0] );
 	glUniformMatrix4fv( uniViewProjectionMatrix, 1, false, &cam->GetViewProjection()[0][0] );

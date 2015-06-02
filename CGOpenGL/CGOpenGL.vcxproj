@@ -195,10 +195,12 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -210,10 +212,12 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClCompile Include="VertexFormatManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ObjectManager.h" />

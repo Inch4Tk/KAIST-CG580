@@ -1,5 +1,6 @@
 #include "ShaderProgram.h"
 
+#include "AppManager.h"
 #include "Debug.h"
 #include "Scene.h"
 
@@ -72,7 +73,7 @@ GLuint ShaderProgram::LoadShader( const std::string& filename, GLenum type )
 const ShaderProgram* ShaderProgram::LoadProgram( const std::string& programName, const InitConfig& config )
 {
 	// Check if the shader already exists
-	ShaderProgram* sp = Scene::GetShader( programName );
+	ShaderProgram* sp = AppManager::GetScene()->GetShader( programName );
 	if( sp != nullptr)
 		return sp;
 
@@ -142,7 +143,7 @@ const ShaderProgram* ShaderProgram::LoadProgram( const std::string& programName,
 	sp->initialized = true;
 
 	// Register with scene
-	Scene::RegisterShader( programName, sp );
+	AppManager::GetScene()->RegisterShader( programName, sp );
 
 	return sp;
 }

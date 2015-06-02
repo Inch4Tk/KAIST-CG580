@@ -57,6 +57,12 @@
     <ClCompile Include="GUI.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AppManager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">
@@ -97,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AppManager.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
