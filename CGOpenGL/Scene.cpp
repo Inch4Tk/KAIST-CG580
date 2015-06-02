@@ -14,6 +14,7 @@
 
 bool Scene::loaded = false;
 Camera* Scene::activeCamera = nullptr;
+GLFWwindow* Scene::currentWindow = nullptr;
 std::list<SceneObject*> Scene::sceneObjects = std::list<SceneObject*>();
 std::unordered_map<std::string, Material*> Scene::materials = std::unordered_map<std::string, Material*>();
 std::unordered_map<std::string, Mesh*> Scene::meshes = std::unordered_map<std::string, Mesh*>();
@@ -32,8 +33,10 @@ Scene::~Scene()
 /// </summary>
 /// <param name="name">The name.</param>
 /// <returns></returns>
-int Scene::Load( const std::string& name )
+int Scene::Load( GLFWwindow* window, const std::string& name )
 {
+	currentWindow = window;
+
 	// Potentially unload a loaded scene beforehand
 	Unload();
 
@@ -72,6 +75,13 @@ void Scene::Unload()
 /// </summary>
 void Scene::LoadTestScene()
 {
+	// Create a default projective camera
+	activeCamera = new Camera();
+	activeCamera->MakeFirstPerson( 10.0f, 10.0f, false );
+	int winWidth, winHeight;
+	glfwGetWindowSize( currentWindow, &winWidth, &winHeight );
+	activeCamera->MakePerspective( 60.0f, static_cast<float>(winWidth)/static_cast<float>(winHeight), 0.1f, 1000.0f );
+
 	// Load a shader
 	ShaderProgram::InitConfig shaderConfig;
 	shaderConfig.vsPath = "Shader/testVshader.glsl";
@@ -173,4 +183,13 @@ ShaderProgram* Scene::GetShader( const std::string& name )
 		return it->second;
 	}
 	return nullptr;
+}
+
+/// <summary>
+/// Gets the active camera.
+/// </summary>
+/// <returns></returns>
+const Camera* Scene::GetActiveCamera()
+{
+	return activeCamera;
 }

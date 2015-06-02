@@ -138,7 +138,7 @@ int main( void )
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 
 	// Load Scene
-	Scene::Load("");
+	Scene::Load( window, "" );
 
 	// Main Loop  
 	do

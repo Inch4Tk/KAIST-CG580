@@ -12,13 +12,14 @@ class ShaderProgram;
 class Scene
 {
 public:
-	static int Load( const std::string& name );
+	static int Load( GLFWwindow* window, const std::string& name );
 	static void Unload();
 
 	static void RegisterMesh( const std::string& name, Mesh* mesh );
 	static void RegisterMaterial( const std::string& name, Material* material );
 	static void RegisterShader( const std::string& name, ShaderProgram* shader );
 
+	static const Camera* GetActiveCamera();
 	static Mesh* GetMesh( const std::string& name );
 	static Material* GetMaterial( const std::string& name );
 	static ShaderProgram* GetShader( const std::string& name );
@@ -28,6 +29,7 @@ private:
 	~Scene();
 
 	static bool loaded;
+	static GLFWwindow* currentWindow;
 	static Camera* activeCamera;
 	static std::list<SceneObject*> sceneObjects;
 	static std::unordered_map<std::string, Mesh*> meshes;
