@@ -61,9 +61,9 @@ void Scene::LoadTestScene()
 	// Create a default projective camera
 	activeCamera = new Camera();
 	activeCamera->MakeFirstPerson( 10.0f, 10.0f, false );
-	int winWidth, winHeight;
-	glfwGetWindowSize( AppManager::GetWindow(), &winWidth, &winHeight );
-	activeCamera->MakePerspective( 60.0f, static_cast<float>(winWidth)/static_cast<float>(winHeight), 0.1f, 1000.0f );
+	std::pair<int, int> windowDim = AppManager::GetWindowDimensions();
+	activeCamera->MakePerspective( 60.0f, static_cast<float>(windowDim.first)/static_cast<float>(windowDim.second), 
+								   0.1f, 1000.0f );
 
 	// Load a shader
 	ShaderProgram::InitConfig shaderConfig;

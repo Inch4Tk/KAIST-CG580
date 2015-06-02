@@ -28,10 +28,31 @@ public:
 	void RegisterMouseButtonHook( int button, int action, std::function<void()> callback );
 	void RegisterKeyEventHook( int key, int action, std::function<void()> callback );
 
+	bool IsLMBPressed() const;
+	bool IsRMBPressed() const;
+	double GetInputAxisX() const;
+	double GetInputAxisY() const;
+	double GetMouseDeltaX() const;
+	double GetMouseDeltaY() const;
+
 private:
 	Input();
 	~Input();
 	
+	// State
+	bool leftMousePressed = false;
+	bool rightMousePressed = false;
+	float inputAxisX = 0.0f;
+	float inputAxisY = 0.0f;
+
+	double lastMousePosX = 0.0;
+	double lastMousePosY = 0.0;
+	double mousePosX = 0.0;
+	double mousePosY = 0.0;
+	double mouseDeltaXNorm = 0.0;
+	double mouseDeltaYNorm = 0.0;
+
+	// Hooks
 	std::unordered_multimap<std::pair<int, int>, std::function<void()>> mouseButtonHooks;
 	std::unordered_multimap<std::pair<int, int>, std::function<void()>> keyHooks;
 };

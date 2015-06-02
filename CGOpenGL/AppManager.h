@@ -17,6 +17,7 @@ public:
 	static void MainLoop();
 
 	static GLFWwindow* GetWindow();
+	static std::pair<int, int> GetWindowDimensions();
 	static GUI* GetGUI();
 	static Input* GetInput();
 	static ObjectManager* GetObjectManager();
@@ -27,6 +28,7 @@ private:
 	~AppManager();
 
 	// Components
+	static std::pair<int, int> windowDimensions;
 	static GLFWwindow* window;
 	static GUI* gui;
 	static Input* input;

@@ -10,6 +10,7 @@ GUI* AppManager::gui = nullptr;
 Input* AppManager::input = nullptr;
 ObjectManager* AppManager::objectManager = nullptr;
 Scene* AppManager::scene = nullptr;
+std::pair<int, int> AppManager::windowDimensions = std::pair<int, int>( 0, 0 );
 
 AppManager::AppManager()
 {
@@ -31,6 +32,7 @@ void AppManager::Initialize( GLFWwindow* window )
 	// Init GUI
 	int winWidth, winHeight;
 	glfwGetWindowSize( window, &winWidth, &winHeight );
+	windowDimensions = std::pair<int, int>(winWidth, winHeight);
 	gui = new GUI( winWidth, winHeight );
 
 	// Init Input
@@ -130,4 +132,13 @@ ObjectManager* AppManager::GetObjectManager()
 Scene* AppManager::GetScene()
 {
 	return scene;
+}
+
+/// <summary>
+/// Gets the window dimensions.
+/// </summary>
+/// <returns></returns>
+std::pair<int, int> AppManager::GetWindowDimensions()
+{
+	return windowDimensions;
 }
