@@ -21,6 +21,9 @@ class Input
 	friend class AppManager;
 public:
 
+	void Update();
+	void WindowFocus( int focus );
+
 	void PostMouseButtonEvent( int button, int action, int mods );
 	void PostMousePosEvent( double xpos, double ypos );
 	void PostKeyEvent( int key, int scancode, int action, int mods );
@@ -45,6 +48,7 @@ private:
 	float inputAxisX = 0.0f;
 	float inputAxisY = 0.0f;
 
+	bool recordMousePos = true;
 	double lastMousePosX = 0.0;
 	double lastMousePosY = 0.0;
 	double mousePosX = 0.0;

@@ -75,7 +75,11 @@ static void characterCallback( GLFWwindow* window, unsigned int codepoint )
 		return;
 }
 
-
+// Define the window focus callback
+static void winFocusCallback( GLFWwindow* window, int focused )
+{
+	AppManager::GetInput()->WindowFocus( focused );
+}
 
 int main( void )
 {
@@ -119,6 +123,7 @@ int main( void )
 	glfwSetScrollCallback( window, scrollCallback );
 	glfwSetKeyCallback( window, keyCallback );
 	glfwSetCharCallback( window, characterCallback );
+	glfwSetWindowFocusCallback( window, winFocusCallback );
 
 	// Initialize GLEW 
 	glewExperimental = GL_TRUE;

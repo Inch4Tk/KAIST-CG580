@@ -110,12 +110,15 @@ void Camera::MakeOrthographic( float left, float right, float bottom, float top,
 /// </summary>
 /// <param name="movementSpeed">The movement speed in m/s.</param>
 /// <param name="turnSpeed">The turn speed in screens (from 0 to 1.0) expressed in rad.</param>
+/// <param name="yLimitAngle">The y limit angle in radians. Limits the viewing range to prevent flipping.</param>
 /// <param name="lockedToMouse">if set to <c>true</c> [locked to mouse].</param>
-void Camera::MakeFirstPerson( float movementSpeed, float turnSpeed, bool lockedToMouse )
+void Camera::MakeFirstPerson( float movementSpeed, float turnSpeed, float yLimitAngle, bool lockedToMouse )
 {
 	this->movementSpeed = movementSpeed;
 	this->turnSpeed = turnSpeed;
 	this->lockedToMouse = lockedToMouse;
+	downPitchLimit = yLimitAngle;
+	upPitchLimit = glm::pi<float>() - yLimitAngle;
 	movementType = MovementType::FirstPerson;
 }
 
@@ -132,13 +135,21 @@ void Camera::UpdateFirstPerson()
 	position += rightDir * (input->GetInputAxisX() * deltaMS);
 	position += viewDir * (input->GetInputAxisY() * deltaMS);
 
-	//// Rotate the view around the right axis
-	//viewDir = glm::rotate( viewDir, input->GetMouseDeltaY() * (turnSpeed), rightDir );
-	//// Rotate the view around the global up axis
-	//viewDir = glm::rotate( viewDir, input->GetMouseDeltaX() * turnSpeed, globalUpDir );
-	viewDir = normalize( viewDir );
+	// Rotate the view around the right axis
+	float pitchingAngle = -input->GetMouseDeltaY() * turnSpeed;
+	// Limit pitching to prevent flipping
+	float curYAngle = glm::acos( viewDir.y );
+	float requestedPitch = curYAngle - pitchingAngle;
+
+	if( requestedPitch > upPitchLimit )
+		pitchingAngle = upPitchLimit - curYAngle;
+	else if( requestedPitch < downPitchLimit )
+		pitchingAngle = downPitchLimit - curYAngle;
+
+	viewDir = glm::rotate( viewDir, pitchingAngle, rightDir );
+	// Rotate the view around the global up axis
+	viewDir = glm::rotate( viewDir, -input->GetMouseDeltaX() * turnSpeed, globalUpDir );
 
 	// Re-normalize the right dir vector
 	rightDir = glm::normalize( glm::cross( viewDir, globalUpDir ) );
-
 }

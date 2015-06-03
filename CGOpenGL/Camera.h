@@ -18,7 +18,7 @@ public:
 	void MakeOrthographic( float left, float right, float bottom, float top, float nearPlane, float farPlane);
 
 	// Change camera movement types/behavior
-	void MakeFirstPerson( float movementSpeed, float turnSpeed, bool lockedToMouse );
+	void MakeFirstPerson( float movementSpeed, float turnSpeed, float yLimitAngle, bool lockedToMouse );
 
 	// Getters
 	glm::mat4 GetView() const;
@@ -39,6 +39,8 @@ protected:
 
 	float movementSpeed = 0;
 	float turnSpeed = 0;
+	float upPitchLimit = 0;
+	float downPitchLimit = 0;
 	bool lockedToMouse = false;
 
 	void UpdateFirstPerson();

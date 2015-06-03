@@ -6,6 +6,8 @@
 
 Input::Input()
 {
+	// Do one update here, so we reset the mouse position early
+	Update();
 }
 
 
@@ -46,16 +48,7 @@ void Input::PostMouseButtonEvent( int button, int action, int mods )
 /// <param name="ypos">The ypos.</param>
 void Input::PostMousePosEvent( double xpos, double ypos )
 {
-	// Set state
-	lastMousePosX = mousePosX;
-	lastMousePosY = mousePosY;
-	mousePosX = xpos;
-	mousePosY = ypos;
-
-	// Debatable, whether we should normalize to window dims, or just to multiple of aspect
-	std::pair<int, int> windowDim = AppManager::GetWindowDimensions();
-	mouseDeltaXNorm = static_cast<float>(mousePosX - lastMousePosX) / static_cast<float>(windowDim.first);
-	mouseDeltaYNorm = static_cast<float>(mousePosY - lastMousePosY) / static_cast<float>(windowDim.second);
+	// Nothing here yet... maybe later something useful will come up
 }
 
 /// <summary>
@@ -170,4 +163,43 @@ float Input::GetMouseDeltaX() const
 float Input::GetMouseDeltaY() const
 {
 	return mouseDeltaYNorm;
+}
+
+/// <summary>
+/// Used for polling events etc
+/// </summary>
+void Input::Update()
+{
+	if( recordMousePos )
+	{
+		// Poll and set mouse state
+		lastMousePosX = mousePosX;
+		lastMousePosY = mousePosY;
+		glfwGetCursorPos( AppManager::GetWindow(), &mousePosX, &mousePosY );
+
+		// Debatable, whether we should normalize to window dims, or just to multiple of aspect
+		std::pair<int, int> windowDim = AppManager::GetWindowDimensions();
+		mouseDeltaXNorm = static_cast<float>(mousePosX - lastMousePosX) / static_cast<float>(windowDim.first);
+		mouseDeltaYNorm = static_cast<float>(mousePosY - lastMousePosY) / static_cast<float>(windowDim.second);
+	}
+}
+
+/// <summary>
+/// If the window gets focused, we have to reset our mouse position values. If it gets defocused stop recording new mouse positions
+/// </summary>
+void Input::WindowFocus( int focus )
+{
+	if( focus == GL_TRUE )
+	{
+		glfwGetCursorPos( AppManager::GetWindow(), &mousePosX, &mousePosY );
+		lastMousePosX = mousePosX;
+		lastMousePosY = mousePosY;
+		mouseDeltaXNorm = 0.0f;
+		mouseDeltaYNorm = 0.0f;
+		recordMousePos = true;
+	}
+	else
+	{
+		recordMousePos = false;
+	}
 }

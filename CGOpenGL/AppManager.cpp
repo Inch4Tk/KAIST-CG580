@@ -74,18 +74,19 @@ void AppManager::MainLoop()
 	// Main Loop  
 	do
 	{
+		// Updating tasks
 		// Update frame time
 		time->NextFrame();
-
+		// Update input
+		input->Update();
 		// Update all objects
 		objectManager->ExecUpdate();
 
+		// Rendering tasks
 		// Clear color buffer  
 		glClear( GL_COLOR_BUFFER_BIT );
-
 		// Render all objects
 		objectManager->ExecRender();
-
 		// Draw GUI
 		gui->Draw();
 
