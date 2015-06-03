@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 #include "AppManager.h"
+#include "Debug.h"
 #include "Input.h"
 #include "Time.h"
 
@@ -71,7 +72,7 @@ glm::mat4 Camera::GetViewProjection() const
 /// <summary>
 /// Makes the camera perspective.
 /// </summary>
-/// <param name="fovy">The fovy.</param>
+/// <param name="fovy">The fovy in radians.</param>
 /// <param name="aspect">The aspect.</param>
 /// <param name="nearPlane">The near plane.</param>
 /// <param name="farPlane">The far plane.</param>
@@ -107,8 +108,8 @@ void Camera::MakeOrthographic( float left, float right, float bottom, float top,
 /// <summary>
 /// Makes the camera first person.
 /// </summary>
-/// <param name="movementSpeed">The movement speed.</param>
-/// <param name="turnSpeed">The turn speed.</param>
+/// <param name="movementSpeed">The movement speed in m/s.</param>
+/// <param name="turnSpeed">The turn speed in screens (from 0 to 1.0) expressed in rad.</param>
 /// <param name="lockedToMouse">if set to <c>true</c> [locked to mouse].</param>
 void Camera::MakeFirstPerson( float movementSpeed, float turnSpeed, bool lockedToMouse )
 {
@@ -126,18 +127,18 @@ void Camera::UpdateFirstPerson()
 	Input* input = AppManager::GetInput();
 
 	// Delta speed
-	float deltaMS = movementSpeed * 1.0f * static_cast<float>(AppManager::GetTime()->GetDelta());
+	float deltaMS = movementSpeed * static_cast<float>(AppManager::GetTime()->GetDelta());
 	// Update the position
 	position += rightDir * (input->GetInputAxisX() * deltaMS);
 	position += viewDir * (input->GetInputAxisY() * deltaMS);
 
 	//// Rotate the view around the right axis
-	//viewDir = glm::rotate( viewDir, input->GetMouseDeltaY() * (turnSpeed * glm::pi<float>()), rightDir );
+	//viewDir = glm::rotate( viewDir, input->GetMouseDeltaY() * (turnSpeed), rightDir );
 	//// Rotate the view around the global up axis
-	//viewDir = glm::rotate( viewDir, input->GetMouseDeltaX() * (turnSpeed * glm::pi<float>()), globalUpDir );
-	//viewDir = normalize( viewDir );
+	//viewDir = glm::rotate( viewDir, input->GetMouseDeltaX() * turnSpeed, globalUpDir );
+	viewDir = normalize( viewDir );
 
-	//// Re-normalize the right dir vector
-	//rightDir = glm::normalize(glm::cross( globalUpDir, viewDir ));
-	
+	// Re-normalize the right dir vector
+	rightDir = glm::normalize( glm::cross( viewDir, globalUpDir ) );
+
 }

@@ -64,7 +64,7 @@ protected:
 	// Transformation related
 	glm::vec3 globalUpDir = { 0, 1, 0 };
 	glm::vec3 viewDir = { 1, 0, 0 };
-	glm::vec3 rightDir = { 0, 0, -1 };
+	glm::vec3 rightDir = { 0, 0, 1 };
 
 	glm::mat4 view;
 	glm::mat4 projection;

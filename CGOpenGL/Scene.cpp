@@ -60,9 +60,9 @@ void Scene::LoadTestScene()
 {
 	// Create a default projective camera
 	activeCamera = new Camera();
-	activeCamera->MakeFirstPerson( 10.0f, 10.0f, false );
+	activeCamera->MakeFirstPerson( 5.0f, glm::radians(360.0f), false );
 	std::pair<int, int> windowDim = AppManager::GetWindowDimensions();
-	activeCamera->MakePerspective( 60.0f, static_cast<float>(windowDim.first)/static_cast<float>(windowDim.second), 
+	activeCamera->MakePerspective( glm::radians(60.0f), static_cast<float>(windowDim.first)/static_cast<float>(windowDim.second), 
 								   0.1f, 1000.0f );
 	AppManager::GetObjectManager()->SubscribeUpdate( activeCamera );
 
