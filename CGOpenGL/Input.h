@@ -23,6 +23,7 @@ public:
 
 	void Update();
 	void WindowFocus( int focus );
+	void CenterMousePos();
 
 	void PostMouseButtonEvent( int button, int action, int mods );
 	void PostMousePosEvent( double xpos, double ypos );
@@ -53,8 +54,8 @@ private:
 	double lastMousePosY = 0.0;
 	double mousePosX = 0.0;
 	double mousePosY = 0.0;
-	float mouseDeltaXNorm = 0.0;
-	float mouseDeltaYNorm = 0.0;
+	float mouseDeltaXNorm = 0.0f;
+	float mouseDeltaYNorm = 0.0f;
 
 	// Hooks
 	std::unordered_multimap<std::pair<int, int>, std::function<void()>> mouseButtonHooks;

@@ -203,3 +203,4 @@ void Input::WindowFocus( int focus )
 		recordMousePos = false;
 	}
 }
+

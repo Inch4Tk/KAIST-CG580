@@ -117,6 +117,10 @@ void Camera::MakeFirstPerson( float movementSpeed, float turnSpeed, float yLimit
 	this->movementSpeed = movementSpeed;
 	this->turnSpeed = turnSpeed;
 	this->lockedToMouse = lockedToMouse;
+	if( lockedToMouse )
+		glfwSetInputMode( AppManager::GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+	else
+		glfwSetInputMode( AppManager::GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL );
 	downPitchLimit = yLimitAngle;
 	upPitchLimit = glm::pi<float>() - yLimitAngle;
 	movementType = MovementType::FirstPerson;
@@ -136,7 +140,14 @@ void Camera::UpdateFirstPerson()
 	position += viewDir * (input->GetInputAxisY() * deltaMS);
 
 	// Rotate the view around the right axis
-	float pitchingAngle = -input->GetMouseDeltaY() * turnSpeed;
+	float pitchingAngle = 0.0f;
+	float turningAngle = 0.0f;
+	if( lockedToMouse || input->IsLMBPressed() )
+	{
+		// Only change pitches when the mouse is grabbed or if the mouse is locked to cursor
+		pitchingAngle = -input->GetMouseDeltaY() * turnSpeed;
+		turningAngle = -input->GetMouseDeltaX() * turnSpeed;
+	}
 	// Limit pitching to prevent flipping
 	float curYAngle = glm::acos( viewDir.y );
 	float requestedPitch = curYAngle - pitchingAngle;
@@ -148,7 +159,7 @@ void Camera::UpdateFirstPerson()
 
 	viewDir = glm::rotate( viewDir, pitchingAngle, rightDir );
 	// Rotate the view around the global up axis
-	viewDir = glm::rotate( viewDir, -input->GetMouseDeltaX() * turnSpeed, globalUpDir );
+	viewDir = glm::rotate( viewDir, turningAngle, globalUpDir );
 
 	// Re-normalize the right dir vector
 	rightDir = glm::normalize( glm::cross( viewDir, globalUpDir ) );
