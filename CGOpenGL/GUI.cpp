@@ -8,6 +8,7 @@ GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 
 	// For now init the tweak bar here, better to do it separately
 	testBar = TwNewBar( "Testbar" );
+	TwDefine( "Testbar visible=false" );
 }
 
 

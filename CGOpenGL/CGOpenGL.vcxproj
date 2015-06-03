@@ -69,18 +69,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
+    <CustomBuildAfterTargets>PostBuildEvent</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
+    <CustomBuildAfterTargets>PostBuildEvent</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
+    <CustomBuildAfterTargets>PostBuildEvent</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
+    <CustomBuildAfterTargets>PostBuildEvent</CustomBuildAfterTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -100,13 +104,16 @@
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Debug\Win32\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Debug\Win32\*" "$(OutDir)" /Y/S
-xcopy "$(SolutionDir)AntTweakBar\lib\AntTweakBar.dll" "$(OutDir)" /Y/S
-mkdir "$(OutDir)Shader"
+xcopy "$(SolutionDir)AntTweakBar\lib\AntTweakBar.dll" "$(OutDir)" /Y/S</Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>mkdir "$(OutDir)Shader"
 xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
 mkdir "$(OutDir)Resources"
 xcopy "$(ProjectDir)Resources\*.obj" "$(OutDir)Resources" /Y/S
 xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
-    </PostBuildEvent>
+      <Outputs>donotfindme</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -126,13 +133,16 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Debug\x64\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Debug\x64\*" "$(OutDir)" /Y/S
-xcopy "$(SolutionDir)AntTweakBar\lib\AntTweakBar64.dll" "$(OutDir)" /Y/S
-mkdir "$(OutDir)Shader"
+xcopy "$(SolutionDir)AntTweakBar\lib\AntTweakBar64.dll" "$(OutDir)" /Y/S</Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>mkdir "$(OutDir)Shader"
 xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
 mkdir "$(OutDir)Resources"
 xcopy "$(ProjectDir)Resources\*.obj" "$(OutDir)Resources" /Y/S
 xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
-    </PostBuildEvent>
+      <Outputs>donotfindme</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -156,13 +166,16 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\Win32\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Release\Win32\*" "$(OutDir)" /Y/S
-xcopy "$(SolutionDir)AntTweakBar\lib\AntTweakBar.dll" "$(OutDir)" /Y/S
-mkdir "$(OutDir)Shader"
+xcopy "$(SolutionDir)AntTweakBar\lib\AntTweakBar.dll" "$(OutDir)" /Y/S</Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Outputs>donotfindme</Outputs>
+      <Command>mkdir "$(OutDir)Shader"
 xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
 mkdir "$(OutDir)Resources"
 xcopy "$(ProjectDir)Resources\*.obj" "$(OutDir)Resources" /Y/S
 xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
-    </PostBuildEvent>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -186,13 +199,16 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)glew\bin\Release\x64\*" "$(OutDir)" /Y/S
 xcopy "$(SolutionDir)glfw\bin\Release\x64\*" "$(OutDir)" /Y/S
-xcopy "$(SolutionDir)AntTweakBar\lib\AntTweakBar64.dll" "$(OutDir)" /Y/S
-mkdir "$(OutDir)Shader"
+xcopy "$(SolutionDir)AntTweakBar\lib\AntTweakBar64.dll" "$(OutDir)" /Y/S</Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>mkdir "$(OutDir)Shader"
 xcopy "$(ProjectDir)*.glsl" "$(OutDir)Shader" /Y/S
 mkdir "$(OutDir)Resources"
 xcopy "$(ProjectDir)Resources\*.obj" "$(OutDir)Resources" /Y/S
 xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
-    </PostBuildEvent>
+      <Outputs>donotfindme</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppManager.cpp" />

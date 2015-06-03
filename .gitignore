@@ -197,3 +197,10 @@ $RECYCLE.BIN/
 !glfw/
 !glfw/*
 !glfw/**/*
+!AntTweakBar/
+!AntTweakBar/*
+!AntTweakBar/**/*
+
+# Keep resources obj files
+!CGOpenGL/Resources/*.obj
+!CGOpenGL/Resources/**/*.obj
