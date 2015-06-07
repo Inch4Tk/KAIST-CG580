@@ -18,7 +18,7 @@ public:
 
 	// Transformation variables
 	glm::vec3 position = { 0, 0, 0 }; // Implies world 
-	glm::quat rotation = { 0, 0, 0, 1 }; // Identity, w = last component
+	glm::quat rotation = { 1, 0, 0, 0 }; // Identity, w = first component
 	glm::vec3 scale = { 1, 1, 1 };
 
 protected:

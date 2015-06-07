@@ -36,6 +36,7 @@ void SceneObject::Render()
 	shader->BindShader();
 
 	// Bind the uniforms
+	glm::mat4 rot = glm::mat4_cast( rotation );
 	glm::mat4 worldMatrix = glm::translate( glm::mat4(1.0f), position ) * 
 		glm::mat4_cast( rotation ) * 
 		glm::scale( glm::mat4(1.0f), scale );

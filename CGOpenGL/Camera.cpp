@@ -157,10 +157,10 @@ void Camera::UpdateFirstPerson()
 	else if( requestedPitch < downPitchLimit )
 		pitchingAngle = downPitchLimit - curYAngle;
 
-	viewDir = glm::rotate( viewDir, pitchingAngle, rightDir );
+	viewDir = glm::normalize( glm::rotate( viewDir, pitchingAngle, rightDir ) );
 	// Rotate the view around the global up axis
-	viewDir = glm::rotate( viewDir, turningAngle, globalUpDir );
+	viewDir = glm::normalize( glm::rotate( viewDir, turningAngle, globalUpDir ) );
 
 	// Re-normalize the right dir vector
-	rightDir = glm::normalize( glm::cross( viewDir, globalUpDir ) );
+	rightDir = glm::normalize( glm::cross( globalUpDir, -viewDir ) );
 }

@@ -65,7 +65,7 @@ Geometry::Geometry( const std::string& objFilename )
 				tex = true;
 			if( shape.mesh.indices.size() > 0 )
 				index = true;
-			if( shape.mesh.material_ids.size() > 0 )
+			if( shape.mesh.material_ids.size() > 0 && shape.mesh.material_ids[0] != -1 )
 				mat = tmp_mats[shape.mesh.material_ids[0]];
 
 			// Create and average normals

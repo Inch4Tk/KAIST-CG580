@@ -6,11 +6,11 @@ in VertexData {
     vec3 normal;
 } FragmentIn;
 
-out vec3 color;
+out vec4 color;
 
 void main()
 {
 	vec3 nLightDir = normalize(lightDir);
-	float light = dot(normalize(FragmentIn.normal), nLightDir);
-    color = vec3(1,0,0) * light;
+	float light = clamp(dot(normalize(FragmentIn.normal), nLightDir), 0, 1);
+    color = vec4(vec3(1,0,0) * light + vec3(0.1,0.1,0.1), 1);
 }
