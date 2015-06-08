@@ -52,6 +52,7 @@ void AppManager::Initialize( GLFWwindow* window )
 
 	// Set a background color  
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+	
 }
 
 /// <summary>
@@ -83,8 +84,11 @@ void AppManager::MainLoop()
 		objectManager->ExecUpdate();
 
 		// Rendering tasks
-		// Clear color buffer  
-		glClear( GL_COLOR_BUFFER_BIT );
+		// Enable depth buffer (Maybe not a very good spot to set this)
+		glEnable( GL_DEPTH_TEST );
+		// Clear color/depth buffer  
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
 		// Render all objects
 		objectManager->ExecRender();
 		// Draw GUI

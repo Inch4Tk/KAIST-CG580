@@ -72,6 +72,9 @@ void Scene::LoadTestScene()
 	shaderConfig.vsPath = "Shader/testVshader.glsl";
 	shaderConfig.fsPath = "Shader/testFshader.glsl";
 	const ShaderProgram* testShader = ShaderProgram::LoadProgram( "TestShader", shaderConfig );
+	shaderConfig.vsPath = "Shader/PhongVshader.glsl";
+	shaderConfig.fsPath = "Shader/PhongFshader.glsl";
+	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig );
 
 	// Load a cube
 	Geometry* g = new Geometry( "cube.obj" );
@@ -87,7 +90,7 @@ void Scene::LoadTestScene()
 	meshes["TriangleMesh"] = triangleMesh;*/
 	
 	// Create a scene object containing the mesh and the test shader
-	SceneObject* tri = new SceneObject( g, testShader );
+	SceneObject* tri = new SceneObject( g, phongShader );
 	AppManager::GetObjectManager()->SubscribeRender( tri );
 	sceneObjects.push_back( tri );
 }

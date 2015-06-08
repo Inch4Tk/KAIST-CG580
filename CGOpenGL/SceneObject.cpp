@@ -17,6 +17,7 @@ SceneObject::SceneObject(Geometry* geometry, const ShaderProgram* shader) : geom
 	uniViewMatrix = shader->GetUniformLocation( "viewMatrix" );
 	uniProjectionMatrix = shader->GetUniformLocation( "projectionMatrix" );
 	uniViewProjectionMatrix = shader->GetUniformLocation( "viewProjectionMatrix" );
+	uniWorldCamPos = shader->GetUniformLocation( "worldCamPos" );
 }
 
 
@@ -45,6 +46,7 @@ void SceneObject::Render()
 	glUniformMatrix4fv( uniViewMatrix, 1, false, &cam->GetView()[0][0] );
 	glUniformMatrix4fv( uniProjectionMatrix, 1, false, &cam->GetProjection()[0][0] );
 	glUniformMatrix4fv( uniViewProjectionMatrix, 1, false, &cam->GetViewProjection()[0][0] );
+	glUniform3fv( uniWorldCamPos, 1, &cam->position[0] );
 
 	// Draw
 	geometry->Draw();

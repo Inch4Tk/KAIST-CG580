@@ -247,6 +247,8 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClInclude Include="VertexFormatManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="PhongFshader.glsl" />
+    <None Include="PhongVshader.glsl" />
     <None Include="testFshader.glsl" />
     <None Include="testVshader.glsl" />
   </ItemGroup>

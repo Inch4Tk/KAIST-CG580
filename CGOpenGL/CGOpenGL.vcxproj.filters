@@ -124,5 +124,11 @@
     <None Include="testFshader.glsl">
       <Filter>Shader</Filter>
     </None>
+    <None Include="PhongFshader.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="PhongVshader.glsl">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
