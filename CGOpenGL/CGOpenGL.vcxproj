@@ -244,6 +244,7 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClInclude Include="StandardIncludes.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="tiny_obj_loader.h" />
+    <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="VertexFormatManager.h" />
   </ItemGroup>
   <ItemGroup>
