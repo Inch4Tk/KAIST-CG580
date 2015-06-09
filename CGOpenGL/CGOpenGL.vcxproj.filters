@@ -10,11 +10,11 @@
     <Filter Include="Core\Geometry">
       <UniqueIdentifier>{8940f21f-537e-43eb-bc20-b59c6062d37b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Shader">
-      <UniqueIdentifier>{41627ede-df25-4594-98d7-2d58bc9af49e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Utils">
       <UniqueIdentifier>{dc973a86-6d46-4995-a453-b5b3de50cd1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Shader">
+      <UniqueIdentifier>{41627ede-df25-4594-98d7-2d58bc9af49e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
