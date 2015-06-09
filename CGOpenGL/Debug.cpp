@@ -1,5 +1,6 @@
 #include "Debug.h"
 
+#include <sstream>
 
 Debug::Debug()
 {
@@ -67,4 +68,36 @@ void Debug::Log( glm::vec3 v, LogType::LogType type /*= LogType::None */ )
 void Debug::Log( glm::vec4 v, LogType::LogType type /*= LogType::None */ )
 {
 	Log( std::to_string( v.x ) + ", " + std::to_string( v.y ) + ", " + std::to_string( v.z ) + ", " + std::to_string( v.w ), type );
+}
+
+bool Debug::CheckGLError( const char *file, int line )
+{
+	bool wasError = false;
+
+	std::stringstream ss;
+	for( GLenum glErr = glGetError(); glErr != GL_NO_ERROR; glErr = glGetError() )
+	{
+		wasError = true;
+		const GLubyte* sError = gluErrorString( glErr );
+
+		if( !sError )
+		{
+			sError = reinterpret_cast<const GLubyte *>(" (no message available)");
+		}
+
+		ss << "  GL Error #" << glErr << "(" << sError << ") " << std::endl;
+	}
+
+	if( wasError )
+	{
+		Debug::LogFailure( file, line, ss.str() );
+	}
+	return wasError;
+}
+
+void Debug::LogFailure( const char *file, const int line, std::string& error )
+{
+	std::stringstream errorstream;
+	errorstream << file << "(" << line << "): " << error;
+	Debug::Log( errorstream.str(), LogType::Error );
 }

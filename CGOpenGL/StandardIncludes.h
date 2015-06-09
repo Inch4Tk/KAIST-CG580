@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include <algorithm> 
+#include <algorithm>
 #include <cctype>
 #include <functional>
 #include <list>

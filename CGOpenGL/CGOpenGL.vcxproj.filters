@@ -1,14 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{41627ede-df25-4594-98d7-2d58bc9af49e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{c8d7edcd-0a1b-4acd-856f-be2a0b8db29c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{dc973a86-6d46-4995-a453-b5b3de50cd1d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{2a9e98a2-d0f4-4a1a-9529-b900d1f6a152}</UniqueIdentifier>
@@ -16,13 +10,19 @@
     <Filter Include="Core\Geometry">
       <UniqueIdentifier>{8940f21f-537e-43eb-bc20-b59c6062d37b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Shader">
+      <UniqueIdentifier>{41627ede-df25-4594-98d7-2d58bc9af49e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Utils">
+      <UniqueIdentifier>{dc973a86-6d46-4995-a453-b5b3de50cd1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClCompile>
     <ClCompile Include="VertexFormatManager.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Core</Filter>
@@ -43,7 +43,7 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="tiny_obj_loader.cc">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
       <Filter>Core\Geometry</Filter>
@@ -55,10 +55,10 @@
       <Filter>Core\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="GUI.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClCompile>
     <ClCompile Include="AppManager.cpp">
       <Filter>Core</Filter>
@@ -69,10 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Core</Filter>
@@ -84,7 +84,7 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="VertexFormatManager.h">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Core</Filter>
@@ -93,7 +93,7 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="tiny_obj_loader.h">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
       <Filter>Core\Geometry</Filter>
@@ -105,10 +105,10 @@
       <Filter>Core\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="GUI.h">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>Utils</Filter>
+      <Filter>Core\Utils</Filter>
     </ClInclude>
     <ClInclude Include="AppManager.h">
       <Filter>Core</Filter>
@@ -116,19 +116,22 @@
     <ClInclude Include="Time.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="GLBuffer.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="testVshader.glsl">
-      <Filter>Shader</Filter>
+      <Filter>Core\Shader</Filter>
     </None>
     <None Include="testFshader.glsl">
-      <Filter>Shader</Filter>
+      <Filter>Core\Shader</Filter>
     </None>
     <None Include="PhongFshader.glsl">
-      <Filter>Shader</Filter>
+      <Filter>Core\Shader</Filter>
     </None>
     <None Include="PhongVshader.glsl">
-      <Filter>Shader</Filter>
+      <Filter>Core\Shader</Filter>
     </None>
   </ItemGroup>
 </Project>

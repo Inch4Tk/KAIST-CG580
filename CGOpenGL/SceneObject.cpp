@@ -2,6 +2,7 @@
 
 #include "AppManager.h"
 #include "Camera.h"
+#include "Debug.h"
 #include "Geometry.h"
 #include "Scene.h"
 #include "ShaderProgram.h"
@@ -47,6 +48,7 @@ void SceneObject::Render()
 	glUniformMatrix4fv( uniProjectionMatrix, 1, false, &cam->GetProjection()[0][0] );
 	glUniformMatrix4fv( uniViewProjectionMatrix, 1, false, &cam->GetViewProjection()[0][0] );
 	glUniform3fv( uniWorldCamPos, 1, &cam->position[0] );
+	CHECK_GL_ERROR();
 
 	// Draw
 	geometry->Draw();

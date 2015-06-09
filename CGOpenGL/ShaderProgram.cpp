@@ -158,6 +158,7 @@ void ShaderProgram::BindShader() const
 		return;
 
 	glUseProgram( programID );
+	CHECK_GL_ERROR();
 }
 
 /// <summary>

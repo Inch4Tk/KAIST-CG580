@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include "Debug.h"
+
 #include "GLM/glm.hpp"
 #include "GL/glew.h"
 
@@ -33,11 +35,13 @@ int Mesh::Initialize( const VertexFormat& format, void* data, uint32_t datasize,
 	// Create vertex array object
 	glGenVertexArrays( 1, &vaoID );
 	glBindVertexArray( vaoID );
+	CHECK_GL_ERROR();
 
 	// Create vertex buffer object and push data
 	glGenBuffers( 1, &vboID );
 	glBindBuffer( GL_ARRAY_BUFFER, vboID );
 	glBufferData( GL_ARRAY_BUFFER, datasize, data, GL_STATIC_DRAW );
+	CHECK_GL_ERROR();
 
 	// Specify the buffer format
 	glBindVertexBuffer( 0, vboID, 0, format.bytesize );
@@ -51,6 +55,7 @@ int Mesh::Initialize( const VertexFormat& format, void* data, uint32_t datasize,
 		else
 			glVertexAttribFormat( i, format.sizes[i], format.types[i], format.normalized[i], format.offsets[i] );
 		glVertexAttribBinding( i, 0 );
+		CHECK_GL_ERROR();
 	}
 
 	glBindVertexArray( 0 );
@@ -76,6 +81,7 @@ int Mesh::Initialize( const VertexFormat& format, void* vdata, uint32_t vdatasiz
 	glGenBuffers( 1, &iboID );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, iboID );
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( uint32_t ), &indices[0], GL_STATIC_DRAW );
+	CHECK_GL_ERROR();
 	numIndices = static_cast<uint32_t>(indices.size());
 	indexed = true;
 	// Init rest
@@ -95,12 +101,14 @@ void Mesh::Draw() const
 		glBindVertexArray( vaoID );
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, iboID );
 		glDrawElements( primitiveType, numIndices, GL_UNSIGNED_INT, nullptr );
+		CHECK_GL_ERROR();
 		glBindVertexArray( 0 );
 	}
 	else
 	{
 		glBindVertexArray( vaoID );
 		glDrawArrays( primitiveType, 0, numVertices );
+		CHECK_GL_ERROR();
 		glBindVertexArray( 0 );
 	}
 }

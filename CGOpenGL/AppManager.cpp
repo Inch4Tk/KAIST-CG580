@@ -1,5 +1,6 @@
 #include "AppManager.h"
 
+#include "Debug.h"
 #include "GUI.h"
 #include "Input.h"
 #include "ObjectManager.h"
@@ -93,6 +94,9 @@ void AppManager::MainLoop()
 		objectManager->ExecRender();
 		// Draw GUI
 		gui->Draw();
+
+		// Make a general error check here
+		CHECK_GL_ERROR();
 
 		// Swap buffers  
 		glfwSwapBuffers( window );
