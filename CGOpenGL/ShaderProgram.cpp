@@ -60,6 +60,7 @@ GLuint ShaderProgram::LoadShader( const std::string& filename, GLenum type )
 	glGetShaderInfoLog( shaderID, infoLogLength, NULL, &shaderErrorMessage[0] );
 	Debug::Log( trim( std::string( shaderErrorMessage.begin(), shaderErrorMessage.end() ) ), LogType::Error );
 
+	CHECK_GL_ERROR();
 	return shaderID;
 }
 
@@ -144,7 +145,7 @@ const ShaderProgram* ShaderProgram::LoadProgram( const std::string& programName,
 
 	// Register with scene
 	AppManager::GetScene()->RegisterShader( programName, sp );
-
+	CHECK_GL_ERROR();
 	return sp;
 }
 

@@ -2,6 +2,7 @@
 
 #include "AppManager.h"
 #include "Camera.h"
+#include "Debug.h"
 #include "Geometry.h"
 #include "Material.h"
 #include "Mesh.h"
@@ -75,7 +76,6 @@ void Scene::LoadTestScene()
 	shaderConfig.vsPath = "Shader/PhongVshader.glsl";
 	shaderConfig.fsPath = "Shader/PhongFshader.glsl";
 	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig );
-
 	// Load a cube
 	Geometry* g = new Geometry( "cube.obj" );
 

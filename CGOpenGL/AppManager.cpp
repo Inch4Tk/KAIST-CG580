@@ -53,7 +53,6 @@ void AppManager::Initialize( GLFWwindow* window )
 
 	// Set a background color  
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-	
 }
 
 /// <summary>

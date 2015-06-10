@@ -25,6 +25,8 @@ public:
 	glm::mat4 GetProjection() const;
 	glm::mat4 GetViewProjection() const;
 
+	// Bind the camera variables
+
 protected:
 	// -------------------
 	// Settings
