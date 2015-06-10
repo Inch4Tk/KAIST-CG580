@@ -136,6 +136,10 @@ int main( void )
 		return -1;
 	}
 
+	// Throw away the glew invalid enum error, that is produced by a bug in glew
+	// http://stackoverflow.com/questions/10857335/opengl-glgeterror-returns-invalid-enum-after-call-to-glewinit
+	glGetError();
+
 	// Detect OpenGL version
 	const GLubyte* y = glGetString( GL_VERSION );
 	std::string glVer = GLUBYTETOSTR( glGetString( GL_VERSION ) );

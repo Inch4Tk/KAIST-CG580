@@ -49,5 +49,7 @@ private:
 	Debug();
 	~Debug();
 
+	static std::unordered_map<GLenum, std::string> glErrorCodes;
+
 };
 

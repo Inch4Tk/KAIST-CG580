@@ -2,6 +2,15 @@
 
 #include <sstream>
 
+std::unordered_map<GLenum, std::string> Debug::glErrorCodes = {
+	{ GL_INVALID_ENUM, "0x0500: GL_INVALID_ENUM" },
+	{ GL_INVALID_VALUE, "0x0501: GL_INVALID_VALUE" },
+	{ GL_INVALID_OPERATION, "0x0502: GL_INVALID_OPERATION" },
+	{ GL_STACK_OVERFLOW, "0x0503: GL_STACK_OVERFLOW" },
+	{ GL_STACK_UNDERFLOW, "0x0504: GL_STACK_UNDERFLOW" },
+	{ GL_OUT_OF_MEMORY, "0x0505: GL_OUT_OF_MEMORY" },
+	{ GL_INVALID_FRAMEBUFFER_OPERATION, "0x0506: GL_INVALID_FRAMEBUFFER_OPERATION" } };
+
 Debug::Debug()
 {
 }
@@ -75,17 +84,24 @@ bool Debug::CheckGLError( const char *file, int line )
 	bool wasError = false;
 
 	std::stringstream ss;
+
 	for( GLenum glErr = glGetError(); glErr != GL_NO_ERROR; glErr = glGetError() )
 	{
 		wasError = true;
-		const GLubyte* sError = gluErrorString( glErr );
 
+		/*const GLubyte* sError = glewGetErrorString( glErr );
 		if( !sError )
 		{
-			sError = reinterpret_cast<const GLubyte *>(" (no message available)");
+		sError = reinterpret_cast<const GLubyte*>("(no message available)");
+		}*/
+		auto errEntry = glErrorCodes.find( glErr );
+		std::string sError = "(no message available)";
+		if( errEntry != glErrorCodes.end() )
+		{
+			sError = errEntry->second;
 		}
-
-		ss << "  GL Error #" << glErr << "(" << sError << ") " << std::endl;
+		
+		ss << "  GL Error #" << sError << std::endl;
 	}
 
 	if( wasError )
