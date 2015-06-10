@@ -25,13 +25,13 @@ public:
 
 	GLint GetUniformLocation( const std::string& name ) const;
 	void BindShader() const;
-	const std::unordered_map<std::string, uint32_t>& GetUniBufferSlots();
+	const std::unordered_map<std::string, uint32_t>& GetBindSlots() const;
 private:
 	GLuint LoadShader( const std::string& filename, GLenum type );
 
 	bool initialized = false;
 	InitConfig config;
 	GLuint programID = 0;
-	std::unordered_map<std::string, uint32_t> uniSlots;
+	std::unordered_map<std::string, uint32_t> bindSlots;
 };
 

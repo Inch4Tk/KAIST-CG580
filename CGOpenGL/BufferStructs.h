@@ -2,9 +2,9 @@
 
 #include "StandardIncludes.h"
 
-struct BufferSlots
+struct BindSlots
 {
-	static std::unordered_map<std::string, uint32_t> defaultUniformSlots;
+	static std::unordered_map<std::string, uint32_t> defaultBindSlots;
 };
 
 struct ShaderGlobals_Std140
@@ -18,4 +18,14 @@ struct ShaderGlobals_Std140
 	glm::vec3 worldUp;
 	float pad1;
 	glm::vec3 worldCamPos;
+};
+
+struct ShaderMaterial_Std140
+{
+	glm::vec3 diffuse;
+	float pad0;
+	glm::vec3 specular;
+	float pad1;
+	glm::vec3 ambient;
+	float shininess;
 };

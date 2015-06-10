@@ -156,7 +156,7 @@ const ShaderProgram* ShaderProgram::LoadProgram( const std::string& programName,
 			glUniformBlockBinding( sp->programID, loc, it->second );
 			CHECK_GL_ERROR();
 			// Build our list of actually existing uni buffers, so we don't bind something not allowed later
-			sp->uniSlots.emplace(std::pair<std::string, uint32_t>(it->first, it->second));
+			sp->bindSlots.emplace(std::pair<std::string, uint32_t>(it->first, it->second));
 		}
 	}
 
@@ -179,7 +179,7 @@ void ShaderProgram::BindShader() const
 	glUseProgram( programID );
 	CHECK_GL_ERROR();
 	// Bind the per frame buffers
-	AppManager::GetObjectManager()->BindPerFrameUniformBuffer( uniSlots );
+	AppManager::GetObjectManager()->BindPerFrameUniformBuffer( bindSlots );
 }
 
 /// <summary>
@@ -196,7 +196,7 @@ GLint ShaderProgram::GetUniformLocation( const std::string& name ) const
 /// Gets the uni buffer slots.
 /// </summary>
 /// <returns></returns>
-const std::unordered_map<std::string, uint32_t>& ShaderProgram::GetUniBufferSlots()
+const std::unordered_map<std::string, uint32_t>& ShaderProgram::GetBindSlots() const
 {
-	return uniSlots;
+	return bindSlots;
 }

@@ -20,13 +20,13 @@ public:
 	int Initialize( const VertexFormat& format, void* vdata, uint32_t vdatasize, const std::vector<uint32_t>& indices,
 					GLenum primitiveType, Material* material = nullptr );
 
-	void Draw() const;
+	void Draw( const std::unordered_map<std::string, uint32_t>& bindSlots ) const;
 
 private:
 	bool initialized = false;
 	bool indexed = false;
 
-	Material* mat;
+	Material* mat = nullptr;
 
 	GLuint vaoID = 0;
 	GLuint vboID = 0;

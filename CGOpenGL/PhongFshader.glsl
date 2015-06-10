@@ -2,15 +2,22 @@
 
 const uint LIGHTS_LIMIT = 10;
 
-layout( std140 ) uniform Globals
+layout( std140 ) uniform UniGlobals
 {
-	uniform mat4 worldMatrix;
-	uniform mat4 viewMatrix;
-	uniform mat4 projectionMatrix;
-	uniform mat4 viewProjectionMatrix;
-	uniform vec3 ambient;
-	uniform vec3 worldUp;
-	uniform vec3 worldCamPos;
+	mat4 worldMatrix;
+	mat4 viewMatrix;
+	mat4 projectionMatrix;
+	mat4 viewProjectionMatrix;
+	vec3 ambient;
+	vec3 worldUp;
+	vec3 worldCamPos;
+};
+layout( std140 ) uniform UniMaterial
+{
+	vec3 mat_diffuse;
+	vec3 mat_specular;
+	vec3 mat_ambient;
+	float mat_shininess;
 };
 
 uniform uint lightCount = 1;
@@ -21,7 +28,7 @@ struct LightSource
 	float range;
 };
 //layout (std140, binding = 0) uniform LightSources {
-//	uniform LightSource lights[LIGHTS_LIMIT];
+//	LightSource lights[LIGHTS_LIMIT];
 //}
 LightSource lights[1];
 
@@ -64,7 +71,7 @@ void PointLightPhongLighting( in LightSource light, in vec3 pos, in vec3 normal,
 	if( Kd == 0.0 )
 		Ks = 0.0;
 	else
-		Ks = pow( clamp( dot( posToView, reflected ), 0.0f, 1.0f ), 15 ); // Insert material shininess here
+		Ks = pow( clamp( dot( posToView, reflected ), 0.0f, 1.0f ), mat_shininess ); // Insert material shininess here
 	specular += Ks * light.color * att;
 }
 
@@ -85,5 +92,5 @@ void main()
 		PointLightPhongLighting( lights[i], FragmentIn.worldPos, normalize( FragmentIn.normal ), dif, spec );
 	}
 
-	color = vec4( clamp( dif * 0.5 + spec * 0.5 + ambient, 0, 1 ), 1 );
+	color = vec4( clamp( dif * mat_diffuse + spec * mat_specular + ambient * mat_ambient, 0, 1 ), 1 );
 }

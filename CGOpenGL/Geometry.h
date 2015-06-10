@@ -14,7 +14,7 @@ public:
 	Geometry( const std::vector<Mesh*>& meshes );
 	~Geometry();
 
-	void Draw() const;
+	void Draw( const std::unordered_map<std::string, uint32_t>& bindSlots ) const;
 
 private:
 	std::vector<Mesh*> meshes;

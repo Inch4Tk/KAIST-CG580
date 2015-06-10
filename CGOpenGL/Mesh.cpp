@@ -1,9 +1,9 @@
 #include "Mesh.h"
 
+#include "AppManager.h"
 #include "Debug.h"
-
-#include "GLM/glm.hpp"
-#include "GL/glew.h"
+#include "Material.h"
+#include "Scene.h"
 
 Mesh::Mesh()
 {
@@ -60,6 +60,16 @@ int Mesh::Initialize( const VertexFormat& format, void* data, uint32_t datasize,
 
 	glBindVertexArray( 0 );
 
+	// If Material is nullptr, fetch default material
+	if( material == nullptr )
+	{
+		mat = AppManager::GetScene()->GetMaterial( "Default" );
+	}
+	else
+	{
+		mat = material;
+	}
+
 	initialized = true;
 	return 0;
 }
@@ -91,11 +101,16 @@ int Mesh::Initialize( const VertexFormat& format, void* vdata, uint32_t vdatasiz
 /// <summary>
 /// Binds the mesh for drawing, then draws the mesh
 /// </summary>
-void Mesh::Draw() const
+/// <param name="bindSlots">The bind slots.</param>
+void Mesh::Draw( const std::unordered_map<std::string, uint32_t>& bindSlots ) const
 {
 	if( !initialized )
 		return;
 
+	// Bind the material uniform buffer and textures
+	mat->Bind( bindSlots );
+
+	// Render the mesh indexed or not
 	if( indexed )
 	{
 		glBindVertexArray( vaoID );

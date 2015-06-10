@@ -16,8 +16,7 @@ ObjectManager::ObjectManager()
 
 ObjectManager::~ObjectManager()
 {
-	delete uniBufferGlobals;
-	//SDELETE( uniBufferGlobals );
+	SDELETE( uniBufferGlobals );
 }
 
 /// <summary>
@@ -75,7 +74,7 @@ void ObjectManager::SubscribeRender( SceneObject* sub )
 void ObjectManager::BindPerFrameUniformBuffer( const std::unordered_map<std::string, uint32_t>& uniSlots )
 {
 	// Globals
-	auto it = uniSlots.find( "Globals" );
+	auto it = uniSlots.find( "UniGlobals" );
 	if( it != uniSlots.end() )
 	{
 		uniBufferGlobals->BindSlot( GL_UNIFORM_BUFFER, it->second );

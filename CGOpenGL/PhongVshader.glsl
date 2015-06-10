@@ -1,14 +1,14 @@
 #version 430 core
 
-layout( std140 ) uniform Globals
+layout( std140 ) uniform UniGlobals
 {
-	uniform mat4 worldMatrix;
-	uniform mat4 viewMatrix;
-	uniform mat4 projectionMatrix;
-	uniform mat4 viewProjectionMatrix;
-	uniform vec3 ambient;
-	uniform vec3 worldUp;
-	uniform vec3 worldCamPos;
+	mat4 worldMatrix;
+	mat4 viewMatrix;
+	mat4 projectionMatrix;
+	mat4 viewProjectionMatrix;
+	vec3 ambient;
+	vec3 worldUp;
+	vec3 worldCamPos;
 };
 
 layout( location = 0 ) in vec3 vPos;

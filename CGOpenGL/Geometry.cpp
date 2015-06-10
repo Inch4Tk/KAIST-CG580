@@ -34,7 +34,10 @@ Geometry::Geometry( const std::string& objFilename )
 		}
 		else
 		{
-			m = new Material();
+			glm::vec3 diffuse = glm::vec3( mat.diffuse[0], mat.diffuse[1], mat.diffuse[2]);
+			glm::vec3 specular = glm::vec3( mat.specular[0], mat.specular[1], mat.specular[2] );
+			glm::vec3 ambient = glm::vec3( mat.ambient[0], mat.ambient[1], mat.ambient[2] );
+			m = new Material( diffuse, specular, ambient, mat.shininess );
 			tmp_mats.push_back( m );
 			scene->RegisterMaterial( s, m );
 		}
@@ -176,8 +179,9 @@ Geometry::~Geometry()
 /// <summary>
 /// Runs over all meshes belonging to the geometry
 /// </summary>
-void Geometry::Draw() const
+/// <param name="bindSlots">The bind slots.</param>
+void Geometry::Draw( const std::unordered_map<std::string, uint32_t>& bindSlots ) const
 {
 	for( Mesh* m : meshes )
-		m->Draw();
+		m->Draw( bindSlots );
 }

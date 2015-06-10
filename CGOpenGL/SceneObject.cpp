@@ -36,5 +36,5 @@ void SceneObject::Render()
 	glUniformMatrix4fv( uniWorldMatrix, 1, false, &worldMatrix[0][0] );
 
 	// Draw
-	geometry->Draw();
+	geometry->Draw( shader->GetBindSlots() );
 }

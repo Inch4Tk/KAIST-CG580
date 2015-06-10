@@ -16,6 +16,8 @@
 
 Scene::Scene()
 {
+	// Create the default material
+	RegisterMaterial( "Default", new Material( glm::vec3( 1, 1, 1 ), glm::vec3( 1, 1, 1 ), glm::vec3( 1, 1, 1 ), 15.0f ) );
 }
 
 Scene::~Scene()
@@ -74,11 +76,11 @@ void Scene::LoadTestScene()
 	shaderConfig.vsPath = "Shader/testVshader.glsl";
 	shaderConfig.fsPath = "Shader/testFshader.glsl";
 	const ShaderProgram* testShader = ShaderProgram::LoadProgram( "TestShader", shaderConfig, 
-																  BufferSlots::defaultUniformSlots );
+																  BindSlots::defaultBindSlots );
 	shaderConfig.vsPath = "Shader/PhongVshader.glsl";
 	shaderConfig.fsPath = "Shader/PhongFshader.glsl";
 	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig, 
-																   BufferSlots::defaultUniformSlots );
+																   BindSlots::defaultBindSlots );
 	// Load a cube
 	Geometry* g = new Geometry( "cube.obj" );
 
