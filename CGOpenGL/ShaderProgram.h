@@ -20,16 +20,18 @@ public:
 	ShaderProgram();
 	~ShaderProgram();
 
-	static const ShaderProgram* LoadProgram( const std::string& programName, const InitConfig& config );
+	static const ShaderProgram* LoadProgram( const std::string& programName, const InitConfig& config,
+											 const std::unordered_map<std::string, uint32_t>& uniSlots );
 
 	GLint GetUniformLocation( const std::string& name ) const;
 	void BindShader() const;
-
+	const std::unordered_map<std::string, uint32_t>& GetUniBufferSlots();
 private:
 	GLuint LoadShader( const std::string& filename, GLenum type );
 
 	bool initialized = false;
 	InitConfig config;
 	GLuint programID = 0;
+	std::unordered_map<std::string, uint32_t> uniSlots;
 };
 

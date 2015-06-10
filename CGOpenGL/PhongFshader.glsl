@@ -2,8 +2,16 @@
 
 const uint LIGHTS_LIMIT = 10;
 
-uniform vec3 ambient = { 0.1, 0.1, 0.1 };
-uniform vec3 worldCamPos;
+layout( std140 ) uniform Globals
+{
+	uniform mat4 worldMatrix;
+	uniform mat4 viewMatrix;
+	uniform mat4 projectionMatrix;
+	uniform mat4 viewProjectionMatrix;
+	uniform vec3 ambient;
+	uniform vec3 worldUp;
+	uniform vec3 worldCamPos;
+};
 
 uniform uint lightCount = 1;
 struct LightSource

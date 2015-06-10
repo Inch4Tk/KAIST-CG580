@@ -42,9 +42,10 @@ public:
 	static void Log( glm::vec4 v, LogType::LogType type = LogType::None );
 
 	// Quick and dirty default failure log type log
-	static void LogFailure( const char *file, const int line, std::string& error);
+	static void LogFailure( const char* file, const int line, const char* error );
+	static void LogFailure( const char* file, const int line, std::string& error);
 	// Use macro over this, because of the debugbreak
-	static bool CheckGLError( const char *file, int line );
+	static bool CheckGLError( const char* file, int line );
 private:
 	Debug();
 	~Debug();

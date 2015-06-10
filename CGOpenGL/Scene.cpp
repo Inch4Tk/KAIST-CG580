@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "AppManager.h"
+#include "BufferStructs.h"
 #include "Camera.h"
 #include "Debug.h"
 #include "Geometry.h"
@@ -72,10 +73,12 @@ void Scene::LoadTestScene()
 	ShaderProgram::InitConfig shaderConfig;
 	shaderConfig.vsPath = "Shader/testVshader.glsl";
 	shaderConfig.fsPath = "Shader/testFshader.glsl";
-	const ShaderProgram* testShader = ShaderProgram::LoadProgram( "TestShader", shaderConfig );
+	const ShaderProgram* testShader = ShaderProgram::LoadProgram( "TestShader", shaderConfig, 
+																  BufferSlots::defaultUniformSlots );
 	shaderConfig.vsPath = "Shader/PhongVshader.glsl";
 	shaderConfig.fsPath = "Shader/PhongFshader.glsl";
-	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig );
+	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig, 
+																   BufferSlots::defaultUniformSlots );
 	// Load a cube
 	Geometry* g = new Geometry( "cube.obj" );
 

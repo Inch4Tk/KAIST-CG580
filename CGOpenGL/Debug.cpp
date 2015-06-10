@@ -111,6 +111,13 @@ bool Debug::CheckGLError( const char *file, int line )
 	return wasError;
 }
 
+void Debug::LogFailure( const char *file, const int line, const char* error )
+{
+	std::stringstream errorstream;
+	errorstream << file << "(" << line << "): " << error;
+	Debug::Log( errorstream.str(), LogType::Error );
+}
+
 void Debug::LogFailure( const char *file, const int line, std::string& error )
 {
 	std::stringstream errorstream;

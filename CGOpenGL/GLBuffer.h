@@ -1,6 +1,7 @@
 #pragma once
 
 #include "StandardIncludes.h"
+#include "Debug.h"
 
 template <typename T>
 class GLBuffer
@@ -14,10 +15,16 @@ public:
 
 		if( elementCount )
 		{
-			CopyFromHost( hostData, elements );
+			CopyFromHost( data, elementCount );
 		}
 	};
-	~GLBuffer();
+	~GLBuffer()
+	{
+		if( id )
+		{
+			glDeleteBuffers( 1, &id );
+		}
+	};
 
 	/// <summary>
 	/// Resizes the buffer.
@@ -46,7 +53,7 @@ public:
 	{
 		ASSERT( elementCount > 0 );
 		this->elementCount = elementCount;
-		glBindBuffer( GL_ARRAY_BUFFER, m_id );
+		glBindBuffer( GL_ARRAY_BUFFER, id );
 
 		// Push buffer data
 		glBufferData( GL_ARRAY_BUFFER, elementCount * sizeof( T ), data, updateMethod );
@@ -111,11 +118,20 @@ public:
 	/// Binds the buffer to the specified target
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="offset">The offset.</param>
-	void Bind( GLenum target = GL_ARRAY_BUFFER, uint32_t offset = 0 ) const
+	void Bind( GLenum target = GL_ARRAY_BUFFER ) const
 	{
-		ASSERT( offset == 0 );
 		glBindBuffer( target, id );
+		CHECK_GL_ERROR();
+	}
+
+	/// <summary>
+	/// Binds the buffer to a specified index/slot.
+	/// </summary>
+	/// <param name="target">The target.</param>
+	/// <param name="slot">The slot.</param>
+	void BindSlot( GLenum target, uint32_t slot ) const
+	{
+		glBindBufferBase( target, slot, id );
 		CHECK_GL_ERROR();
 	}
 

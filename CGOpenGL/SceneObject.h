@@ -27,9 +27,5 @@ protected:
 
 	// Uniform locations mapping the shader variables 
 	GLint uniWorldMatrix = -1;
-	GLint uniViewMatrix = -1; // These 3 are highly inefficient and should be grouped into a uniform buffer
-	GLint uniProjectionMatrix = -1;
-	GLint uniViewProjectionMatrix = -1;
-	GLint uniWorldCamPos = -1;
 };
 

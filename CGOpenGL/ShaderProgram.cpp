@@ -2,6 +2,7 @@
 
 #include "AppManager.h"
 #include "Debug.h"
+#include "ObjectManager.h"
 #include "Scene.h"
 
 #include <algorithm>
@@ -70,8 +71,10 @@ GLuint ShaderProgram::LoadShader( const std::string& filename, GLenum type )
 /// </summary>
 /// <param name="programName">Name of the program.</param>
 /// <param name="config">The configuration.</param>
+/// <param name="uniSlots">The uniform buffer slots.</param>
 /// <returns></returns>
-const ShaderProgram* ShaderProgram::LoadProgram( const std::string& programName, const InitConfig& config )
+const ShaderProgram* ShaderProgram::LoadProgram( const std::string& programName, const InitConfig& config,
+												 const std::unordered_map<std::string, uint32_t>& uniSlots )
 {
 	// Check if the shader already exists
 	ShaderProgram* sp = AppManager::GetScene()->GetShader( programName );
@@ -143,6 +146,20 @@ const ShaderProgram* ShaderProgram::LoadProgram( const std::string& programName,
 
 	sp->initialized = true;
 
+	// Bind the uniform buffer block slots
+	for( auto it = uniSlots.begin(); it != uniSlots.end(); ++it )
+	{
+		int loc = glGetUniformBlockIndex( sp->programID, it->first.c_str() );
+		CHECK_GL_ERROR();
+		if( loc >= 0 )
+		{
+			glUniformBlockBinding( sp->programID, loc, it->second );
+			CHECK_GL_ERROR();
+			// Build our list of actually existing uni buffers, so we don't bind something not allowed later
+			sp->uniSlots.emplace(std::pair<std::string, uint32_t>(it->first, it->second));
+		}
+	}
+
 	// Register with scene
 	AppManager::GetScene()->RegisterShader( programName, sp );
 	CHECK_GL_ERROR();
@@ -158,8 +175,11 @@ void ShaderProgram::BindShader() const
 	if( !initialized )
 		return;
 
+	// Bind shader program
 	glUseProgram( programID );
 	CHECK_GL_ERROR();
+	// Bind the per frame buffers
+	AppManager::GetObjectManager()->BindPerFrameUniformBuffer( uniSlots );
 }
 
 /// <summary>
@@ -170,4 +190,13 @@ void ShaderProgram::BindShader() const
 GLint ShaderProgram::GetUniformLocation( const std::string& name ) const
 {
 	return glGetUniformLocation( programID, name.c_str() );
+}
+
+/// <summary>
+/// Gets the uni buffer slots.
+/// </summary>
+/// <returns></returns>
+const std::unordered_map<std::string, uint32_t>& ShaderProgram::GetUniBufferSlots()
+{
+	return uniSlots;
 }

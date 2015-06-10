@@ -1,10 +1,7 @@
 #include "SceneObject.h"
 
-#include "AppManager.h"
-#include "Camera.h"
 #include "Debug.h"
 #include "Geometry.h"
-#include "Scene.h"
 #include "ShaderProgram.h"
 
 SceneObject::SceneObject()
@@ -13,12 +10,6 @@ SceneObject::SceneObject()
 
 SceneObject::SceneObject(Geometry* geometry, const ShaderProgram* shader) : geometry(geometry), shader(shader)
 {
-	// Set the uniform locations
-	uniWorldMatrix = shader->GetUniformLocation( "worldMatrix" );
-	uniViewMatrix = shader->GetUniformLocation( "viewMatrix" );
-	uniProjectionMatrix = shader->GetUniformLocation( "projectionMatrix" );
-	uniViewProjectionMatrix = shader->GetUniformLocation( "viewProjectionMatrix" );
-	uniWorldCamPos = shader->GetUniformLocation( "worldCamPos" );
 }
 
 
@@ -43,12 +34,6 @@ void SceneObject::Render()
 		glm::mat4_cast( rotation ) * 
 		glm::scale( glm::mat4(1.0f), scale );
 	glUniformMatrix4fv( uniWorldMatrix, 1, false, &worldMatrix[0][0] );
-	const Camera* cam = AppManager::GetScene()->GetActiveCamera();
-	glUniformMatrix4fv( uniViewMatrix, 1, false, &cam->GetView()[0][0] );
-	glUniformMatrix4fv( uniProjectionMatrix, 1, false, &cam->GetProjection()[0][0] );
-	glUniformMatrix4fv( uniViewProjectionMatrix, 1, false, &cam->GetViewProjection()[0][0] );
-	glUniform3fv( uniWorldCamPos, 1, &cam->position[0] );
-	CHECK_GL_ERROR();
 
 	// Draw
 	geometry->Draw();
