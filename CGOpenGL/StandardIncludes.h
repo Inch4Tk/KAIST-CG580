@@ -1,5 +1,8 @@
 #pragma once
 
+// Include our config defines
+#include "Config.h"
+
 // OpenGL libraries
 //Include GLEW  
 #include <GL/glew.h>

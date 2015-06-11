@@ -20,17 +20,19 @@ layout( std140 ) uniform UniMaterial
 	float mat_shininess;
 };
 
-uniform uint lightCount = 1;
 struct LightSource
 { // for now restrict ourselves to point lights
-	vec4 position;
+	vec3 position;
+	float pad0;
 	vec3 color;
 	float range;
 };
-//layout (std140, binding = 0) uniform LightSources {
-//	LightSource lights[LIGHTS_LIMIT];
-//}
-LightSource lights[1];
+layout (std140) uniform UniLights {
+	LightSource lights[LIGHTS_LIMIT];
+	// Little bit of a hack, we actually reserve one more light space and can pack associated vars
+	uint lightCount; 
+};
+//LightSource lights[1];
 
 in VertexData{
 	vec3 worldPos;
@@ -45,14 +47,11 @@ void PointLightPhongLighting( in LightSource light, in vec3 pos, in vec3 normal,
 	float Kd;
 	float Ks;
 
-	// Add the rotation matrix
-	vec3 Lpos = light.position.xyz;
-
 	// Renormalize the normal
 	vec3 n = normalize( normal );
 
 	// Calculate distance and attenuation
-	vec3 toLightUnnorm = Lpos - pos;
+	vec3 toLightUnnorm = light.position - pos;
 	float att = 1.0;
 	if( light.range > 0 )
 	{
@@ -80,7 +79,7 @@ out vec4 color;
 void main()
 {
 	// debugging
-	lights[0] = LightSource( vec4( worldCamPos, 1 ), vec3( 1, 1, 1 ), 0 );
+	//lights[0] = LightSource( vec4( worldCamPos, 1 ), vec3( 1, 1, 1 ), 0 );
 
 	// Lighting params
 	vec3 dif = vec3( 0.0, 0.0, 0.0 );

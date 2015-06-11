@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Debug.h"
 #include "Geometry.h"
+#include "Light.h"
 #include "Material.h"
 #include "Mesh.h"
 #include "ObjectManager.h"
@@ -81,8 +82,14 @@ void Scene::LoadTestScene()
 	shaderConfig.fsPath = "Shader/PhongFshader.glsl";
 	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig, 
 																   BindSlots::defaultBindSlots );
+	
+	// Add some lights
+	Light* light = new Light(glm::vec3(10,1,1), glm::vec3(1,1,1), 0.0f);
+	AppManager::GetObjectManager()->AddLight( light );
+	sceneObjects.push_back( light );
+
 	// Load a cube
-	std::string geomName = "cornell_box.obj";
+	std::string geomName = "cube.obj";
 	Geometry* g = GetGeometry( geomName );
 	if( g == nullptr )
 	{
@@ -101,9 +108,9 @@ void Scene::LoadTestScene()
 	meshes["TriangleMesh"] = triangleMesh;*/
 	
 	// Create a scene object containing the mesh and the test shader
-	SceneObject* tri = new SceneObject( g, phongShader );
-	AppManager::GetObjectManager()->SubscribeRender( tri );
-	sceneObjects.push_back( tri );
+	SceneObject* obj = new SceneObject( g, phongShader );
+	AppManager::GetObjectManager()->SubscribeRender( obj );
+	sceneObjects.push_back( obj );
 }
 
 /// <summary>

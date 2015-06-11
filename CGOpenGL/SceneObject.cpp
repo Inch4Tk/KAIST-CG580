@@ -1,7 +1,9 @@
 #include "SceneObject.h"
 
+#include "AppManager.h"
 #include "Debug.h"
 #include "Geometry.h"
+#include "ObjectManager.h"
 #include "ShaderProgram.h"
 
 SceneObject::SceneObject()
@@ -15,6 +17,9 @@ SceneObject::SceneObject(Geometry* geometry, const ShaderProgram* shader) : geom
 
 SceneObject::~SceneObject()
 {
+	AppManager::GetObjectManager()->UnSubscribeUpdate( this );
+	AppManager::GetObjectManager()->UnSubscribeRender( this );
+
 	SDELETE( geometry );
 }
 

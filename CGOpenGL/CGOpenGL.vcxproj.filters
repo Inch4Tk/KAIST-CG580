@@ -69,6 +69,7 @@
     <ClCompile Include="BufferStructs.cpp">
       <Filter>Core\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">
@@ -125,6 +126,10 @@
     <ClInclude Include="BufferStructs.h">
       <Filter>Core\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="testVshader.glsl">

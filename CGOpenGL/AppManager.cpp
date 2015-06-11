@@ -80,11 +80,11 @@ void AppManager::Initialize( GLFWwindow* window )
 /// </summary>
 void AppManager::Terminate()
 {
-	SDELETE( gui );
 	SDELETE( input );
-	SDELETE( objectManager );
 	SDELETE( scene );
 	SDELETE( time );
+	SDELETE( gui );
+	SDELETE( objectManager ); // Last/Late because of dependencies
 }
 
 /// <summary>

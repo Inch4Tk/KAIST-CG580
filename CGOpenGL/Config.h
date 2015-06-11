@@ -1,0 +1,4 @@
+
+#ifndef CONFIG_MAX_LIGHTS
+#define CONFIG_MAX_LIGHTS 10
+#endif

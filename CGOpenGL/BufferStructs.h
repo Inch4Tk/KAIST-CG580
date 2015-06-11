@@ -29,3 +29,18 @@ struct ShaderMaterial_Std140
 	glm::vec3 ambient;
 	float shininess;
 };
+
+struct ShaderLight_Std140
+{
+	glm::vec3 position;
+	float pad0;
+	glm::vec3 color;
+	float range;
+	ShaderLight_Std140()
+	{
+	};
+	ShaderLight_Std140( glm::vec3 position, glm::vec3 color, float range ) 
+		: position( position ), color( color ), range( range )
+	{
+	};
+};

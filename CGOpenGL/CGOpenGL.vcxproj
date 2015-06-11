@@ -218,6 +218,7 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -233,10 +234,12 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClInclude Include="AppManager.h" />
     <ClInclude Include="BufferStructs.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ObjectManager.h" />
