@@ -80,7 +80,7 @@ out vec4 color;
 void main()
 {
 	// debugging
-	lights[0] = LightSource( vec4( worldCamPos, 1 ), vec3( 1, 1, 1 ), 10 );
+	lights[0] = LightSource( vec4( worldCamPos, 1 ), vec3( 1, 1, 1 ), 0 );
 
 	// Lighting params
 	vec3 dif = vec3( 0.0, 0.0, 0.0 );
@@ -92,5 +92,5 @@ void main()
 		PointLightPhongLighting( lights[i], FragmentIn.worldPos, normalize( FragmentIn.normal ), dif, spec );
 	}
 
-	color = vec4( clamp( dif * mat_diffuse + spec * mat_specular + ambient * mat_ambient, 0, 1 ), 1 );
+	color = vec4( clamp( dif * mat_diffuse + spec * mat_specular + ambient * mat_diffuse, 0, 1 ), 1 );
 }

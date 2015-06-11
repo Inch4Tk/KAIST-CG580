@@ -82,7 +82,13 @@ void Scene::LoadTestScene()
 	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig, 
 																   BindSlots::defaultBindSlots );
 	// Load a cube
-	Geometry* g = new Geometry( "cube.obj" );
+	std::string geomName = "cube.obj";
+	Geometry* g = GetGeometry( geomName );
+	if( g == nullptr )
+	{
+		g = new Geometry( geomName );
+		RegisterGeometry( geomName, g );
+	}
 
 	// Create a random triangle mesh
 	/*glm::vec3 tris[3];
@@ -101,36 +107,76 @@ void Scene::LoadTestScene()
 }
 
 /// <summary>
-/// Registers the mesh for auto deletion and for easy global access and memory de-duplication. If name already exists nothing happens.
+/// Registers the mesh for auto deletion and for easy global access and memory de-duplication. Returns the same mesh.
+/// If name already exists the passed in mesh will be deleted and the existing will be returned.
 /// </summary>
 /// <param name="name">The name.</param>
 /// <param name="mesh">The mesh.</param>
-void Scene::RegisterMesh( const std::string& name, Mesh* mesh )
+Mesh* Scene::RegisterMesh( const std::string& name, Mesh* mesh )
 {
-	if( meshes.count(name) == 0 )
+	auto it = meshes.find( name );
+	if( it == meshes.end() )
+	{
 		meshes[name] = mesh;
+		return mesh;
+	}
+	SDELETE( mesh );
+	return it->second;
 }
 
 /// <summary>
-/// Registers the material for auto deletion and for easy global access and memory de-duplication. If name already exists nothing happens.
+/// Registers the material for auto deletion and for easy global access and memory de-duplication. Returns the same material.
+/// If name already exists the passed in mesh will be deleted and the existing will be returned.
 /// </summary>
 /// <param name="name">The name.</param>
 /// <param name="material">The material.</param>
-void Scene::RegisterMaterial( const std::string& name, Material* material )
+Material* Scene::RegisterMaterial( const std::string& name, Material* material )
 {
-	if( materials.count( name ) == 0 )
+	auto it = materials.find( name );
+	if( it == materials.end() )
+	{
 		materials[name] = material;
+		return material;
+	}
+	SDELETE( material );
+	return it->second;
 }
 
 /// <summary>
-/// Registers the shader for auto deletion and for easy global access and memory de-duplication. If name already exists nothing happens.
+/// Registers the shader for auto deletion and for easy global access and memory de-duplication. Returns the same shader.
+/// If name already exists the passed in mesh will be deleted and existing will be returned.
 /// </summary>
 /// <param name="name">The name.</param>
 /// <param name="shader">The shader.</param>
-void Scene::RegisterShader( const std::string& name, ShaderProgram* shader )
+ShaderProgram* Scene::RegisterShader( const std::string& name, ShaderProgram* shader )
 {
-	if( shaders.count( name ) == 0 )
+	auto it = shaders.find( name );
+	if( it == shaders.end() )
+	{
 		shaders[name] = shader;
+		return shader;
+	}
+	SDELETE( shader );
+	return it->second;
+}
+
+/// <summary>
+/// Registers the geometry for auto deletion and for easy global access and memory de-duplication. Returns the same geometry.
+/// If name already exists the passed in geometry will be deleted and existing will be returned.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <param name="geom">The geom.</param>
+/// <returns></returns>
+Geometry* Scene::RegisterGeometry( const std::string& name, Geometry* geom )
+{
+	auto it = geometries.find( name );
+	if( it == geometries.end() )
+	{
+		geometries[name] = geom;
+		return geom;
+	}
+	SDELETE( geom );
+	return it->second;
 }
 
 /// <summary>
@@ -185,4 +231,19 @@ ShaderProgram* Scene::GetShader( const std::string& name )
 const Camera* Scene::GetActiveCamera()
 {
 	return activeCamera;
+}
+
+/// <summary>
+/// Gets the geometry.
+/// </summary>
+/// <param name="name">The name.</param>
+/// <returns></returns>
+Geometry* Scene::GetGeometry( const std::string& name )
+{
+	auto it = geometries.find( name );
+	if( it != geometries.end() )
+	{
+		return it->second;
+	}
+	return nullptr;
 }
