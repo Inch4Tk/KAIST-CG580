@@ -1,6 +1,7 @@
 #include "AppManager.h"
 
 #include "Debug.h"
+#include "Camera.h"
 #include "GUI.h"
 #include "Input.h"
 #include "ObjectManager.h"
@@ -50,6 +51,25 @@ void AppManager::Initialize( GLFWwindow* window )
 	// Load Scene
 	scene = new Scene();
 	scene->LoadScene( "" );
+
+	// Register hotkeys
+	// Camera movement speed related hotkeys
+	input->RegisterKeyEventHook( GLFW_KEY_KP_ADD, GLFW_PRESS, []()
+	{
+		scene->GetActiveCamera()->AddMovespeed( 2.5f );
+	} );
+	input->RegisterKeyEventHook( GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, []()
+	{
+		scene->GetActiveCamera()->AddMovespeed( -2.5f );
+	} );
+	input->RegisterKeyEventHook( GLFW_KEY_KP_MULTIPLY, GLFW_PRESS, []()
+	{
+		scene->GetActiveCamera()->MultMovespeed( 2.0f );
+	} );
+	input->RegisterKeyEventHook( GLFW_KEY_KP_DIVIDE, GLFW_PRESS, []()
+	{
+		scene->GetActiveCamera()->MultMovespeed( 0.5f );
+	} );
 
 	// Set a background color  
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );

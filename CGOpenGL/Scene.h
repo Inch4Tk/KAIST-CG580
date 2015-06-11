@@ -19,11 +19,11 @@ public:
 	Material* RegisterMaterial( const std::string& name, Material* material );
 	ShaderProgram* RegisterShader( const std::string& name, ShaderProgram* shader );
 
-	const Camera* GetActiveCamera();
-	Geometry* GetGeometry( const std::string& name );
-	Mesh* GetMesh( const std::string& name );
-	Material* GetMaterial( const std::string& name );
-	ShaderProgram* GetShader( const std::string& name );
+	Camera* GetActiveCamera() const;
+	Geometry* GetGeometry( const std::string& name ) const;
+	Mesh* GetMesh( const std::string& name ) const;
+	Material* GetMaterial( const std::string& name ) const;
+	ShaderProgram* GetShader( const std::string& name ) const;
 
 private:
 	Scene();

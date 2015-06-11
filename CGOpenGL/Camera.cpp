@@ -164,3 +164,21 @@ void Camera::UpdateFirstPerson()
 	// Re-normalize the right dir vector
 	rightDir = glm::normalize( glm::cross( globalUpDir, -viewDir ) );
 }
+
+/// <summary>
+/// Adds the movespeed to the camera movementspeed variable.
+/// </summary>
+/// <param name="moveSpeed">The move speed.</param>
+void Camera::AddMovespeed( float moveSpeed )
+{
+	movementSpeed += moveSpeed;
+}
+
+/// <summary>
+/// Multiplies the movespeed.
+/// </summary>
+/// <param name="multiplier">The multiplier.</param>
+void Camera::MultMovespeed( float multiplier )
+{
+	movementSpeed *= multiplier;
+}

@@ -108,7 +108,6 @@ void Input::RegisterMouseButtonHook( int button, int action, std::function<void(
 void Input::RegisterKeyEventHook( int key, int action, std::function<void()> callback )
 {
 	keyHooks.emplace( std::pair<int, int>( key, action ), callback );
-
 }
 
 /// <summary>

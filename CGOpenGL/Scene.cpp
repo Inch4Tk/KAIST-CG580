@@ -68,7 +68,7 @@ void Scene::LoadTestScene()
 	activeCamera->MakeFirstPerson( 5.0f, glm::radians(360.0f), glm::radians(10.0f), true );
 	std::pair<int, int> windowDim = AppManager::GetWindowDimensions();
 	activeCamera->MakePerspective( glm::radians(60.0f), static_cast<float>(windowDim.first)/static_cast<float>(windowDim.second), 
-								   0.1f, 1000.0f );
+								   0.1f, 10000.0f );
 	AppManager::GetObjectManager()->SubscribeUpdate( activeCamera );
 
 	// Load a shader
@@ -184,7 +184,7 @@ Geometry* Scene::RegisterGeometry( const std::string& name, Geometry* geom )
 /// </summary>
 /// <param name="name">The name.</param>
 /// <returns></returns>
-Mesh* Scene::GetMesh( const std::string& name )
+Mesh* Scene::GetMesh( const std::string& name ) const
 {
 	auto it = meshes.find( name );
 	if( it != meshes.end() )
@@ -199,7 +199,7 @@ Mesh* Scene::GetMesh( const std::string& name )
 /// </summary>
 /// <param name="name">The name.</param>
 /// <returns></returns>
-Material* Scene::GetMaterial( const std::string& name )
+Material* Scene::GetMaterial( const std::string& name ) const
 {
 	auto it = materials.find( name );
 	if( it != materials.end() )
@@ -214,7 +214,7 @@ Material* Scene::GetMaterial( const std::string& name )
 /// </summary>
 /// <param name="name">The name.</param>
 /// <returns></returns>
-ShaderProgram* Scene::GetShader( const std::string& name )
+ShaderProgram* Scene::GetShader( const std::string& name ) const
 {
 	auto it = shaders.find( name );
 	if( it != shaders.end() )
@@ -225,20 +225,11 @@ ShaderProgram* Scene::GetShader( const std::string& name )
 }
 
 /// <summary>
-/// Gets the active camera.
-/// </summary>
-/// <returns></returns>
-const Camera* Scene::GetActiveCamera()
-{
-	return activeCamera;
-}
-
-/// <summary>
 /// Gets the geometry.
 /// </summary>
 /// <param name="name">The name.</param>
 /// <returns></returns>
-Geometry* Scene::GetGeometry( const std::string& name )
+Geometry* Scene::GetGeometry( const std::string& name ) const
 {
 	auto it = geometries.find( name );
 	if( it != geometries.end() )
@@ -246,4 +237,13 @@ Geometry* Scene::GetGeometry( const std::string& name )
 		return it->second;
 	}
 	return nullptr;
+}
+
+/// <summary>
+/// Gets the active camera.
+/// </summary>
+/// <returns></returns>
+Camera* Scene::GetActiveCamera() const
+{
+	return activeCamera;
 }

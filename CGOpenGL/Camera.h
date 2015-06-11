@@ -19,6 +19,8 @@ public:
 
 	// Change camera movement types/behavior
 	void MakeFirstPerson( float movementSpeed, float turnSpeed, float yLimitAngle, bool lockedToMouse );
+	void AddMovespeed( float moveSpeed );
+	void MultMovespeed( float multiplier );
 
 	// Getters
 	glm::mat4 GetView() const;
