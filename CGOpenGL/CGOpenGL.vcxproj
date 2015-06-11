@@ -22,6 +22,8 @@
     <ProjectGuid>{862D9299-61FA-45B0-8777-1B2D3A8FD512}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>OpenGLTemplate</RootNamespace>
+    <CudaToolkitCustomDir>
+    </CudaToolkitCustomDir>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -52,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 7.0.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -214,6 +217,7 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="BufferStructs.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CudaAdapter.cu" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GUI.cpp" />
@@ -235,6 +239,8 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClInclude Include="BufferStructs.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="CudaAdapter.h" />
+    <ClInclude Include="CudaUtil.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GUI.h" />
@@ -253,6 +259,8 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClInclude Include="VertexFormatManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClusterPrepassF.glsl" />
+    <None Include="ClusterPrepassV.glsl" />
     <None Include="PhongFshader.glsl" />
     <None Include="PhongVshader.glsl" />
     <None Include="testFshader.glsl" />
@@ -260,5 +268,6 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 7.0.targets" />
   </ImportGroup>
 </Project>

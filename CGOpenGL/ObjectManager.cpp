@@ -48,6 +48,9 @@ void ObjectManager::ExecRender()
 	o.worldCamPos = cam->position;
 	o.ambient = glm::vec3( 0.1f, 0.1f, 0.1f );
 	o.worldUp = glm::vec3( 0, 1, 0 );
+	o.invNear = 1.0f / cam->GetNearPlane();
+	auto winDim = AppManager::GetWindowDimensions();
+	o.invLogSubDiv = 2.0f * tanf( cam->GetFOV() * 0.5f ) / float( (winDim.second + AMT_TILES_Y - 1) / AMT_TILES_Y );
 	uniBufferGlobals->CopyFromHost(&o, 1);
 
 	// Update the lights uniform buffer

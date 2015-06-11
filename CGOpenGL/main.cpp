@@ -4,6 +4,7 @@
 
 // Project Includes
 #include "AppManager.h"
+#include "Config.h"
 #include "Debug.h"
 #include "GUI.h"
 #include "Input.h"
@@ -134,6 +135,13 @@ int main( void )
 	{
 		Debug::Log( GLUBYTETOSTR( glewGetErrorString( err ) ), LogType::Error );
 		return -1;
+	}
+
+	// Check for the shader image load store extension (DX: Unordered Access View)
+	if( !GLEW_EXT_shader_image_load_store )
+	{
+		Debug::Log("GLEW_EXT_shader_image_load_store not present. No GPU clustering." );
+		g_configGPUClustering = false;
 	}
 
 	// Throw away the glew invalid enum error, that is produced by a bug in glew

@@ -11,6 +11,8 @@ layout( std140 ) uniform UniGlobals
 	vec3 ambient;
 	vec3 worldUp;
 	vec3 worldCamPos;
+	float invNear; // 1.0f / nearPlane
+	float invLogSubDiv; // 1.0f / log(subDivision + 1.0f); subDivision = 2.0f * tan( fov * 0.5f ) / gridDimY;
 };
 layout( std140 ) uniform UniMaterial
 {
@@ -32,12 +34,6 @@ layout (std140) uniform UniLights {
 	// Little bit of a hack, we actually reserve one more light space and can pack associated vars
 	uint lightCount; 
 };
-//LightSource lights[1];
-
-in VertexData{
-	vec3 worldPos;
-	vec3 normal;
-} FragmentIn;
 
 // Light source as a point light (without attenuation)
 // Pos and normal are supposed to be in world space
@@ -74,13 +70,15 @@ void PointLightPhongLighting( in LightSource light, in vec3 pos, in vec3 normal,
 	specular += Ks * light.color * att;
 }
 
+in VertexData{
+	vec3 worldPos;
+	vec3 normal;
+} FragmentIn;
+
 out vec4 color;
 
 void main()
 {
-	// debugging
-	//lights[0] = LightSource( vec4( worldCamPos, 1 ), vec3( 1, 1, 1 ), 0 );
-
 	// Lighting params
 	vec3 dif = vec3( 0.0, 0.0, 0.0 );
 	vec3 spec = vec3( 0.0, 0.0, 0.0 );

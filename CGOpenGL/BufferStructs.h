@@ -18,6 +18,8 @@ struct ShaderGlobals_Std140
 	glm::vec3 worldUp;
 	float pad1;
 	glm::vec3 worldCamPos;
+	float invNear; // 1.0f / nearPlane
+	float invLogSubDiv; // 1.0f / log(subDivision + 1.0f); subDivision = 2.0f * tan( fov * 0.5f ) / gridDimY;
 };
 
 struct ShaderMaterial_Std140

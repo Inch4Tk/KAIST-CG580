@@ -182,3 +182,21 @@ void Camera::MultMovespeed( float multiplier )
 {
 	movementSpeed *= multiplier;
 }
+
+/// <summary>
+/// Gets the near plane.
+/// </summary>
+/// <returns></returns>
+float Camera::GetNearPlane() const
+{
+	return nearPlane;
+}
+
+/// <summary>
+/// Gets the fov.
+/// </summary>
+/// <returns></returns>
+float Camera::GetFOV() const
+{
+	return fovy;
+}

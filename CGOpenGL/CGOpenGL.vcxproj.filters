@@ -16,6 +16,9 @@
     <Filter Include="Core\Shader">
       <UniqueIdentifier>{41627ede-df25-4594-98d7-2d58bc9af49e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CUDA">
+      <UniqueIdentifier>{9ad3fe79-8b5e-4d1e-8635-b21d827259a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -63,13 +66,18 @@
     <ClCompile Include="AppManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="BufferStructs.cpp">
       <Filter>Core\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Light.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CudaAdapter.cu">
+      <Filter>CUDA</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">
@@ -117,9 +125,6 @@
     <ClInclude Include="AppManager.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="GLBuffer.h">
       <Filter>Core\Utils</Filter>
     </ClInclude>
@@ -129,7 +134,18 @@
     <ClInclude Include="Config.h">
       <Filter>Core\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h" />
+    <ClInclude Include="Light.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaAdapter.h">
+      <Filter>CUDA</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaUtil.h">
+      <Filter>CUDA</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="testVshader.glsl">
@@ -142,6 +158,12 @@
       <Filter>Core\Shader</Filter>
     </None>
     <None Include="PhongVshader.glsl">
+      <Filter>Core\Shader</Filter>
+    </None>
+    <None Include="ClusterPrepassV.glsl">
+      <Filter>Core\Shader</Filter>
+    </None>
+    <None Include="ClusterPrepassF.glsl">
       <Filter>Core\Shader</Filter>
     </None>
   </ItemGroup>
