@@ -22,7 +22,7 @@ layout( std140 ) uniform UniMaterial
 
 uniform uint lightCount = 1;
 struct LightSource
-{ // try to pack them maximally efficiently, for now restrict ourselves to point lights
+{ // for now restrict ourselves to point lights
 	vec4 position;
 	vec3 color;
 	float range;
@@ -92,5 +92,5 @@ void main()
 		PointLightPhongLighting( lights[i], FragmentIn.worldPos, normalize( FragmentIn.normal ), dif, spec );
 	}
 
-	color = vec4( clamp( dif * mat_diffuse + spec * mat_specular + ambient * mat_diffuse, 0, 1 ), 1 );
+	color = vec4( clamp( dif * mat_diffuse + spec * mat_specular + ambient * mat_ambient, 0, 1 ), 1 );
 }

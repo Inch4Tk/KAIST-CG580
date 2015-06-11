@@ -77,7 +77,7 @@ Geometry::Geometry( const std::string& objFilename )
 			{
 				// Create a real vertex array
 				std::vector<glm::vec3> tmp_verts;
-				for( uint32_t i = 0; i < shape.mesh.positions.size() / 3; ++i )
+				for( uint32_t i = 0; i < shape.mesh.positions.size(); i += 3 )
 				{
 					tmp_verts.push_back( glm::vec3( shape.mesh.positions[i],
 						shape.mesh.positions[i + 1], shape.mesh.positions[i + 2] ) );
@@ -146,7 +146,6 @@ Geometry::Geometry( const std::string& objFilename )
 			// Init the mesh
 			if( index && tex )
 			{
-
 				m->Initialize( VertexFormatManager::Get3F3F2F(), &mem[0], static_cast<uint32_t>(mem.size() * 4),
 							   shape.mesh.indices, GL_TRIANGLES, mat );
 			}

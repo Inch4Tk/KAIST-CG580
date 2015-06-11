@@ -82,7 +82,7 @@ void Scene::LoadTestScene()
 	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig, 
 																   BindSlots::defaultBindSlots );
 	// Load a cube
-	std::string geomName = "cube.obj";
+	std::string geomName = "cornell_box.obj";
 	Geometry* g = GetGeometry( geomName );
 	if( g == nullptr )
 	{
