@@ -146,7 +146,11 @@ int main( void )
 
 	// Throw away the glew invalid enum error, that is produced by a bug in glew
 	// http://stackoverflow.com/questions/10857335/opengl-glgeterror-returns-invalid-enum-after-call-to-glewinit
-	glGetError();
+	auto glErr = glGetError();
+	if( glErr != GL_NO_ERROR && glErr != GL_INVALID_ENUM )
+	{
+		Debug::LogFailure( __FILE__, __LINE__, "Error initializing OpenGL." );
+	}
 
 	// Detect OpenGL version
 	const GLubyte* y = glGetString( GL_VERSION );
