@@ -7,7 +7,7 @@ template <typename T>
 class GLBuffer
 {
 public:
-	GLBuffer(size_t elementCount, const T* data = 0, uint32_t updateMethod = GL_DYNAMIC_COPY) : 
+	GLBuffer(size_t elementCount, const T* data = nullptr, uint32_t updateMethod = GL_DYNAMIC_COPY) : 
 		elementCount(elementCount), updateMethod(updateMethod)
 	{
 		glGenBuffers( 1, &id );
@@ -20,10 +20,14 @@ public:
 	};
 	~GLBuffer()
 	{
+		if( texId )
+		{
+			glDeleteTextures( 1, &texId );
+		}
 		if( id )
 		{
 			glDeleteBuffers( 1, &id );
-		}
+		}	
 	};
 
 	/// <summary>
@@ -39,9 +43,23 @@ public:
 	/// Gets the element count.
 	/// </summary>
 	/// <returns></returns>
-	size_t GetElementCount() const
+	size_t Size() const
 	{
 		return elementCount;
+	}
+
+	/// <summary>
+	/// Makes the buffer a texture buffer.
+	/// </summary>
+	/// <param name="type">The type.</param>
+	void MakeTexBuffer( GLenum type )
+	{
+		texType = type;
+		glGenTextures( 1, &texId );
+		glBindTexture( GL_TEXTURE_BUFFER, texId );
+		glTexBuffer( GL_TEXTURE_BUFFER, type, id );
+		glBindTexture( GL_TEXTURE_BUFFER, 0 );
+		CHECK_GL_ERROR();
 	}
 
 	/// <summary>
@@ -136,6 +154,29 @@ public:
 	}
 
 	/// <summary>
+	/// Binds the buffer texture to a texture unit. Or alternatively as a UAV to get written into. (Then texunit = index)
+	/// </summary>
+	/// <param name="texUnit">The tex unit.</param>
+	/// <param name="write">if set to <c>true</c> [write].</param>
+	void BindTexture( int texUnit, bool write = false )
+	{
+		if( texBound )
+			UnbindTexture();
+		if( write )
+		{
+			glBindImageTextureEXT( texUnit, texId, 0, false, 0, GL_WRITE_ONLY, texType );
+			texWriteBound = true;
+		}
+		else
+		{
+			this->texUnit = texUnit;
+			glActiveTexture( GL_TEXTURE0 + texUnit );
+			glBindTexture( texType, texId );
+		}
+		texBound = true;
+	}
+
+	/// <summary>
 	/// Unbinds the buffer from the specified target.
 	/// </summary>
 	/// <param name="target">The target.</param>
@@ -144,9 +185,34 @@ public:
 		glBindBuffer( target, 0 );
 	}
 
+	/// <summary>
+	/// Unbinds the texture.
+	/// </summary>
+	void UnbindTexture()
+	{
+		if( texBound && !texWriteBound )
+		{
+			glActiveTexture( GL_TEXTURE0 + texUnit );
+			glBindTexture( texType, 0 );
+			texBound = false;
+		}
+		else if( texBound && texWriteBound )
+		{
+			glBindImageTextureEXT( texUnit, 0, 0, false, 0, GL_WRITE_ONLY, texType );
+			texBound = false;
+			texWriteBound = false;
+		}
+	}
+
 private:
 	size_t elementCount = 0;
 	GLuint id = 0;
 	GLuint updateMethod = GL_DYNAMIC_COPY;
+	// Texture
+	GLuint texId = 0;
+	GLenum texType = 0;
+	int texUnit = 0;
+	bool texBound = false;
+	bool texWriteBound = false;
 };
 
