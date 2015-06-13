@@ -88,6 +88,9 @@ void ObjectManager::ExecRender()
 	// Perform clustering
 	if( clusteringActive )
 	{
+		glDepthFunc( GL_LEQUAL ); // This is important, so we actually render something in the second pass
+
+		// Cluster-madness
 		BuildCluster();
 		
 		// Bind the cluster infos
