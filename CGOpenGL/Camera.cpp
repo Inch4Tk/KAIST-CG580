@@ -37,7 +37,7 @@ void Camera::Update()
 	viewProjection = projection * view; // First apply view then projection
 }
 
-void Camera::Render()
+void Camera::Render(const std::string& shaderName)
 {
 	// Empty, because we don't want to render the camera, but still need to override the default render behavior
 }

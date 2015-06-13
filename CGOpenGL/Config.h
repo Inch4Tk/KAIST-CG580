@@ -12,5 +12,6 @@
 #ifndef MAX_TILES_Z
 #define MAX_TILES_Z 256
 #endif
-
-static bool g_configGPUClustering = false;
+#ifndef ENABLE_CUDA
+#define ENABLE_CUDA false
+#endif

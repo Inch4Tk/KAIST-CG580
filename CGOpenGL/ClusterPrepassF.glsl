@@ -18,7 +18,7 @@ layout( std140 ) uniform UniGlobals
 };
 
 // Which clusters actually exist uffer (DX: UAV)
-layout(size1x32) uniform uimageBuffer usedClusters;
+layout( binding = 0, size1x32 ) uniform uimageBuffer usedClusters;
 
 in VertexData{
 	vec3 viewPos;
@@ -29,7 +29,7 @@ out vec4 color;
 // Determine the cluster offset in the usedClusters UAV.
 // Determined after the algorithm provided by:
 // http://www.cse.chalmers.se/~olaolss/main_frame.php?contents=publication&id=clustered_shading
-int getClusterOffset( vec2 screenXY, float depth )
+uint getClusterOffset( vec2 screenXY, float depth )
 {
 	uint clusterIdX = uint( screenXY.x ) / AMT_TILES_X;
 	uint clusterIdY = uint( screenXY.y ) / AMT_TILES_Y;
@@ -41,6 +41,6 @@ int getClusterOffset( vec2 screenXY, float depth )
 void main()
 {
 	// Write to the cluster that we are in
-	imageStore( usedClusters, getClusterOffset( gl_FragCoord.xy, FragmentIn.viewPos.z ), uvec4(1U) );
+	imageStore( usedClusters, int( getClusterOffset( gl_FragCoord.xy, FragmentIn.viewPos.z ) ), uvec4( 1U ) );
 	color = vec4( 1.0 );
 }

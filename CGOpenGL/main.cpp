@@ -134,17 +134,17 @@ int main( void )
 	if( err != GLEW_OK )
 	{
 		Debug::Log( GLUBYTETOSTR( glewGetErrorString( err ) ), LogType::Error );
-		return -1;
+		exit( EXIT_FAILURE );
 	}
 
 	// Check for the shader image load store extension (DX: Unordered Access View)
 	if( !GLEW_EXT_shader_image_load_store )
 	{
-		Debug::Log("GLEW_EXT_shader_image_load_store not present. No GPU clustering." );
-		g_configGPUClustering = false;
+		Debug::Log("GLEW_EXT_shader_image_load_store not present. Not possible to run application. (Need OpenGL 4.3 support)" );
+		exit( EXIT_FAILURE );
 	}
 
-	// Throw away the glew invalid enum error, that is produced by a bug in glew
+	// Throw away the GLEW invalid enum error, that is produced by a bug in GLEW
 	// http://stackoverflow.com/questions/10857335/opengl-glgeterror-returns-invalid-enum-after-call-to-glewinit
 	auto glErr = glGetError();
 	if( glErr != GL_NO_ERROR && glErr != GL_INVALID_ENUM )

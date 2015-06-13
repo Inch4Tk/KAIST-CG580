@@ -10,7 +10,7 @@ SceneObject::SceneObject()
 {
 }
 
-SceneObject::SceneObject(Geometry* geometry, const ShaderProgram* shader) : geometry(geometry), shader(shader)
+SceneObject::SceneObject(Geometry* geometry) : geometry(geometry)
 {
 }
 
@@ -23,15 +23,35 @@ SceneObject::~SceneObject()
 	SDELETE( geometry );
 }
 
+/// <summary>
+/// Adds a shader.
+/// </summary>
+/// <param name="shaderName">Name of the shader.</param>
+/// <param name="shader">The shader.</param>
+void SceneObject::AddShader( const std::string& shaderName, const ShaderProgram* shader )
+{
+	shaders[shaderName] = shader;
+}
+
+/// <summary>
+/// Updates this instance.
+/// </summary>
 void SceneObject::Update()
 {
 	// Empty default update
 }
 
-void SceneObject::Render()
+/// <summary>
+/// Renders this instance.
+/// </summary>
+void SceneObject::Render(const std::string& shaderName)
 {
 	// Bind the shader
-	shader->BindShader();
+	auto shader = shaders.find( shaderName );
+	if( shader != shaders.end() )
+		shader->second->BindShader();
+	else
+		return; // Don't render anything if there is no shader
 
 	// Bind the uniforms
 	glm::mat4 rot = glm::mat4_cast( rotation );
@@ -41,5 +61,5 @@ void SceneObject::Render()
 	glUniformMatrix4fv( uniWorldMatrix, 1, false, &worldMatrix[0][0] );
 
 	// Draw
-	geometry->Draw( shader->GetBindSlots() );
+	geometry->Draw( shader->second->GetBindSlots() );
 }

@@ -166,5 +166,11 @@
     <None Include="ClusterPrepassF.glsl">
       <Filter>Core\Shader</Filter>
     </None>
+    <None Include="ClusterForwardV.glsl">
+      <Filter>Core\Shader</Filter>
+    </None>
+    <None Include="ClusterForwardF.glsl">
+      <Filter>Core\Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

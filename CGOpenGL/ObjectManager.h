@@ -28,12 +28,21 @@ private:
 
 	void ExecUpdate();
 	void ExecRender();
-
+	
 	std::list<SceneObject*> subsUpdate;
 	std::list<SceneObject*> subsRender;
 	std::list<Light*> sceneLights;
 
 	GLBuffer<ShaderGlobals_Std140>* uniBufferGlobals;
 	GLBuffer<ShaderLight_Std140>* uniBufferLights;
+
+	// Clustered lighting
+	bool clusteringActive = false;
+	bool cudaClustering = false;
+	void BuildCluster();
+	void CalcClusterCPU();
+	GLBuffer<uint32_t>* uniTexBufUsedClusters;
+	GLBuffer<glm::uvec2>* uniTexBufClusters;
+	GLBuffer<int32_t>* uniTexBufClusterLightIdx;
 };
 

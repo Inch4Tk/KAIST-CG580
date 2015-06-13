@@ -9,6 +9,7 @@
 
 ObjectManager::ObjectManager()
 {
+	// Globals and lights uniform buffers
 	ShaderGlobals_Std140 o;
 	memset( &o, 0, sizeof( ShaderGlobals_Std140 ) );
 	uniBufferGlobals = new GLBuffer<ShaderGlobals_Std140>( 1, &o );
@@ -16,6 +17,19 @@ ObjectManager::ObjectManager()
 	ShaderLight_Std140 l[CONFIG_MAX_LIGHTS + 1]; // Hack for packing more vars, we use maxlights + 1
 	memset( l, 0, sizeof( ShaderLight_Std140 ) * (CONFIG_MAX_LIGHTS + 1) );
 	uniBufferLights = new GLBuffer<ShaderLight_Std140>( CONFIG_MAX_LIGHTS + 1, l );
+
+	// Texture buffers
+	uniTexBufUsedClusters = new GLBuffer<uint32_t>( AMT_TILES_X * AMT_TILES_Y * MAX_TILES_Z );
+	uint32_t* p = uniTexBufUsedClusters->BeginMapWrite();
+	memset( p, 0, sizeof( uint32_t ) * uniTexBufUsedClusters->Size() );
+	uniTexBufUsedClusters->EndMap();
+	uniTexBufUsedClusters->MakeTexBuffer( GL_R32UI );
+
+	uniTexBufClusters = new GLBuffer<glm::uvec2>( AMT_TILES_X * AMT_TILES_Y * MAX_TILES_Z );
+	uniTexBufClusters->MakeTexBuffer( GL_RG32UI );
+
+	uniTexBufClusterLightIdx = new GLBuffer<int32_t>( 1 );
+	uniTexBufClusterLightIdx->MakeTexBuffer( GL_R32I );
 }
 
 
@@ -23,6 +37,9 @@ ObjectManager::~ObjectManager()
 {
 	SDELETE( uniBufferGlobals );
 	SDELETE( uniBufferLights );
+	SDELETE( uniTexBufUsedClusters );
+	SDELETE( uniTexBufClusters );
+	SDELETE( uniTexBufClusterLightIdx );
 }
 
 /// <summary>
@@ -68,9 +85,26 @@ void ObjectManager::ExecRender()
 	memcpy( target + CONFIG_MAX_LIGHTS, &numLights, sizeof( uint32_t ) );
 	uniBufferLights->EndMap();
 
-	// Render the objects
-	for( SceneObject* ro : subsRender )
-		ro->Render();
+	// Perform clustering
+	if( clusteringActive )
+	{
+		BuildCluster();
+		
+		// Bind the cluster infos
+		uniTexBufClusters->BindTexture( 0 );
+		uniTexBufClusterLightIdx->BindTexture( 1 );
+
+		// Render the objects 
+		for( SceneObject* ro : subsRender )
+			ro->Render( "clusterPhong" );
+	}
+	else
+	{
+		// Render the objects
+		for( SceneObject* ro : subsRender )
+			ro->Render( "phong" );
+	}
+	
 }
 
 /// <summary>
@@ -145,6 +179,42 @@ void ObjectManager::BindPerFrameUniformBuffer( const std::unordered_map<std::str
 	{
 		uniBufferLights->BindSlot( GL_UNIFORM_BUFFER, it->second );
 	}
+}
+
+/// <summary>
+/// Builds the cluster.
+/// </summary>
+void ObjectManager::BuildCluster()
+{
+	// Unbind the textures in case
+	uniTexBufClusters->UnbindTexture();
+	uniTexBufClusterLightIdx->UnbindTexture();
+
+	// Render the objects to check for clusters (No color output)
+	uniTexBufUsedClusters->BindTexture( 0, true );
+	glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
+	for( SceneObject* ro : subsRender )
+		ro->Render( "clusterPre" );
+	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+	uniTexBufUsedClusters->UnbindTexture();
+	
+	// Perform clustering
+	if( cudaClustering )
+	{
+
+	}
+	else
+	{
+		CalcClusterCPU();
+	}
+}
+
+/// <summary>
+/// Calculates the cluster on the cpu.
+/// </summary>
+void ObjectManager::CalcClusterCPU()
+{
+
 }
 
 

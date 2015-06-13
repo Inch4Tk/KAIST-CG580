@@ -10,11 +10,12 @@ class SceneObject
 {
 public:
 	SceneObject();
-	SceneObject( Geometry* geometry, const ShaderProgram* shader );
+	SceneObject( Geometry* geometry );
 	~SceneObject();
 
+	void AddShader( const std::string& shaderName, const ShaderProgram* shader );
 	virtual void Update();
-	virtual void Render();
+	virtual void Render( const std::string& shaderName );
 
 	// Transformation variables
 	glm::vec3 position = { 0, 0, 0 }; // Implies world 
@@ -23,7 +24,7 @@ public:
 
 protected:
 	Geometry* geometry = nullptr;
-	const ShaderProgram* shader = nullptr;
+	std::unordered_map<std::string, const ShaderProgram*> shaders;
 
 	// Uniform locations mapping the shader variables 
 	GLint uniWorldMatrix = -1;

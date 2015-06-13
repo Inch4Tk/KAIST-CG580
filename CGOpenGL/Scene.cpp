@@ -76,13 +76,21 @@ void Scene::LoadTestScene()
 	ShaderProgram::InitConfig shaderConfig;
 	shaderConfig.vsPath = "Shader/testVshader.glsl";
 	shaderConfig.fsPath = "Shader/testFshader.glsl";
-	const ShaderProgram* testShader = ShaderProgram::LoadProgram( "TestShader", shaderConfig, 
+	const ShaderProgram* testShader = ShaderProgram::LoadProgram( "Test", shaderConfig, 
 																  BindSlots::defaultBindSlots );
 	shaderConfig.vsPath = "Shader/PhongVshader.glsl";
 	shaderConfig.fsPath = "Shader/PhongFshader.glsl";
-	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "PhongShader", shaderConfig, 
+	const ShaderProgram* phongShader = ShaderProgram::LoadProgram( "Phong", shaderConfig, 
 																   BindSlots::defaultBindSlots );
-	
+	shaderConfig.vsPath = "Shader/ClusterPrepassV.glsl";
+	shaderConfig.fsPath = "Shader/ClusterPrepassF.glsl";
+	const ShaderProgram* clusterPre = ShaderProgram::LoadProgram( "ClusterPre", shaderConfig,
+																   BindSlots::defaultBindSlots );
+	shaderConfig.vsPath = "Shader/ClusterForwardV.glsl";
+	shaderConfig.fsPath = "Shader/ClusterForwardF.glsl";
+	const ShaderProgram* clusterPhong = ShaderProgram::LoadProgram( "ClusterPhong", shaderConfig,
+																   BindSlots::defaultBindSlots );
+
 	// Add some lights
 	Light* light = new Light(glm::vec3(10,1,1), glm::vec3(1,1,1), 0.0f);
 	AppManager::GetObjectManager()->AddLight( light );
@@ -108,7 +116,11 @@ void Scene::LoadTestScene()
 	meshes["TriangleMesh"] = triangleMesh;*/
 	
 	// Create a scene object containing the mesh and the test shader
-	SceneObject* obj = new SceneObject( g, phongShader );
+	SceneObject* obj = new SceneObject( g );
+	obj->AddShader( "test", testShader );
+	obj->AddShader( "phong", phongShader );
+	obj->AddShader( "clusterPre", clusterPre );
+	obj->AddShader( "clusterPhong", clusterPhong );
 	AppManager::GetObjectManager()->SubscribeRender( obj );
 	sceneObjects.push_back( obj );
 }

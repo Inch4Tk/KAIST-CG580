@@ -11,7 +11,7 @@ public:
 
 	// Scene object overrides
 	void Update();
-	void Render();
+	void Render( const std::string& shaderName );
 
 	// Change camera projection types
 	void MakePerspective( float fovy, float aspect, float nearPlane, float farPlane );
