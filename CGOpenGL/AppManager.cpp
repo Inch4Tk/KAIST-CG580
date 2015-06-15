@@ -33,6 +33,9 @@ void AppManager::Initialize( GLFWwindow* window )
 {
 	AppManager::window = window;
 
+	// Seed rand
+	srand( static_cast<uint32_t>(std::time( 0 )) );
+
 	// Init GUI
 	int winWidth, winHeight;
 	glfwGetWindowSize( window, &winWidth, &winHeight );

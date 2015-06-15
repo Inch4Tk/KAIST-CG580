@@ -37,7 +37,7 @@ private:
 	GLBuffer<ShaderLight_Std140>* uniBufferLights;
 
 	// Clustered lighting
-	bool clusteringActive = false;
+	bool clusteringActive = true;
 	bool cudaClustering = false;
 	void BuildCluster();
 	void CalcClusterCPU();

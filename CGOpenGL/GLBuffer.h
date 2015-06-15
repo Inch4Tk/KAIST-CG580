@@ -89,7 +89,7 @@ public:
 	void CopyToHost( T* data, size_t count = 0 )
 	{
 		ASSERT( elementCount > 0 );
-		memcpy( data, BeginMapRead(), std::min( count, elementCount() ) * sizeof( T ) );
+		memcpy( data, BeginMapRead(), std::min( count, elementCount ) * sizeof( T ) );
 		EndMap();
 	}
 
@@ -166,12 +166,14 @@ public:
 		{
 			glBindImageTextureEXT( texUnit, texId, 0, false, 0, GL_WRITE_ONLY, texType );
 			texWriteBound = true;
+			CHECK_GL_ERROR();
 		}
 		else
 		{
 			this->texUnit = texUnit;
 			glActiveTexture( GL_TEXTURE0 + texUnit );
-			glBindTexture( texType, texId );
+			glBindTexture( GL_TEXTURE_BUFFER, texId );
+			CHECK_GL_ERROR();
 		}
 		texBound = true;
 	}
@@ -193,14 +195,16 @@ public:
 		if( texBound && !texWriteBound )
 		{
 			glActiveTexture( GL_TEXTURE0 + texUnit );
-			glBindTexture( texType, 0 );
+			glBindTexture( GL_TEXTURE_BUFFER, 0 );
 			texBound = false;
+			CHECK_GL_ERROR();
 		}
 		else if( texBound && texWriteBound )
 		{
 			glBindImageTextureEXT( texUnit, 0, 0, false, 0, GL_WRITE_ONLY, texType );
 			texBound = false;
 			texWriteBound = false;
+			CHECK_GL_ERROR();
 		}
 	}
 

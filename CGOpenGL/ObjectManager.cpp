@@ -96,6 +96,7 @@ void ObjectManager::ExecRender()
 		// Bind the cluster infos
 		uniTexBufClusters->BindTexture( 0 );
 		uniTexBufClusterLightIdx->BindTexture( 1 );
+		CHECK_GL_ERROR();
 
 		// Render the objects 
 		for( SceneObject* ro : subsRender )
@@ -200,7 +201,8 @@ void ObjectManager::BuildCluster()
 		ro->Render( "clusterPre" );
 	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 	uniTexBufUsedClusters->UnbindTexture();
-	
+	CHECK_GL_ERROR();
+
 	// Perform clustering
 	if( cudaClustering )
 	{
@@ -217,7 +219,52 @@ void ObjectManager::BuildCluster()
 /// </summary>
 void ObjectManager::CalcClusterCPU()
 {
+	// Vector of light indices per cluster
+	std::vector<glm::uvec2> clusters; // Offset + Amount for every cluster
+	clusters.resize(uniTexBufClusters->Size());
+	std::vector<int32_t> lightIndicesPerCluster; // These are accessed by offset and amount of lights
 
+	// First get the used clusters
+	std::vector<uint32_t> usedClusters(uniTexBufUsedClusters->Size());
+	uniTexBufUsedClusters->CopyToHost(&usedClusters[0], uniTexBufUsedClusters->Size());
+	// Then reset the used clusters on GPU
+	uint32_t* p = uniTexBufUsedClusters->BeginMapWrite();
+	memset( p, 0, sizeof( uint32_t ) * uniTexBufUsedClusters->Size() );
+	uniTexBufUsedClusters->EndMap();
+
+	// Run over all clusters, if the cluster is used, we determine lights and offset
+	// This is quite inefficient compared to first building rects around lights, 
+	// and then only testing for clusters that are close. But quick to implement.
+	for( uint32_t i = 0; i < usedClusters.size(); ++i )
+	{
+		// Only if the cluster actually contains anything
+		if( usedClusters[i] > 0 )
+		{
+			// Go over lights and check for overlaps
+			uint32_t offset = static_cast<uint32_t>(lightIndicesPerCluster.size());
+			uint32_t assignedLights = 0;
+			for( size_t l = 0; l < sceneLights.size(); ++l )
+			{
+				// For now we assign every light to every cluster, maximal inefficiency
+				lightIndicesPerCluster.push_back( static_cast<int>(l) );
+
+				++assignedLights;
+			}
+			clusters[i] = glm::uvec2( offset, assignedLights );
+		}
+	}
+
+	// Shove data to GPU
+	uniTexBufClusters->CopyFromHost( &clusters[0], clusters.size() );
+	if( lightIndicesPerCluster.size() > 0 )
+	{
+		uniTexBufClusterLightIdx->CopyFromHost( &lightIndicesPerCluster[0], lightIndicesPerCluster.size() );
+	}
+	else
+	{
+		uniTexBufClusterLightIdx->CopyFromHost( nullptr, 1 );
+	}
+	CHECK_GL_ERROR();
 }
 
 

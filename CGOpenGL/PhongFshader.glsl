@@ -1,6 +1,6 @@
 #version 430 core
 
-const uint LIGHTS_LIMIT = 10;
+const uint LIGHTS_LIMIT = 1024;
 
 layout( std140 ) uniform UniGlobals
 {

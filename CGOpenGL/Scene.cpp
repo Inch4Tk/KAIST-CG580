@@ -90,11 +90,21 @@ void Scene::LoadTestScene()
 	shaderConfig.fsPath = "Shader/ClusterForwardF.glsl";
 	const ShaderProgram* clusterPhong = ShaderProgram::LoadProgram( "ClusterPhong", shaderConfig,
 																   BindSlots::defaultBindSlots );
-
+	
 	// Add some lights
-	Light* light = new Light(glm::vec3(10,1,1), glm::vec3(1,1,1), 0.0f);
-	AppManager::GetObjectManager()->AddLight( light );
-	sceneObjects.push_back( light );
+	Light* light = nullptr;
+	for( int z = -2; z < 3; ++z )
+	{
+		for( int y = -1; y < 2; ++y )
+		{
+			for( int x = -2; x < 3; ++x )
+			{
+				light = new Light( glm::vec3( x, y, z ), glm::vec3( randFloat(), randFloat(), randFloat() ), 2.0f );
+				AppManager::GetObjectManager()->AddLight( light );
+				sceneObjects.push_back( light );
+			}
+		}
+	}
 
 	// Load a cube
 	std::string geomName = "cube.obj";

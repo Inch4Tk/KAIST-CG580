@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef CONFIG_MAX_LIGHTS
-#define CONFIG_MAX_LIGHTS 10
+#define CONFIG_MAX_LIGHTS 1024
 #endif
 #ifndef AMT_TILES_X
 #define AMT_TILES_X 64
