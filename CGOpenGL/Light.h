@@ -2,8 +2,12 @@
 
 #include "StandardIncludes.h"
 
+#include "AABB.h"
 #include "BufferStructs.h"
 #include "SceneObject.h"
+
+// Forwards
+class Camera;
 
 class Light :
 	public SceneObject
@@ -18,6 +22,10 @@ public:
 	Light( glm::vec3 position, glm::vec3 color, float range ); // Inferred light type: point light
 	Light( glm::vec3 position, Light& copyFrom ); // Copies settings from the provided light, but changes position
 	~Light();
+
+	std::pair<glm::uvec3, glm::uvec3> GetClusterExtents( Camera* cam, float invNear, float invLogSubDiv ) const;
+	AABB GetAABB() const;
+	AABB GetTransformedAABB( glm::mat4& transform ) const;
 
 	// Getters and setters
 	bool IsActive() const;

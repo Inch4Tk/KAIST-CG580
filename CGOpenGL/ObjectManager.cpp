@@ -91,7 +91,7 @@ void ObjectManager::ExecRender()
 		glDepthFunc( GL_LEQUAL ); // This is important, so we actually render something in the second pass
 
 		// Cluster-madness
-		BuildCluster();
+		BuildCluster( o.invNear, o.invLogSubDiv );
 		
 		// Bind the cluster infos
 		uniTexBufClusters->BindTexture( 0 );
@@ -188,7 +188,7 @@ void ObjectManager::BindPerFrameUniformBuffer( const std::unordered_map<std::str
 /// <summary>
 /// Builds the cluster.
 /// </summary>
-void ObjectManager::BuildCluster()
+void ObjectManager::BuildCluster( float invNear, float invLogSubDiv )
 {
 	// Unbind the textures in case
 	uniTexBufClusters->UnbindTexture();
@@ -210,15 +210,16 @@ void ObjectManager::BuildCluster()
 	}
 	else
 	{
-		CalcClusterCPU();
+		CalcClusterCPU( invNear, invLogSubDiv );
 	}
 }
 
 /// <summary>
 /// Calculates the cluster on the cpu.
 /// </summary>
-void ObjectManager::CalcClusterCPU()
+void ObjectManager::CalcClusterCPU( float invNear, float invLogSubDiv )
 {
+	Camera* mainCam = AppManager::GetScene()->GetActiveCamera();
 	// Vector of light indices per cluster
 	std::vector<glm::uvec2> clusters; // Offset + Amount for every cluster
 	clusters.resize(uniTexBufClusters->Size());
@@ -235,24 +236,28 @@ void ObjectManager::CalcClusterCPU()
 	// Run over all clusters, if the cluster is used, we determine lights and offset
 	// This is quite inefficient compared to first building rects around lights, 
 	// and then only testing for clusters that are close. But quick to implement.
-	for( uint32_t i = 0; i < usedClusters.size(); ++i )
-	{
-		// Only if the cluster actually contains anything
-		if( usedClusters[i] > 0 )
-		{
-			// Go over lights and check for overlaps
-			uint32_t offset = static_cast<uint32_t>(lightIndicesPerCluster.size());
-			uint32_t assignedLights = 0;
-			for( size_t l = 0; l < sceneLights.size(); ++l )
-			{
-				// For now we assign every light to every cluster, maximal inefficiency
-				lightIndicesPerCluster.push_back( static_cast<int>(l) );
+	//for( uint32_t i = 0; i < usedClusters.size(); ++i )
+	//{
+	//	// Only if the cluster actually contains anything
+	//	if( usedClusters[i] > 0 )
+	//	{
+	//		// Go over lights and check for overlaps
+	//		uint32_t offset = static_cast<uint32_t>(lightIndicesPerCluster.size());
+	//		uint32_t assignedLights = 0;
+	//		auto it = sceneLights.begin();
+	//		for( size_t l = 0; l < sceneLights.size(); ++l )
+	//		{
+	//			(*it)->GetClusterExtents( mainCam, invNear, invLogSubDiv );
+	//			// For now we assign every light to every cluster, maximal inefficiency
+	//			lightIndicesPerCluster.push_back( static_cast<int>(l) );
+	//			++it;
+	//			++assignedLights;
+	//		}
+	//		clusters[i] = glm::uvec2( offset, assignedLights );
+	//	}
+	//}
 
-				++assignedLights;
-			}
-			clusters[i] = glm::uvec2( offset, assignedLights );
-		}
-	}
+
 
 	// Shove data to GPU
 	uniTexBufClusters->CopyFromHost( &clusters[0], clusters.size() );

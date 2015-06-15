@@ -214,6 +214,7 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="BufferStructs.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -235,6 +236,7 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClCompile Include="VertexFormatManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="AppManager.h" />
     <ClInclude Include="BufferStructs.h" />
     <ClInclude Include="Camera.h" />

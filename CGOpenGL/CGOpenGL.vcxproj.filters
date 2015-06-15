@@ -78,6 +78,9 @@
     <ClCompile Include="CudaAdapter.cu">
       <Filter>CUDA</Filter>
     </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="CudaUtil.h">
       <Filter>CUDA</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Core\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
