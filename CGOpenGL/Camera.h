@@ -21,6 +21,7 @@ public:
 	void MakeFirstPerson( float movementSpeed, float turnSpeed, float yLimitAngle, bool lockedToMouse );
 	void AddMovespeed( float moveSpeed );
 	void MultMovespeed( float multiplier );
+	void ToggleMouseLock();
 
 	// Getters
 	float GetFOV() const;

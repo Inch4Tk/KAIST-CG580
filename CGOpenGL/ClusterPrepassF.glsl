@@ -16,6 +16,7 @@ layout( std140 ) uniform UniGlobals
 	uint amtTilesX;
 	uint amtTilesY;
 };
+uniform mat4 worldMatrixNormal;
 uniform mat4 worldMatrix;
 
 // Which clusters actually exist uffer (DX: UAV)

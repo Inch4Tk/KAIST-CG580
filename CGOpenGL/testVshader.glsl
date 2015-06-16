@@ -15,6 +15,7 @@ layout( std140 ) uniform UniGlobals
 	uint amtTilesX;
 	uint amtTilesY;
 };
+uniform mat4 worldMatrixNormal;
 uniform mat4 worldMatrix;
 
 layout(location = 0) in vec3 vPos;
@@ -26,6 +27,6 @@ out VertexData {
 
 void main()
 {   
-	VertexOut.normal = vNorm;
+	VertexOut.normal = (worldMatrixNormal * vec4(vNorm, 0)).xyz;
 	gl_Position = viewProjectionMatrix * worldMatrix * vec4(vPos,1);
  }

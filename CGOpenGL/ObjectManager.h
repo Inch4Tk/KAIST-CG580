@@ -22,6 +22,7 @@ public:
 
 	void BindPerFrameUniformBuffer( const std::unordered_map<std::string, uint32_t>& uniSlots );
 
+	void ToggleClustering();
 private:
 	ObjectManager();
 	~ObjectManager();

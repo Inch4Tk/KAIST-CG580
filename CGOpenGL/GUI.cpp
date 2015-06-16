@@ -1,5 +1,8 @@
 #include "GUI.h"
 
+#include "AppManager.h"
+#include "Debug.h"
+
 GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 {
 	// Start Tweak Bar
@@ -7,8 +10,17 @@ GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 	TwWindowSize( windowWidth, windowHeight );
 
 	// For now init the tweak bar here, better to do it separately
-	testBar = TwNewBar( "Testbar" );
-	TwDefine( "Testbar visible=false" );
+	mainBar = TwNewBar( mainBarName.c_str() );
+	auto windim = AppManager::GetWindowDimensions();
+	TwDefine( (mainBarName + " label='Stats and Config' alpha=180 position='15 15' size='300 " + std::to_string(windim.second - 30) + "'").c_str() );
+	if( active )
+	{
+		TwDefine( (mainBarName + " visible = true").c_str() );
+	}
+	else
+	{
+		TwDefine( (mainBarName + " visible = false").c_str() );
+	}
 }
 
 
@@ -48,4 +60,20 @@ int GUI::KeyHandler( int key, int action )
 int GUI::CharHandler( unsigned int codepoint )
 {
 	return TwEventCharGLFW( codepoint, 0 );
+}
+
+/// <summary>
+/// Toggles the GUI.
+/// </summary>
+void GUI::ToggleGUI()
+{
+	active = !active;
+	if( active ) // Display bar
+	{
+		TwDefine( (mainBarName + " visible = true").c_str() );
+	}
+	else // Hide bar
+	{
+		TwDefine( (mainBarName + " visible = false").c_str() );
+	}
 }

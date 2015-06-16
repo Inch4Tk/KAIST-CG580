@@ -92,6 +92,22 @@ void AppManager::Initialize( GLFWwindow* window )
 		scene->GetActiveCamera()->MultMovespeed( 0.5f );
 		Debug::Log( "Current movement speed: " + std::to_string( scene->GetActiveCamera()->GetMovespeed() ) );
 	} );
+	// Set up a hook for swapping clustering
+	input->RegisterKeyEventHook( GLFW_KEY_F2, GLFW_PRESS, []()
+	{
+		objectManager->ToggleClustering();
+	} );
+	// Set up hook for toggling GUI
+	input->RegisterKeyEventHook( GLFW_KEY_F3, GLFW_PRESS, []()
+	{
+		gui->ToggleGUI();
+	} );
+	// Free mouse
+	input->RegisterKeyEventHook( GLFW_KEY_F4, GLFW_PRESS, []()
+	{
+		scene->GetActiveCamera()->ToggleMouseLock();
+	} );
+
 
 	// Set a background color  
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );

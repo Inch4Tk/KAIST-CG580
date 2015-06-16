@@ -221,3 +221,16 @@ float Camera::GetMovespeed() const
 {
 	return movementSpeed;
 }
+
+/// <summary>
+/// Toggles the mouse lock.
+/// </summary>
+void Camera::ToggleMouseLock()
+{
+	lockedToMouse = !lockedToMouse;
+	if( lockedToMouse )
+		glfwSetInputMode( AppManager::GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+	else
+		glfwSetInputMode( AppManager::GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL );
+	Debug::Log( "Mouse is not locked to center: " + std::to_string( lockedToMouse ) );
+}

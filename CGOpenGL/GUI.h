@@ -10,6 +10,8 @@ class GUI
 public:
 	void Draw();
 
+	void ToggleGUI();
+
 	// Input events
 	int MouseButtonHandler( int button, int action );
 	int MouseMoveHandler( double xpos, double ypos );
@@ -21,6 +23,8 @@ private:
 	GUI( uint32_t windowWidth, uint32_t windowHeight );
 	~GUI();
 
-	TwBar* testBar;
+	bool active = false;
+	TwBar* mainBar;
+	std::string mainBarName = "mainBar";
 };
 

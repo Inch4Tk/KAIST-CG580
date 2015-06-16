@@ -15,6 +15,7 @@ layout( std140 ) uniform UniGlobals
 	uint amtTilesX;
 	uint amtTilesY;
 };
+uniform mat4 worldMatrixNormal;
 uniform mat4 worldMatrix;
 
 const vec3 lightDir = {0.7, 1.0, 0.0};

@@ -31,13 +31,6 @@ ObjectManager::ObjectManager()
 
 	uniTexBufClusterLightIdx = new GLBuffer<int32_t>( 1 );
 	uniTexBufClusterLightIdx->MakeTexBuffer( GL_R32I );
-
-	// Set up a hook for swapping clustering
-	AppManager::GetInput()->RegisterKeyEventHook( GLFW_KEY_F2, GLFW_PRESS, [&]()
-	{
-		clusteringActive = !clusteringActive;
-		Debug::Log( "Clustering is active: " + std::to_string( clusteringActive ) );
-	} );
 }
 
 
@@ -353,6 +346,15 @@ void ObjectManager::CalcClusterCPU( float invNear, float invLogSubDiv )
 		uniTexBufClusterLightIdx->CopyFromHost( nullptr, 1 );
 	}
 	CHECK_GL_ERROR();
+}
+
+/// <summary>
+/// Toggles the clustering.
+/// </summary>
+void ObjectManager::ToggleClustering()
+{
+	clusteringActive = !clusteringActive;
+	Debug::Log( "Clustering is active: " + std::to_string( clusteringActive ) );
 }
 
 
