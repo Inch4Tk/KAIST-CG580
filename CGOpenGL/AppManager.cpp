@@ -31,15 +31,30 @@ AppManager::~AppManager()
 /// <param name="window">The window.</param>
 void AppManager::Initialize( GLFWwindow* window )
 {
+	// Updating window
 	AppManager::window = window;
+	int winWidth, winHeight;
+	glfwGetWindowSize( window, &winWidth, &winHeight );
+	windowDimensions = std::pair<int, int>( winWidth, winHeight );
+
+	// Update the clustered shading variables determining the cluster sizes
+	// The +1 for every amount is just for making life easier when calculating and is not written to
+	Config::FOV_Y = glm::radians( 60.0f );
+	Config::ASPECT = static_cast<float>(winWidth) / static_cast<float>(winHeight);
+	Config::NEAR_PLANE = 0.1f;
+	Config::FAR_PLANE = 10000.0f;
+	Config::DIM_TILES_X = 64;
+	Config::DIM_TILES_Y = 64;
+	Config::AMT_TILES_X = static_cast<uint32_t>(winWidth + Config::DIM_TILES_X - 1) / Config::DIM_TILES_X + 1;
+	Config::AMT_TILES_Y = static_cast<uint32_t>(winHeight + Config::DIM_TILES_Y - 1) / Config::DIM_TILES_Y + 1;
+	float sD = 2.0f * tanf( Config::FOV_Y * 0.5f ) / static_cast<float>(Config::AMT_TILES_Y);
+	float zGridLocFar = logf( Config::FAR_PLANE / Config::NEAR_PLANE ) / logf( 1.0f + sD );
+	Config::AMT_TILES_Z = static_cast<uint32_t>(ceilf( zGridLocFar ) + 0.5f) + 1;
 
 	// Seed rand
 	srand( static_cast<uint32_t>(std::time( 0 )) );
 
 	// Init GUI
-	int winWidth, winHeight;
-	glfwGetWindowSize( window, &winWidth, &winHeight );
-	windowDimensions = std::pair<int, int>(winWidth, winHeight);
 	gui = new GUI( winWidth, winHeight );
 
 	// Init Input

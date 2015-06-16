@@ -200,3 +200,12 @@ float Camera::GetFOV() const
 {
 	return fovy;
 }
+
+/// <summary>
+/// Gets the far plane.
+/// </summary>
+/// <returns></returns>
+float Camera::GetFarPlane() const
+{
+	return farPlane;
+}

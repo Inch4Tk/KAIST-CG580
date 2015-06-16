@@ -19,13 +19,13 @@ ObjectManager::ObjectManager()
 	uniBufferLights = new GLBuffer<ShaderLight_Std140>( CONFIG_MAX_LIGHTS + 1, l );
 
 	// Texture buffers
-	uniTexBufUsedClusters = new GLBuffer<uint32_t>( AMT_TILES_X * AMT_TILES_Y * MAX_TILES_Z );
+	uniTexBufUsedClusters = new GLBuffer<uint32_t>( Config::AMT_TILES_X * Config::AMT_TILES_Y * Config::AMT_TILES_Z );
 	uint32_t* p = uniTexBufUsedClusters->BeginMapWrite();
 	memset( p, 0, sizeof( uint32_t ) * uniTexBufUsedClusters->Size() );
 	uniTexBufUsedClusters->EndMap();
 	uniTexBufUsedClusters->MakeTexBuffer( GL_R32UI );
 
-	uniTexBufClusters = new GLBuffer<glm::uvec2>( AMT_TILES_X * AMT_TILES_Y * MAX_TILES_Z );
+	uniTexBufClusters = new GLBuffer<glm::uvec2>( Config::AMT_TILES_X * Config::AMT_TILES_Y * Config::AMT_TILES_Z );
 	uniTexBufClusters->MakeTexBuffer( GL_RG32UI );
 
 	uniTexBufClusterLightIdx = new GLBuffer<int32_t>( 1 );
@@ -67,7 +67,11 @@ void ObjectManager::ExecRender()
 	o.worldUp = glm::vec3( 0, 1, 0 );
 	o.invNear = 1.0f / cam->GetNearPlane();
 	auto winDim = AppManager::GetWindowDimensions();
-	o.invLogSubDiv = 2.0f * tanf( cam->GetFOV() * 0.5f ) / float( (winDim.second + AMT_TILES_Y - 1) / AMT_TILES_Y );
+	o.invLogSubDiv = 2.0f * tanf( cam->GetFOV() * 0.5f ) / static_cast<float>( Config::AMT_TILES_Y );
+	o.amtTilesX = Config::AMT_TILES_X;
+	o.amtTilesY = Config::AMT_TILES_Y;
+	o.dimTilesX = Config::DIM_TILES_X;
+	o.dimTilesY = Config::DIM_TILES_Y;
 	uniBufferGlobals->CopyFromHost(&o, 1);
 
 	// Update the lights uniform buffer
@@ -233,32 +237,96 @@ void ObjectManager::CalcClusterCPU( float invNear, float invLogSubDiv )
 	memset( p, 0, sizeof( uint32_t ) * uniTexBufUsedClusters->Size() );
 	uniTexBufUsedClusters->EndMap();
 
-	// Run over all clusters, if the cluster is used, we determine lights and offset
-	// This is quite inefficient compared to first building rects around lights, 
-	// and then only testing for clusters that are close. But quick to implement.
-	//for( uint32_t i = 0; i < usedClusters.size(); ++i )
-	//{
-	//	// Only if the cluster actually contains anything
-	//	if( usedClusters[i] > 0 )
-	//	{
-	//		// Go over lights and check for overlaps
-	//		uint32_t offset = static_cast<uint32_t>(lightIndicesPerCluster.size());
-	//		uint32_t assignedLights = 0;
-	//		auto it = sceneLights.begin();
-	//		for( size_t l = 0; l < sceneLights.size(); ++l )
-	//		{
-	//			(*it)->GetClusterExtents( mainCam, invNear, invLogSubDiv );
-	//			// For now we assign every light to every cluster, maximal inefficiency
-	//			lightIndicesPerCluster.push_back( static_cast<int>(l) );
-	//			++it;
-	//			++assignedLights;
-	//		}
-	//		clusters[i] = glm::uvec2( offset, assignedLights );
-	//	}
-	//}
+#define INDEX(X,Y,Z) ( X + Config::AMT_TILES_X * ( y + ( z * Config::AMT_TILES_Y ) ) )
 
+	uint32_t totalClusteredLights = 0;
 
+	// The way the algorithm right now is structured it has to walk over lights 2 times, and over the clusters 1 times.
+	// Whereas is you just run over all the lights for every cluster it would be lights * clusters
 
+	// Write the amount of lights for every cluster
+	for( Light* l : sceneLights )
+	{
+		if( !l->IsActive() )
+			continue;
+
+		std::pair<glm::uvec3, glm::uvec3> cluster = l->GetClusterExtents( mainCam, invNear, invLogSubDiv );
+
+		// Go over all the clusters affected by the light
+		for( uint32_t z = cluster.first.z; z < cluster.second.z; ++z )
+		{
+			for( uint32_t y = cluster.first.y; y < cluster.second.y; ++y )
+			{
+				for( uint32_t x = cluster.first.x; x < cluster.second.x; ++x )
+				{
+					// Add a light to the cluster if it is occupied
+					uint32_t idx = INDEX( x, y, z );
+					if( usedClusters[idx] > 0 )
+					{
+						clusters[idx].y += 1;
+						++totalClusteredLights;
+					}
+				}
+			}
+		}
+	}
+
+	// Go over all clusters
+	uint32_t offset = 0;
+	uint32_t occupiedClusters = 0;
+
+	for( uint32_t z = 0; z < Config::AMT_TILES_Z; ++z )
+	{
+		for( uint32_t y = 0; y < Config::AMT_TILES_Y; ++y )
+		{
+			for( uint32_t x = 0; x < Config::AMT_TILES_X; ++x )
+			{
+				// Set the amount as the new offset and
+				uint32_t idx = INDEX( x, y, z );
+				uint32_t count = clusters[idx].y;
+				clusters[idx].x = offset;
+				clusters[idx].y = 0;
+				offset += count;
+				// Debug info
+				if (usedClusters[idx])
+				{
+					++occupiedClusters;
+				}
+			}
+		}
+	}
+
+	// Go over the lights and assign them to the lights list
+	lightIndicesPerCluster.resize( totalClusteredLights );
+	uint32_t lIdx = 0;
+	for( Light* l : sceneLights )
+	{
+		if( !l->IsActive() )
+			continue;
+
+		std::pair<glm::uvec3, glm::uvec3> cluster = l->GetClusterExtents( mainCam, invNear, invLogSubDiv );
+
+		// Go over all the clusters affected by the light
+		for( uint32_t z = cluster.first.z; z < cluster.second.z; ++z )
+		{
+			for( uint32_t y = cluster.first.y; y < cluster.second.y; ++y )
+			{
+				for( uint32_t x = cluster.first.x; x < cluster.second.x; ++x )
+				{
+					// Add a light to the cluster if it is occupied
+					uint32_t idx = INDEX( x, y, z );
+					if( usedClusters[idx] > 0 )
+					{
+						lightIndicesPerCluster[clusters[idx].x + clusters[idx].y] = lIdx;
+						clusters[idx].y += 1;
+					}
+				}
+			}
+		}
+		++lIdx;
+	}
+
+#undef INDEX
 	// Shove data to GPU
 	uniTexBufClusters->CopyFromHost( &clusters[0], clusters.size() );
 	if( lightIndicesPerCluster.size() > 0 )

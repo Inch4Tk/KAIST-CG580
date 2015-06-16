@@ -23,7 +23,9 @@ public:
 	Light( glm::vec3 position, Light& copyFrom ); // Copies settings from the provided light, but changes position
 	~Light();
 
-	std::pair<glm::uvec3, glm::uvec3> GetClusterExtents( Camera* cam, float invNear, float invLogSubDiv ) const;
+	void Update();
+
+	std::pair<glm::uvec3, glm::uvec3> GetClusterExtents( Camera* cam, float invNear, float invLogSubDiv );
 	AABB GetAABB() const;
 	AABB GetTransformedAABB( glm::mat4& transform ) const;
 
@@ -41,5 +43,9 @@ private:
 
 	glm::vec3 color = {1,1,1};
 	float range = 0.0f;
+
+	// Small cache that gets deleted on update
+	bool extentsCached = false;
+	std::pair<glm::uvec3, glm::uvec3> cachedClusterExtents;
 };
 

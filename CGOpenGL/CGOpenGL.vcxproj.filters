@@ -81,6 +81,9 @@
     <ClCompile Include="AABB.cpp">
       <Filter>Core\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">

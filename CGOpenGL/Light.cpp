@@ -120,13 +120,19 @@ AABB Light::GetAABB() const
 /// Gets the cluster extents.
 /// </summary>
 /// <returns></returns>
-std::pair<glm::uvec3, glm::uvec3> Light::GetClusterExtents( Camera* cam, float invNear, float invLogSubDiv ) const
+std::pair<glm::uvec3, glm::uvec3> Light::GetClusterExtents( Camera* cam, float invNear, float invLogSubDiv )
 {
-	AABB aabb = GetTransformedAABB( cam->GetView() );
+	// Check if extents were already calculated before
+	if( extentsCached )
+		return cachedClusterExtents;
+
 	// Check if the light is actually in front of the camera
+	AABB aabb = GetTransformedAABB( cam->GetView() );
 	if( aabb.positionBLB.z > 0 && aabb.maxExtents.z > 0 )
 	{
-		return std::pair<glm::uvec3, glm::uvec3>( { 0, 0, 0 }, { 0, 0, 0 } );
+		extentsCached = true;
+		cachedClusterExtents = std::pair<glm::uvec3, glm::uvec3>( { 0, 0, 0 }, { 0, 0, 0 } );
+		return cachedClusterExtents;
 	}
 	else if( aabb.maxExtents.z > 0 )
 	{
@@ -139,13 +145,27 @@ std::pair<glm::uvec3, glm::uvec3> Light::GetClusterExtents( Camera* cam, float i
 	glm::vec4 posMin = cam->GetProjection() * glm::vec4( aabb.positionBLB, 1.0f );
 	posMin /= posMin.w; // homogenize
 	posMin = (posMin + glm::vec4( 1.0f )) * 0.5f; // Normalize to 0-1
-	posMin = glm::clamp( posMin, glm::vec4( 0 ), glm::vec4( 1 ) ); // Clamp to range
-	posMin.x *= winDim.first; // Scale to window dim
-	posMin.y *= winDim.second;
 	// Max
 	glm::vec4 posMax = cam->GetProjection() * glm::vec4( aabb.maxExtents, 1.0f );
 	posMax /= posMax.w; // homogenize
 	posMax = (posMax + glm::vec4( 1.0f )) * 0.5f; // Normalize to 0-1
+
+	// Make checks for out of bounds
+	uint32_t xAdd = 1;
+	uint32_t yAdd = 1;
+	if( posMax.x < 0.0f && posMin.x < 0.0f )
+		xAdd = 0;
+	if( posMax.x > 1.0f && posMin.x > 1.0f )
+		xAdd = 0;
+	if( posMax.y < 0.0f && posMin.y < 0.0f )
+		yAdd = 0;
+	if( posMax.x > 1.0f && posMin.y > 1.0f )
+		yAdd = 0;
+
+	// Clamping and scaling to window dim
+	posMin = glm::clamp( posMin, glm::vec4( 0 ), glm::vec4( 1 ) ); // Clamp to range
+	posMin.x *= winDim.first; // Scale to window dim
+	posMin.y *= winDim.second;
 	posMax = glm::clamp( posMax, glm::vec4( 0 ), glm::vec4( 1 ) ); // Clamp to range
 	posMax.x *= winDim.first; // Scale to window dim
 	posMax.y *= winDim.second;
@@ -154,17 +174,27 @@ std::pair<glm::uvec3, glm::uvec3> Light::GetClusterExtents( Camera* cam, float i
 	glm::uvec3 clusterIDmax;
 
 	// Calculate the cluster minimum and maximums
-	clusterIDmin.x = static_cast<uint32_t>(posMin.x) / AMT_TILES_X;
-	clusterIDmin.y = static_cast<uint32_t>(posMin.y) / AMT_TILES_Y;
+	clusterIDmin.x = static_cast<uint32_t>(posMin.x) / Config::DIM_TILES_X;
+	clusterIDmin.y = static_cast<uint32_t>(posMin.y) / Config::DIM_TILES_Y;
 	clusterIDmin.z = static_cast<uint32_t>(log( -aabb.positionBLB.z * invNear ) * invLogSubDiv);
-	clusterIDmax.x = static_cast<uint32_t>(posMax.x) / AMT_TILES_X;
-	clusterIDmax.y = static_cast<uint32_t>(posMax.y) / AMT_TILES_Y;
-	clusterIDmax.z = static_cast<uint32_t>(log( -aabb.maxExtents.z * invNear ) * invLogSubDiv);
+	clusterIDmax.x = static_cast<uint32_t>(posMax.x) / Config::DIM_TILES_X + xAdd;
+	clusterIDmax.y = static_cast<uint32_t>(posMax.y) / Config::DIM_TILES_Y + yAdd;
+	clusterIDmax.z = static_cast<uint32_t>(log( -aabb.maxExtents.z * invNear ) * invLogSubDiv) + 1;
 
 	// Assert everything
 	ASSERT( clusterIDmin.x <= clusterIDmax.x );
 	ASSERT( clusterIDmin.y <= clusterIDmax.y );
 	ASSERT( clusterIDmin.z <= clusterIDmax.z );
 
-	return std::pair<glm::uvec3, glm::uvec3>(clusterIDmin, clusterIDmax);
+	extentsCached = true;
+	cachedClusterExtents = std::pair<glm::uvec3, glm::uvec3>( clusterIDmin, clusterIDmax );
+	return cachedClusterExtents;
+}
+
+/// <summary>
+/// Updates this instance. Used to clear the extent cluster
+/// </summary>
+void Light::Update()
+{
+	extentsCached = false;
 }

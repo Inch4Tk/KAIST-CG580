@@ -7,10 +7,14 @@ layout( std140 ) uniform UniGlobals
 	mat4 projectionMatrix;
 	mat4 viewProjectionMatrix;
 	vec3 ambient;
-	vec3 worldUp;
-	vec3 worldCamPos;
-	float invNear; // 1.0f / nearPlane
 	float invLogSubDiv; // 1.0f / log(subDivision + 1.0f); subDivision = 2.0f * tan( fov * 0.5f ) / gridDimY;
+	vec3 worldUp;
+	float invNear; // 1.0f / nearPlane
+	vec3 worldCamPos;
+	uint dimTilesX;
+	uint dimTilesY;
+	uint amtTilesX;
+	uint amtTilesY;
 };
 
 layout( location = 0 ) in vec3 vPos;

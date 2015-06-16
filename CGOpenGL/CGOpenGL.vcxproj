@@ -218,6 +218,7 @@ xcopy "$(ProjectDir)Resources\*.mtl" "$(OutDir)Resources" /Y/S</Command>
     <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="BufferStructs.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="CudaAdapter.cu" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Geometry.cpp" />
