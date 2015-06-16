@@ -4,7 +4,6 @@ const uint LIGHTS_LIMIT = 1024;
 
 layout( std140 ) uniform UniGlobals
 {
-	mat4 worldMatrix;
 	mat4 viewMatrix;
 	mat4 projectionMatrix;
 	mat4 viewProjectionMatrix;
@@ -18,6 +17,8 @@ layout( std140 ) uniform UniGlobals
 	uint amtTilesX;
 	uint amtTilesY;
 };
+uniform mat4 worldMatrix;
+
 layout( std140 ) uniform UniMaterial
 {
 	vec3 mat_diffuse;

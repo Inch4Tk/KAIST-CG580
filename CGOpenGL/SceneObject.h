@@ -25,8 +25,5 @@ public:
 protected:
 	Geometry* geometry = nullptr;
 	std::unordered_map<std::string, const ShaderProgram*> shaders;
-
-	// Uniform locations mapping the shader variables 
-	GLint uniWorldMatrix = -1;
 };
 

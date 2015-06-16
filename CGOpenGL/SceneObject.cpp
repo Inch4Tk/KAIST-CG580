@@ -19,8 +19,6 @@ SceneObject::~SceneObject()
 {
 	AppManager::GetObjectManager()->UnSubscribeUpdate( this );
 	AppManager::GetObjectManager()->UnSubscribeRender( this );
-
-	SDELETE( geometry );
 }
 
 /// <summary>
@@ -58,7 +56,7 @@ void SceneObject::Render(const std::string& shaderName)
 	glm::mat4 worldMatrix = glm::translate( glm::mat4(1.0f), position ) * 
 		glm::mat4_cast( rotation ) * 
 		glm::scale( glm::mat4(1.0f), scale );
-	glUniformMatrix4fv( uniWorldMatrix, 1, false, &worldMatrix[0][0] );
+	glUniformMatrix4fv( shader->second->GetUniformLocation( "worldMatrix" ), 1, false, &worldMatrix[0][0] );
 
 	// Draw
 	geometry->Draw( shader->second->GetBindSlots() );

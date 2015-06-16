@@ -33,10 +33,13 @@ Scene::~Scene()
 			SDELETE( mat.second );
 		for( std::pair<std::string, ShaderProgram*> sp : shaders )
 			SDELETE( sp.second );
+		for( std::pair<std::string, Geometry*> g : geometries )
+			SDELETE( g.second );
 		sceneObjects.clear();
 		meshes.clear();
 		materials.clear();
 		shaders.clear();
+		geometries.clear();
 		loaded = false;
 	}
 }
@@ -125,13 +128,32 @@ void Scene::LoadTestScene()
 	meshes["TriangleMesh"] = triangleMesh;*/
 	
 	// Create a scene object containing the mesh and the test shader
-	SceneObject* obj = new SceneObject( g );
+	SceneObject* obj;
+	/*obj = new SceneObject( g );
+	obj->position = glm::vec3( 4, 3, 2 );
 	obj->AddShader( "test", testShader );
 	obj->AddShader( "phong", phongShader );
 	obj->AddShader( "clusterPre", clusterPre );
 	obj->AddShader( "clusterPhong", clusterPhong );
 	AppManager::GetObjectManager()->SubscribeRender( obj );
-	sceneObjects.push_back( obj );
+	sceneObjects.push_back( obj );*/
+	for( int z = -2; z < 3; ++z )
+	{
+		for( int y = -1; y < 2; ++y )
+		{
+			for( int x = -2; x < 3; ++x )
+			{
+				obj = new SceneObject( g );
+				obj->position = glm::vec3( x * 2.5f + 0.5f, y * 1.5f, z * 2.5f + 5.5f );
+				obj->AddShader( "test", testShader );
+				obj->AddShader( "phong", phongShader );
+				obj->AddShader( "clusterPre", clusterPre );
+				obj->AddShader( "clusterPhong", clusterPhong );
+				AppManager::GetObjectManager()->SubscribeRender( obj );
+				sceneObjects.push_back( obj );
+			}
+		}
+	}
 }
 
 /// <summary>
