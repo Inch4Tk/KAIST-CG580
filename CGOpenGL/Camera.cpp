@@ -212,3 +212,12 @@ float Camera::GetFarPlane() const
 {
 	return farPlane;
 }
+
+/// <summary>
+/// Gets the movespeed.
+/// </summary>
+/// <returns></returns>
+float Camera::GetMovespeed() const
+{
+	return movementSpeed;
+}

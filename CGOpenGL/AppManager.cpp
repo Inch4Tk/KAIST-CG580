@@ -75,18 +75,22 @@ void AppManager::Initialize( GLFWwindow* window )
 	input->RegisterKeyEventHook( GLFW_KEY_KP_ADD, GLFW_PRESS, []()
 	{
 		scene->GetActiveCamera()->AddMovespeed( 2.5f );
+		Debug::Log( "Current movement speed: " + std::to_string(scene->GetActiveCamera()->GetMovespeed()) );
 	} );
 	input->RegisterKeyEventHook( GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, []()
 	{
 		scene->GetActiveCamera()->AddMovespeed( -2.5f );
+		Debug::Log( "Current movement speed: " + std::to_string( scene->GetActiveCamera()->GetMovespeed() ) );
 	} );
 	input->RegisterKeyEventHook( GLFW_KEY_KP_MULTIPLY, GLFW_PRESS, []()
 	{
 		scene->GetActiveCamera()->MultMovespeed( 2.0f );
+		Debug::Log( "Current movement speed: " + std::to_string( scene->GetActiveCamera()->GetMovespeed() ) );
 	} );
 	input->RegisterKeyEventHook( GLFW_KEY_KP_DIVIDE, GLFW_PRESS, []()
 	{
 		scene->GetActiveCamera()->MultMovespeed( 0.5f );
+		Debug::Log( "Current movement speed: " + std::to_string( scene->GetActiveCamera()->GetMovespeed() ) );
 	} );
 
 	// Set a background color  

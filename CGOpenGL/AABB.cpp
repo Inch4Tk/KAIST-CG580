@@ -1,26 +1,26 @@
 #include "AABB.h"
 
 
-AABB::AABB( glm::vec3 positionBLB, glm::vec3 extents ) : positionBLB( positionBLB ), extents( extents )
+AABB::AABB( glm::vec3 positionBLF, glm::vec3 extents ) : positionBLF( positionBLF ), extents( extents )
 {
-	maxExtents = positionBLB + extents;
+	this->maxExtents = positionBLF + extents;
 	// Flip zmin and zmax
-	float t = positionBLB.z;
-	positionBLB.z = maxExtents.z;
-	maxExtents.z = t;
+	float t = positionBLF.z;
+	this->positionBLF.z = maxExtents.z;
+	this->maxExtents.z = t;
 }
 
 /// <summary>
-/// Creates an AABB that covers everything (almost)
+/// Creates an AABB that covers everything (almost) 1000*farplane, any interactions that should be bigger than that... handle them differently
 /// </summary>
 AABB::AABB()
 {
-	positionBLB = glm::vec3( 0.01f * -FLT_MAX );
-	extents = glm::vec3( 0.02f * FLT_MAX );
-	maxExtents = positionBLB + extents;
+	positionBLF = glm::vec3( -500 * Config::FAR_PLANE );
+	extents = glm::vec3( 1000 * Config::FAR_PLANE );
+	maxExtents = positionBLF + extents;
 	// Flip zmin and zmax
-	float t = positionBLB.z;
-	positionBLB.z = maxExtents.z;
+	float t = positionBLF.z;
+	positionBLF.z = maxExtents.z;
 	maxExtents.z = t;
 }
 

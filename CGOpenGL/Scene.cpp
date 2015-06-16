@@ -90,19 +90,20 @@ void Scene::LoadTestScene()
 	
 	// Add some lights
 	Light* light = nullptr;
-	light = new Light( glm::vec3( 10, 2, 1 ), glm::vec3( randFloat(), randFloat(), randFloat() ), 0.0f );
-	sceneObjects.push_back( light );
-	/*for( int z = -2; z < 3; ++z )
+	/*light = new Light( glm::vec3( 3, 0, 0 ), glm::vec3( randFloat(), randFloat(), randFloat() ), 5.0f );
+	sceneObjects.push_back( light );*/
+
+	for( int z = -2; z < 3; ++z )
 	{
 		for( int y = -1; y < 2; ++y )
 		{
 			for( int x = -2; x < 3; ++x )
 			{
-				light = new Light( glm::vec3( x, y, z ), glm::vec3( randFloat(), randFloat(), randFloat() ), 2.0f );
+				light = new Light( glm::vec3( x * 2.5, y, z * 2.5 ), glm::vec3( randFloat(), randFloat(), randFloat() ), 5.0f );
 				sceneObjects.push_back( light );
 			}
 		}
-	}*/
+	}
 
 	// Load a cube
 	std::string geomName = "cube.obj";

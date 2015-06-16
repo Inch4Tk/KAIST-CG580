@@ -26,6 +26,7 @@ public:
 	float GetFOV() const;
 	float GetFarPlane() const;
 	float GetNearPlane() const;
+	float GetMovespeed() const;
 	glm::mat4 GetView() const;
 	glm::mat4 GetProjection() const;
 	glm::mat4 GetViewProjection() const;
