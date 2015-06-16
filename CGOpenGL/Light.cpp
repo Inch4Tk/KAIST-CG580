@@ -10,6 +10,8 @@
 
 Light::Light()
 {
+	AppManager::GetObjectManager()->SubscribeUpdate( this );
+	AppManager::GetObjectManager()->AddLight( this );
 }
 
 /// <summary>
@@ -21,6 +23,8 @@ Light::Light()
 Light::Light( glm::vec3 position, glm::vec3 color, float range ) : color(color), range(range)
 {
 	this->position = position;
+	AppManager::GetObjectManager()->SubscribeUpdate( this );
+	AppManager::GetObjectManager()->AddLight( this );
 }
 
 /// <summary>
@@ -37,11 +41,14 @@ Light::Light( glm::vec3 position, Light& copyFrom )
 	lightType = copyFrom.lightType;
 	color = copyFrom.color;
 	range = copyFrom.range;
+	AppManager::GetObjectManager()->SubscribeUpdate( this );
+	AppManager::GetObjectManager()->AddLight( this );
 }
 
 
 Light::~Light()
 {
+	AppManager::GetObjectManager()->UnSubscribeUpdate( this );
 	AppManager::GetObjectManager()->RemoveLight( this );
 }
 
@@ -104,7 +111,10 @@ void Light::SetRange( float val )
 AABB Light::GetTransformedAABB( glm::mat4& transform ) const
 {
 	glm::vec3 tPos = glm::vec3( transform * glm::vec4( position, 1.0f ) );
-	return AABB( tPos - 0.5f * range, glm::vec3( range ) );
+	if(range == 0.0f )
+		return AABB();
+	else
+		return AABB( tPos - range, glm::vec3( range * 2.0f ) );
 }
 
 /// <summary>
@@ -113,7 +123,10 @@ AABB Light::GetTransformedAABB( glm::mat4& transform ) const
 /// <returns></returns>
 AABB Light::GetAABB() const
 {
-	return AABB( position - 0.5f * range, glm::vec3( range ) );
+	if( range == 0.0f )
+		return AABB();
+	else
+		return AABB( position - range, glm::vec3( range * 2.0f ) );
 }
 
 /// <summary>
@@ -176,10 +189,12 @@ std::pair<glm::uvec3, glm::uvec3> Light::GetClusterExtents( Camera* cam, float i
 	// Calculate the cluster minimum and maximums
 	clusterIDmin.x = static_cast<uint32_t>(posMin.x) / Config::DIM_TILES_X;
 	clusterIDmin.y = static_cast<uint32_t>(posMin.y) / Config::DIM_TILES_Y;
-	clusterIDmin.z = static_cast<uint32_t>(log( -aabb.positionBLB.z * invNear ) * invLogSubDiv);
+	float minZtmp = std::max( log( -std::max( aabb.positionBLB.z, -Config::FAR_PLANE ) * invNear ) * invLogSubDiv, 0.0f );
+	clusterIDmin.z = std::min( static_cast<uint32_t>(minZtmp), Config::AMT_TILES_Z);
 	clusterIDmax.x = static_cast<uint32_t>(posMax.x) / Config::DIM_TILES_X + xAdd;
 	clusterIDmax.y = static_cast<uint32_t>(posMax.y) / Config::DIM_TILES_Y + yAdd;
-	clusterIDmax.z = static_cast<uint32_t>(log( -aabb.maxExtents.z * invNear ) * invLogSubDiv) + 1;
+	float maxZtmp = std::max( log( -std::max( aabb.maxExtents.z, -Config::FAR_PLANE ) * invNear ) * invLogSubDiv, 0.0f );
+	clusterIDmax.z = std::min( static_cast<uint32_t>(maxZtmp + 1), Config::AMT_TILES_Z);
 
 	// Assert everything
 	ASSERT( clusterIDmin.x <= clusterIDmax.x );

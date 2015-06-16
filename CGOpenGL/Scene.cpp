@@ -68,7 +68,6 @@ void Scene::LoadTestScene()
 	activeCamera->position = glm::vec3( 0, 0, -5 );
 	activeCamera->MakeFirstPerson( 5.0f, glm::radians(360.0f), glm::radians(10.0f), true );
 	activeCamera->MakePerspective( Config::FOV_Y, Config::ASPECT, Config::NEAR_PLANE, Config::FAR_PLANE );
-	AppManager::GetObjectManager()->SubscribeUpdate( activeCamera );
 
 	// Load a shader
 	ShaderProgram::InitConfig shaderConfig;
@@ -91,18 +90,19 @@ void Scene::LoadTestScene()
 	
 	// Add some lights
 	Light* light = nullptr;
-	for( int z = -2; z < 3; ++z )
+	light = new Light( glm::vec3( 10, 2, 1 ), glm::vec3( randFloat(), randFloat(), randFloat() ), 0.0f );
+	sceneObjects.push_back( light );
+	/*for( int z = -2; z < 3; ++z )
 	{
 		for( int y = -1; y < 2; ++y )
 		{
 			for( int x = -2; x < 3; ++x )
 			{
 				light = new Light( glm::vec3( x, y, z ), glm::vec3( randFloat(), randFloat(), randFloat() ), 2.0f );
-				AppManager::GetObjectManager()->AddLight( light );
 				sceneObjects.push_back( light );
 			}
 		}
-	}
+	}*/
 
 	// Load a cube
 	std::string geomName = "cube.obj";

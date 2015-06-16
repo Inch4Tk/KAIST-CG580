@@ -3,16 +3,19 @@
 #include "AppManager.h"
 #include "Debug.h"
 #include "Input.h"
+#include "ObjectManager.h"
 #include "Time.h"
 
 
 Camera::Camera()
-{
-}
 
+{
+	AppManager::GetObjectManager()->SubscribeUpdate( this );
+}
 
 Camera::~Camera()
 {
+	AppManager::GetObjectManager()->UnSubscribeUpdate( this );
 }
 
 

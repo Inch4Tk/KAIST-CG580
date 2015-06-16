@@ -5,6 +5,7 @@
 class AABB
 {
 public:
+	AABB();
 	AABB( glm::vec3 positionBLB, glm::vec3 extents );
 	~AABB();
 

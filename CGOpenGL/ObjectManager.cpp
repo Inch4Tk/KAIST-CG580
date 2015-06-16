@@ -3,6 +3,7 @@
 #include "AppManager.h"
 #include "Camera.h"
 #include "Debug.h"
+#include "Input.h"
 #include "Light.h"
 #include "Scene.h"
 #include "SceneObject.h"
@@ -30,6 +31,12 @@ ObjectManager::ObjectManager()
 
 	uniTexBufClusterLightIdx = new GLBuffer<int32_t>( 1 );
 	uniTexBufClusterLightIdx->MakeTexBuffer( GL_R32I );
+
+	// Set up a hook for swapping clustering
+	AppManager::GetInput()->RegisterKeyEventHook( GLFW_KEY_F2, GLFW_PRESS, [&]()
+	{
+		clusteringActive = !clusteringActive;
+	} );
 }
 
 
@@ -67,7 +74,7 @@ void ObjectManager::ExecRender()
 	o.worldUp = glm::vec3( 0, 1, 0 );
 	o.invNear = 1.0f / cam->GetNearPlane();
 	auto winDim = AppManager::GetWindowDimensions();
-	o.invLogSubDiv = 2.0f * tanf( cam->GetFOV() * 0.5f ) / static_cast<float>( Config::AMT_TILES_Y );
+	o.invLogSubDiv = 1.0f / (2.0f * tanf( cam->GetFOV() * 0.5f ) / static_cast<float>( Config::AMT_TILES_Y ));
 	o.amtTilesX = Config::AMT_TILES_X;
 	o.amtTilesY = Config::AMT_TILES_Y;
 	o.dimTilesX = Config::DIM_TILES_X;
@@ -84,8 +91,12 @@ void ObjectManager::ExecRender()
 		ls.emplace_back( l->position, l->GetColor(), l->GetRange() );
 		++numLights;
 	}
+	
 	ShaderLight_Std140* target = uniBufferLights->BeginMapWrite();
-	memcpy( target, &ls[0], ls.size() * sizeof( ShaderLight_Std140 ) );
+	if( numLights > 0 )
+	{
+		memcpy( target, &ls[0], ls.size() * sizeof( ShaderLight_Std140 ) );
+	}
 	memcpy( target + CONFIG_MAX_LIGHTS, &numLights, sizeof( uint32_t ) );
 	uniBufferLights->EndMap();
 
@@ -274,27 +285,30 @@ void ObjectManager::CalcClusterCPU( float invNear, float invLogSubDiv )
 	// Go over all clusters
 	uint32_t offset = 0;
 	uint32_t occupiedClusters = 0;
-
-	for( uint32_t z = 0; z < Config::AMT_TILES_Z; ++z )
+	if( totalClusteredLights > 0 )
 	{
-		for( uint32_t y = 0; y < Config::AMT_TILES_Y; ++y )
+		for( uint32_t z = 0; z < Config::AMT_TILES_Z; ++z )
 		{
-			for( uint32_t x = 0; x < Config::AMT_TILES_X; ++x )
+			for( uint32_t y = 0; y < Config::AMT_TILES_Y; ++y )
 			{
-				// Set the amount as the new offset and
-				uint32_t idx = INDEX( x, y, z );
-				uint32_t count = clusters[idx].y;
-				clusters[idx].x = offset;
-				clusters[idx].y = 0;
-				offset += count;
-				// Debug info
-				if (usedClusters[idx])
+				for( uint32_t x = 0; x < Config::AMT_TILES_X; ++x )
 				{
-					++occupiedClusters;
+					// Set the amount as the new offset and
+					uint32_t idx = INDEX( x, y, z );
+					uint32_t count = clusters[idx].y;
+					clusters[idx].x = offset;
+					clusters[idx].y = 0;
+					offset += count;
+					// Debug info
+					if( usedClusters[idx] )
+					{
+						++occupiedClusters;
+					}
 				}
 			}
 		}
 	}
+	
 
 	// Go over the lights and assign them to the lights list
 	lightIndicesPerCluster.resize( totalClusteredLights );
