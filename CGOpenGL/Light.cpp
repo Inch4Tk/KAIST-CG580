@@ -147,31 +147,21 @@ std::pair<glm::uvec3, glm::uvec3> Light::GetClusterExtents( Camera* cam, float i
 		cachedClusterExtents = std::pair<glm::uvec3, glm::uvec3>( { 0, 0, 0 }, { 0, 0, 0 } );
 		return cachedClusterExtents;
 	}
+	float midZ = (aabb.positionBLF.z + aabb.maxExtents.z) * 0.5f;
+	midZ = std::min( 0.0f, midZ );
 	aabb.positionBLF.z = std::min( 0.0f, aabb.positionBLF.z );
 	aabb.maxExtents.z = std::min( 0.0f, aabb.maxExtents.z );
 
 	auto winDim = AppManager::GetWindowDimensions();
 	// Get max and min screen position
 	// Min
-	glm::vec4 posMin = cam->GetProjection() * glm::vec4( aabb.positionBLF.x, aabb.positionBLF.y, aabb.positionBLF.z, 1.0f );
+	glm::vec4 posMin = cam->GetProjection() * glm::vec4( aabb.positionBLF.x, aabb.positionBLF.y, midZ, 1.0f );
 	posMin /= posMin.w; // homogenize
 	posMin = (posMin + glm::vec4( 1.0f )) * 0.5f; // Normalize to 0-1
 	// Max
-	glm::vec4 posMax = cam->GetProjection() * glm::vec4( aabb.maxExtents.x, aabb.maxExtents.y, aabb.positionBLF.z, 1.0f );
+	glm::vec4 posMax = cam->GetProjection() * glm::vec4( aabb.maxExtents.x, aabb.maxExtents.y, midZ, 1.0f );
 	posMax /= posMax.w; // homogenize
 	posMax = (posMax + glm::vec4( 1.0f )) * 0.5f; // Normalize to 0-1
-
-	// Make checks for out of bounds
-	uint32_t xAdd = 1;
-	uint32_t yAdd = 1;
-	if( posMax.x < 0.0f && posMin.x < 0.0f )
-		xAdd = 0;
-	if( posMax.x > 1.0f && posMin.x > 1.0f )
-		xAdd = 0;
-	if( posMax.y < 0.0f && posMin.y < 0.0f )
-		yAdd = 0;
-	if( posMax.x > 1.0f && posMin.y > 1.0f )
-		yAdd = 0;
 
 	// Clamping and scaling to window dim
 	posMin = glm::clamp( posMin, glm::vec4( 0 ), glm::vec4( 1 ) ); // Clamp to range
@@ -190,8 +180,8 @@ std::pair<glm::uvec3, glm::uvec3> Light::GetClusterExtents( Camera* cam, float i
 	float minZtmp = std::max( log( -std::max( aabb.positionBLF.z, -Config::FAR_PLANE ) * invNear ) * invLogSubDiv, 0.0f );
 	clusterIDmin.z = std::min( static_cast<uint32_t>(minZtmp), Config::AMT_TILES_Z);
 
-	clusterIDmax.x = static_cast<uint32_t>(posMax.x) / Config::DIM_TILES_X + xAdd;
-	clusterIDmax.y = static_cast<uint32_t>(posMax.y) / Config::DIM_TILES_Y + yAdd;
+	clusterIDmax.x = static_cast<uint32_t>(posMax.x + Config::DIM_TILES_X - 1) / Config::DIM_TILES_X;
+	clusterIDmax.y = static_cast<uint32_t>(posMax.y + Config::DIM_TILES_X - 1) / Config::DIM_TILES_Y;
 	float maxZtmp = std::max( log( -std::max( aabb.maxExtents.z, -Config::FAR_PLANE ) * invNear ) * invLogSubDiv, 0.0f );
 	clusterIDmax.z = std::min( static_cast<uint32_t>(maxZtmp + 1), Config::AMT_TILES_Z);
 

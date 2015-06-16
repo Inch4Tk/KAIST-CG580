@@ -286,7 +286,7 @@ void ObjectManager::CalcClusterCPU( float invNear, float invLogSubDiv )
 	// Go over all clusters
 	uint32_t offset = 0;
 	uint32_t occupiedClusters = 0;
-	//if( totalClusteredLights > 0 )
+	if( totalClusteredLights > 0 )
 	{
 		for( uint32_t z = 0; z < Config::AMT_TILES_Z; ++z )
 		{
