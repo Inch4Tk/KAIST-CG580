@@ -12,6 +12,7 @@ public:
 	uint64_t GetFramecount() const;
 	double GetDelta() const;
 	double GetFps() const;
+	double GetFpsLast() const;
 	double GetFpsRunning() const;
 
 private:
@@ -25,7 +26,8 @@ private:
 	double sinceStartT = 0.0;
 
 	uint64_t framecount = 0;
-	double fps = 0.0;
+	double fps = 0.0; // Over all frames
+	double fpsLast = 0.0; // Just last frame
 	double fpsRunning = 0.0; // Weights the last frame 0.5 of all frames
 };
 

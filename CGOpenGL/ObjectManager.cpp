@@ -357,4 +357,12 @@ void ObjectManager::ToggleClustering()
 	Debug::Log( "Clustering is active: " + std::to_string( clusteringActive ) );
 }
 
+/// <summary>
+/// Determines whether clustering is active.
+/// </summary>
+bool ObjectManager::IsClusteringActive() const
+{
+	return clusteringActive;
+}
+
 

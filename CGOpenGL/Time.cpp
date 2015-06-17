@@ -30,10 +30,11 @@ void Time::NextFrame()
 	// Update other time variables
 	deltaFrameT = curFrameT - lastFrameT;
 	sinceStartT = curFrameT - firstFrameT;
-	fps = sinceStartT / static_cast<double>(framecount);
+	fps = static_cast<double>(framecount) / sinceStartT;
 	if( deltaFrameT > 0 )
 	{
-		fpsRunning = 0.5 * fpsRunning + 0.5 * (1.0 / deltaFrameT);
+		fpsLast = 1.0 / deltaFrameT;
+		fpsRunning = 0.9 * fpsRunning + 0.1 * (1.0 / deltaFrameT);
 	}
 }
 
@@ -55,7 +56,7 @@ double Time::GetDelta() const
 
 
 /// <summary>
-/// Gets the FPS.
+/// Gets the FPS over all frames.
 /// </summary>
 double Time::GetFps() const
 {
@@ -68,4 +69,13 @@ double Time::GetFps() const
 double Time::GetFpsRunning() const
 {
 	return fpsRunning;
+}
+
+/// <summary>
+/// Gets the FPS of only the last frame.
+/// </summary>
+/// <returns></returns>
+double Time::GetFpsLast() const
+{
+	return fpsLast;
 }

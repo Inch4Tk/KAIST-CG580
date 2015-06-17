@@ -11,7 +11,7 @@ class SceneObject
 public:
 	SceneObject();
 	SceneObject( Geometry* geometry );
-	~SceneObject();
+	virtual ~SceneObject();
 
 	void AddShader( const std::string& shaderName, const ShaderProgram* shader );
 	virtual void Update();

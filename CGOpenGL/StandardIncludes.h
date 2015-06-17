@@ -57,7 +57,6 @@ static inline float randFloat( float min = 0.0f, float max = 1.0f )
 	return (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * (max - min) + min;
 }
 
-
 // Valuable macros
 #define SDELETE(p) {if(p){delete p; p = nullptr;}}
 #define GLUBYTETOSTR(str) std::string( reinterpret_cast<const char*>(str) )

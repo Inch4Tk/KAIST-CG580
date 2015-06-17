@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Debug.h"
 #include "Geometry.h"
+#include "GUI.h"
 #include "Light.h"
 #include "Material.h"
 #include "Mesh.h"
@@ -71,6 +72,7 @@ void Scene::LoadTestScene()
 	activeCamera->position = glm::vec3( 0, 0, -5 );
 	activeCamera->MakeFirstPerson( 5.0f, glm::radians(360.0f), glm::radians(10.0f), true );
 	activeCamera->MakePerspective( Config::FOV_Y, Config::ASPECT, Config::NEAR_PLANE, Config::FAR_PLANE );
+	sceneObjects.push_back( activeCamera );
 
 	// Load a shader
 	ShaderProgram::InitConfig shaderConfig;
@@ -91,23 +93,6 @@ void Scene::LoadTestScene()
 	const ShaderProgram* clusterPhong = ShaderProgram::LoadProgram( "ClusterPhong", shaderConfig,
 																   BindSlots::defaultBindSlots );
 	
-	// Add some lights
-	Light* light = nullptr;
-	/*light = new Light( glm::vec3( 3, 0, 0 ), glm::vec3( randFloat(), randFloat(), randFloat() ), 5.0f );
-	sceneObjects.push_back( light );*/
-
-	for( int z = -2; z < 3; ++z )
-	{
-		for( int y = -1; y < 2; ++y )
-		{
-			for( int x = -2; x < 3; ++x )
-			{
-				light = new Light( glm::vec3( x * 2.5, y, z * 2.5 ), glm::vec3( randFloat(), randFloat(), randFloat() ), 5.0f );
-				sceneObjects.push_back( light );
-			}
-		}
-	}
-
 	// Load a cube
 	std::string geomName = "cube.obj";
 	Geometry* g = GetGeometry( geomName );
@@ -126,34 +111,9 @@ void Scene::LoadTestScene()
 	Mesh* triangleMesh = new Mesh();
 	triangleMesh->Initialize( VertexFormatManager::Get3F(), tris, 36, GL_TRIANGLES);
 	meshes["TriangleMesh"] = triangleMesh;*/
+
+	RegenerateScene();
 	
-	// Create a scene object containing the mesh and the test shader
-	SceneObject* obj;
-	/*obj = new SceneObject( g );
-	obj->position = glm::vec3( 4, 3, 2 );
-	obj->AddShader( "test", testShader );
-	obj->AddShader( "phong", phongShader );
-	obj->AddShader( "clusterPre", clusterPre );
-	obj->AddShader( "clusterPhong", clusterPhong );
-	AppManager::GetObjectManager()->SubscribeRender( obj );
-	sceneObjects.push_back( obj );*/
-	for( int z = -2; z < 3; ++z )
-	{
-		for( int y = -1; y < 2; ++y )
-		{
-			for( int x = -2; x < 3; ++x )
-			{
-				obj = new SceneObject( g );
-				obj->position = glm::vec3( x * 2.5f + 0.5f, y * 1.5f, z * 2.5f + 5.5f );
-				obj->AddShader( "test", testShader );
-				obj->AddShader( "phong", phongShader );
-				obj->AddShader( "clusterPre", clusterPre );
-				obj->AddShader( "clusterPhong", clusterPhong );
-				AppManager::GetObjectManager()->SubscribeRender( obj );
-				sceneObjects.push_back( obj );
-			}
-		}
-	}
 }
 
 /// <summary>
@@ -296,4 +256,161 @@ Geometry* Scene::GetGeometry( const std::string& name ) const
 Camera* Scene::GetActiveCamera() const
 {
 	return activeCamera;
+}
+
+/// <summary>
+/// Hackish way to get GUI to work correctly with scene to regenerate cubes and lights when vars change
+/// </summary>
+void Scene::RegenerateScene()
+{
+	const ShaderProgram* testShader = GetShader( "Test" );
+	const ShaderProgram* phongShader = GetShader( "Phong" );
+	const ShaderProgram* clusterPre = GetShader( "ClusterPre" );
+	const ShaderProgram* clusterPhong = GetShader( "ClusterPhong" );
+	Geometry* g = GetGeometry( "cube.obj" );
+	
+	GUI* gui = AppManager::GetGUI();
+
+	// Determine regeneration variables
+	glm::ivec3 lightLowBounds = -(gui->lights / 2);
+	glm::ivec3 lightHighBounds = (gui->lights + 1) / 2;
+	glm::ivec3 cubeLowBounds = -(gui->cubes / 2);
+	glm::ivec3 cubeHighBounds = (gui->cubes + 1) / 2;
+
+	// Check if cube or light grid is different so we need to complete regen
+	if( gui->cubes != oldCubeGrid || gui->lights != oldLightGrid )
+	{
+		// Most inefficient way to regenerate the scene...
+		// Delete everything
+		sceneObjects.remove( activeCamera );
+		for( SceneObject* so : sceneObjects )
+		{
+			SDELETE( so );
+		}
+		sceneObjects.clear();
+		sceneObjects.push_back( activeCamera );
+
+		// Create lights
+		Light* light = nullptr;
+		for( int z = lightLowBounds.z; z < lightHighBounds.z; ++z )
+		{
+			for( int y = lightLowBounds.y; y < lightHighBounds.y; ++y )
+			{
+				for( int x = lightLowBounds.x; x < lightHighBounds.x; ++x )
+				{
+					glm::vec3 randOffsets = glm::vec3( gui->lightOffsets.x * randFloat( -1.0f ),
+												   gui->lightOffsets.y * randFloat( -1.0f ),
+												   gui->lightOffsets.z * randFloat( -1.0f ) );
+					glm::vec3 pos = glm::vec3( x, y, z);
+					glm::vec3 color = gui->lightColor;
+					if( gui->lightRandomColors )
+						color = glm::vec3( randFloat(), randFloat(), randFloat() );
+					float rangeVar =  randFloat() * gui->lightRangeVariance;
+					light = new Light( randOffsets + pos * gui->lightSpacing,
+									   color, 
+									   std::max(0.1f, gui->lightRange + rangeVar) );
+					sceneObjects.push_back( light );
+				}
+			}
+		}
+
+		// Create scene objects
+		SceneObject* obj;
+		for( int z = cubeLowBounds.z; z < cubeHighBounds.z; ++z )
+		{
+			for( int y = cubeLowBounds.y; y < cubeHighBounds.y; ++y )
+			{
+				for( int x = cubeLowBounds.x; x < cubeHighBounds.x; ++x )
+				{
+					glm::vec3 randOffsets = glm::vec3( gui->cubeOffsets.x * randFloat( -1.0f ),
+													   gui->cubeOffsets.y * randFloat( -1.0f ),
+													   gui->cubeOffsets.z * randFloat( -1.0f ) );
+					glm::vec3 pos = glm::vec3( x, y, z );
+					glm::vec3 scale = glm::vec3( gui->cubeScale.x * randFloat( -1.0f ),
+												 gui->cubeScale.y * randFloat( -1.0f ),
+												 gui->cubeScale.z * randFloat( -1.0f ) );
+					obj = new SceneObject( g );
+					obj->position = pos * gui->cubeSpacing + randOffsets;
+					obj->scale += scale;
+					if( gui->cubeRandRot )
+					{
+						obj->rotation = glm::quat( glm::vec3(randFloat() * 2.0f * glm::pi<float>(),
+												   randFloat() * 2.0f * glm::pi<float>(),
+												   randFloat() * 2.0f * glm::pi<float>() ) );
+					}
+					obj->AddShader( "test", testShader );
+					obj->AddShader( "phong", phongShader );
+					obj->AddShader( "clusterPre", clusterPre );
+					obj->AddShader( "clusterPhong", clusterPhong );
+					AppManager::GetObjectManager()->SubscribeRender( obj );
+					sceneObjects.push_back( obj );
+				}
+			}
+		}
+
+		// Update old cube and light grid vars
+		oldCubeGrid = gui->cubes;
+		oldLightGrid = gui->lights;
+	}
+	else // Only other vars are different just run over the grid and update the rest
+	{
+		// We abuse the fact that lights are always before scene objects in the current version 
+		// of the program, if this gets changed everything will get recked... well npnp
+		// TODO: update this to check for type and forward iterators correctly
+		auto it = sceneObjects.begin();
+		++it; // Skip camera
+		// Update lights
+		for( int z = lightLowBounds.z; z < lightHighBounds.z; ++z )
+		{
+			for( int y = lightLowBounds.y; y < lightHighBounds.y; ++y )
+			{
+				for( int x = lightLowBounds.x; x < lightHighBounds.x; ++x )
+				{
+					glm::vec3 randOffsets = glm::vec3( gui->lightOffsets.x * randFloat( -1.0f ),
+													   gui->lightOffsets.y * randFloat( -1.0f ),
+													   gui->lightOffsets.z * randFloat( -1.0f ) );
+					glm::vec3 pos = glm::vec3( x, y, z );
+					glm::vec3 color = gui->lightColor;
+					if( gui->lightRandomColors )
+						color = glm::vec3( randFloat(), randFloat(), randFloat() );
+					float rangeVar = randFloat() * gui->lightRangeVariance;
+					Light* light = dynamic_cast<Light*>(*it);
+					light->position = pos * gui->lightSpacing + randOffsets;
+					light->SetColor( color );
+					light->SetRange( std::max( 0.1f, gui->lightRange + rangeVar ) );
+
+					++it;
+				}
+			}
+		}
+
+		// Create scene objects
+		for( int z = cubeLowBounds.z; z < cubeHighBounds.z; ++z )
+		{
+			for( int y = cubeLowBounds.y; y < cubeHighBounds.y; ++y )
+			{
+				for( int x = cubeLowBounds.x; x < cubeHighBounds.x; ++x )
+				{
+					glm::vec3 randOffsets = glm::vec3( gui->cubeOffsets.x * randFloat( -1.0f ),
+													   gui->cubeOffsets.y * randFloat( -1.0f ),
+													   gui->cubeOffsets.z * randFloat( -1.0f ) );
+					glm::vec3 pos = glm::vec3( x, y, z );
+					glm::vec3 scale = glm::vec3( gui->cubeScale.x * randFloat( -1.0f ),
+												 gui->cubeScale.y * randFloat( -1.0f ),
+												 gui->cubeScale.z * randFloat( -1.0f ) );
+					SceneObject* obj = *it;
+					obj->position = pos * gui->cubeSpacing + randOffsets;
+					obj->scale += scale;
+					if( gui->cubeRandRot )
+					{
+						obj->rotation = glm::quat( glm::vec3( randFloat() * 2.0f * glm::pi<float>(),
+							randFloat() * 2.0f * glm::pi<float>(),
+							randFloat() * 2.0f * glm::pi<float>() ) );
+					}
+
+					++it;
+				}
+			}
+		}
+	}
 }

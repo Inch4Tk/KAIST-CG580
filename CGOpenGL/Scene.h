@@ -25,6 +25,9 @@ public:
 	Material* GetMaterial( const std::string& name ) const;
 	ShaderProgram* GetShader( const std::string& name ) const;
 
+	// Hackish way to get GUI to work correctly with scene to regenerate cubes and lights when vars change
+	void RegenerateScene();
+
 private:
 	Scene();
 	~Scene();
@@ -40,5 +43,7 @@ private:
 	std::unordered_map<std::string, ShaderProgram*> shaders;
 
 	void LoadTestScene();
+	glm::ivec3 oldCubeGrid = { 0, 0, 0 };
+	glm::ivec3 oldLightGrid = { 0, 0, 0 };
 };
 

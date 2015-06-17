@@ -57,9 +57,7 @@ static void scrollCallback( GLFWwindow* window, double xoffset, double yoffset )
 static void keyCallback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
 	// Handle AntTweakBar
-	if( AppManager::GetGUI()->KeyHandler( key, action ) )
-		return;
-
+	AppManager::GetGUI()->KeyHandler( key, action );
 	AppManager::GetInput()->PostKeyEvent( key, scancode, action, mods );
 
 	// Quit on escape
