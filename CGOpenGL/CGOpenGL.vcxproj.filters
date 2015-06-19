@@ -16,9 +16,6 @@
     <Filter Include="Core\Shader">
       <UniqueIdentifier>{41627ede-df25-4594-98d7-2d58bc9af49e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CUDA">
-      <UniqueIdentifier>{9ad3fe79-8b5e-4d1e-8635-b21d827259a5}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -74,9 +71,6 @@
     </ClCompile>
     <ClCompile Include="Time.cpp">
       <Filter>Core\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="CudaAdapter.cu">
-      <Filter>CUDA</Filter>
     </ClCompile>
     <ClCompile Include="AABB.cpp">
       <Filter>Core\Utils</Filter>
@@ -145,12 +139,6 @@
     </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>Core\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="CudaAdapter.h">
-      <Filter>CUDA</Filter>
-    </ClInclude>
-    <ClInclude Include="CudaUtil.h">
-      <Filter>CUDA</Filter>
     </ClInclude>
     <ClInclude Include="AABB.h">
       <Filter>Core\Utils</Filter>

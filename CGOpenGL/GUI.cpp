@@ -39,9 +39,15 @@ GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 	TwAddVarRW( mainBar, "C Gridsize X", TW_TYPE_INT32, &cubes[0], "group='C Gridsize' min=0" );
 	TwAddVarRW( mainBar, "C Gridsize Y", TW_TYPE_INT32, &cubes[1], "group='C Gridsize' min=0" );
 	TwAddVarRW( mainBar, "C Gridsize Z", TW_TYPE_INT32, &cubes[2], "group='C Gridsize' min=0" );
-	TwAddVarRW( mainBar, "C Spacing", TW_TYPE_DIR3F, &cubeSpacing[0], "" );
-	TwAddVarRW( mainBar, "C Rand Offset", TW_TYPE_DIR3F, &cubeOffsets[0], "" );
-	TwAddVarRW( mainBar, "C Rand Scale", TW_TYPE_DIR3F, &cubeScale[0], "" );
+	TwAddVarRW( mainBar, "C Spacing X", TW_TYPE_FLOAT, &cubeSpacing[0], "group='C Spacing' min=0.1" );
+	TwAddVarRW( mainBar, "C Spacing Y", TW_TYPE_FLOAT, &cubeSpacing[1], "group='C Spacing' min=0.1" );
+	TwAddVarRW( mainBar, "C Spacing Z", TW_TYPE_FLOAT, &cubeSpacing[2], "group='C Spacing' min=0.1" );
+	TwAddVarRW( mainBar, "C Rand Offset X", TW_TYPE_FLOAT, &cubeOffsets[0], "group='C Rand Offset' min=0.0" );
+	TwAddVarRW( mainBar, "C Rand Offset Y", TW_TYPE_FLOAT, &cubeOffsets[1], "group='C Rand Offset' min=0.0" );
+	TwAddVarRW( mainBar, "C Rand Offset Z", TW_TYPE_FLOAT, &cubeOffsets[2], "group='C Rand Offset' min=0.0" );
+	TwAddVarRW( mainBar, "C Rand Scale X", TW_TYPE_FLOAT, &cubeScale[0], "group='C Rand Scale' min=0.0 max=1.0" );
+	TwAddVarRW( mainBar, "C Rand Scale Y", TW_TYPE_FLOAT, &cubeScale[1], "group='C Rand Scale' min=0.0 max=1.0" );
+	TwAddVarRW( mainBar, "C Rand Scale Z", TW_TYPE_FLOAT, &cubeScale[2], "group='C Rand Scale' min=0.0 max=1.0" );
 	TwAddVarRW( mainBar, "C Rand Rotation", TW_TYPE_BOOLCPP, &cubeRandRot, "" );
 	TwAddSeparator( mainBar, "Sep1", "" );
 
@@ -49,8 +55,12 @@ GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 	TwAddVarRW( mainBar, "L Gridsize X", TW_TYPE_INT32, &lights[0], "group='L Gridsize' min=0" );
 	TwAddVarRW( mainBar, "L Gridsize Y", TW_TYPE_INT32, &lights[1], "group='L Gridsize' min=0" );
 	TwAddVarRW( mainBar, "L Gridsize Z", TW_TYPE_INT32, &lights[2], "group='L Gridsize' min=0" );
-	TwAddVarRW( mainBar, "L Spacing", TW_TYPE_DIR3F, &lightSpacing[0], "" );
-	TwAddVarRW( mainBar, "L Rand Offset", TW_TYPE_DIR3F, &lightOffsets[0], "" );
+	TwAddVarRW( mainBar, "L Spacing X", TW_TYPE_FLOAT, &lightSpacing[0], "group='L Spacing' min=0.1" );
+	TwAddVarRW( mainBar, "L Spacing Y", TW_TYPE_FLOAT, &lightSpacing[1], "group='L Spacing' min=0.1" );
+	TwAddVarRW( mainBar, "L Spacing Z", TW_TYPE_FLOAT, &lightSpacing[2], "group='L Spacing' min=0.1" );
+	TwAddVarRW( mainBar, "L Rand Offset X", TW_TYPE_FLOAT, &lightSpacing[0], "group='L Rand Offset' min=0.0" );
+	TwAddVarRW( mainBar, "L Rand Offset Y", TW_TYPE_FLOAT, &lightSpacing[1], "group='L Rand Offset' min=0.0" );
+	TwAddVarRW( mainBar, "L Rand Offset Z", TW_TYPE_FLOAT, &lightSpacing[2], "group='L Rand Offset' min=0.0" );
 	TwAddVarRW( mainBar, "L Color", TW_TYPE_COLOR3F, &lightColor[0], "" );
 	TwAddVarRW( mainBar, "L Range", TW_TYPE_FLOAT, &lightRange, "min=0.0" );
 	TwAddVarRW( mainBar, "L Range variance", TW_TYPE_FLOAT, &lightRangeVariance, "min=0.0" );
@@ -63,12 +73,6 @@ GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 	TwAddButton( mainBar, "Regenerate", [](void* clientData)
 	{
 		GUI* g = reinterpret_cast<GUI*>(clientData);
-		// Set some barrier values for directions
-		g->cubeSpacing = glm::clamp( g->cubeSpacing, 0.1f, FLT_MAX );
-		g->cubeOffsets = glm::clamp( g->cubeOffsets, 0.0f, FLT_MAX );
-		g->cubeScale = glm::clamp( g->cubeScale, 0.0f, 1.0f );
-		g->lightSpacing = glm::clamp( g->lightSpacing, 0.1f, FLT_MAX );
-		g->lightOffsets = glm::clamp( g->lightOffsets, 0.0f, FLT_MAX );
 		// Regen scene
 		AppManager::GetScene()->RegenerateScene();
 	}, this, "" );
