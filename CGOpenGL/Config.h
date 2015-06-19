@@ -3,11 +3,7 @@
 #include <cstdint>
 
 #ifndef CONFIG_MAX_LIGHTS
-#define CONFIG_MAX_LIGHTS 1024
-#endif
-
-#ifndef ENABLE_CUDA
-#define ENABLE_CUDA false
+#define CONFIG_MAX_LIGHTS 2000
 #endif
 
 class Config

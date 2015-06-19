@@ -1,6 +1,6 @@
 #version 430 core
 
-const uint LIGHTS_LIMIT = 1024;
+const uint LIGHTS_LIMIT = 2000;
 const uint AMT_TILES_X = 64;
 const uint AMT_TILES_Y = 64;
 
