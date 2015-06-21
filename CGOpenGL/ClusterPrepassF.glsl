@@ -40,6 +40,7 @@ uint getClusterOffset( vec2 screenXY, float depth )
 	return clusterIdX + amtTilesX * (clusterIdY + clusterIdZ * amtTilesY);
 }
 
+layout(early_fragment_tests) in;
 void main()
 {
 	// Write to the cluster that we are in

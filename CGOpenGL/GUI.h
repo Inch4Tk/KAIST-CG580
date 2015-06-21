@@ -13,11 +13,11 @@ public:
 	void ToggleGUI();
 
 	// Input events
-	int MouseButtonHandler( int button, int action );
-	int MouseMoveHandler( double xpos, double ypos );
-	int MouseScrollHandler( double yoffset );
-	int KeyHandler( int key, int action );
-	int CharHandler( unsigned int codepoint );
+	int MouseButtonHandler( GLFWwindow* window, int glfwButton, int glfwAction, int glfwMods );
+	int MouseMoveHandler( GLFWwindow* window, double xpos, double ypos );
+	int MouseScrollHandler( GLFWwindow* window, double xoffset, double yoffset );
+	int KeyHandler( GLFWwindow* window, int glfwKey, int glfwScancode, int glfwAction, int glfwMods );
+	int CharHandler( GLFWwindow* window, int glfwChar, int glfwMods );
 
 	// Expose these vars as public for easy sync, bit hackish, but easy
 	glm::ivec3 cubes = { 1, 1, 1 };

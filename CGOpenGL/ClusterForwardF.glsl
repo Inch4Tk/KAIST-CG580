@@ -103,6 +103,7 @@ uint getClusterOffset( vec2 screenXY, float depth )
 	return clusterIdX + amtTilesX * (clusterIdY + clusterIdZ * amtTilesY);
 }
 
+layout(early_fragment_tests) in; // Make early z test, to reuse our prepass
 void main()
 {
 	int clusterIdx = int( getClusterOffset( gl_FragCoord.xy, FragmentIn.viewPos.z ) );

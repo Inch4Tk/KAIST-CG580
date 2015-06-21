@@ -110,29 +110,30 @@ void GUI::Draw()
 	TwDraw();
 }
 
-int GUI::MouseButtonHandler( int button, int action )
+int GUI::MouseButtonHandler( GLFWwindow* window, int glfwButton, int glfwAction, int glfwMods )
 {
-	return TwEventMouseButtonGLFW( button, action );
+	
+	return TwEventMouseButtonGLFW3( window, glfwButton, glfwAction, glfwMods );
 }
 
-int GUI::MouseMoveHandler( double xpos, double ypos )
+int GUI::MouseMoveHandler( GLFWwindow* window, double xpos, double ypos )
 {
-	return TwEventMousePosGLFW( static_cast<int>(xpos), static_cast<int>(ypos) );
+	return TwEventCursorPosGLFW3( window, xpos, ypos );
 }
 
-int GUI::MouseScrollHandler( double yoffset )
+int GUI::MouseScrollHandler( GLFWwindow* window, double xoffset, double yoffset )
 {
-	return TwEventMouseWheelGLFW( static_cast<int>(yoffset) );
+	return TwEventScrollGLFW3( window, xoffset, yoffset );
 }
 
-int GUI::KeyHandler( int key, int action )
+int GUI::KeyHandler( GLFWwindow* window, int glfwKey, int glfwScancode, int glfwAction, int glfwMods )
 {
-	return TwEventKeyGLFW( key, action );
+	return TwEventKeyGLFW3( window, glfwKey, glfwScancode, glfwAction, glfwMods );
 }
 
-int GUI::CharHandler( unsigned int codepoint )
+int GUI::CharHandler( GLFWwindow* window, int glfwChar, int glfwMods )
 {
-	return TwEventCharGLFW( codepoint, GLFW_PRESS );
+	return TwEventCharModsGLFW3( window, glfwChar, glfwMods );
 }
 
 /// <summary>

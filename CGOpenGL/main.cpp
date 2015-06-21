@@ -28,7 +28,7 @@ static void errorCallback( int error, const char* description )
 static void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
 {
 	// Handle AntTweakBar
-	if( AppManager::GetGUI()->MouseButtonHandler( button, action ) )
+	if( AppManager::GetGUI()->MouseButtonHandler( window, button, action, mods ) )
 		return;
 
 	AppManager::GetInput()->PostMouseButtonEvent( button, action, mods );
@@ -39,7 +39,7 @@ static void mouseButtonCallback( GLFWwindow* window, int button, int action, int
 static void cursorPositionCallback( GLFWwindow* window, double xpos, double ypos )
 {
 	// Handle AntTweakBar
-	if( AppManager::GetGUI()->MouseMoveHandler( xpos, ypos ) )
+	if( AppManager::GetGUI()->MouseMoveHandler( window, xpos, ypos ) )
 		return;
 
 	AppManager::GetInput()->PostMousePosEvent( xpos, ypos );
@@ -49,7 +49,7 @@ static void cursorPositionCallback( GLFWwindow* window, double xpos, double ypos
 static void scrollCallback( GLFWwindow* window, double xoffset, double yoffset )
 {
 	// Handle AntTweakBar
-	if( AppManager::GetGUI()->MouseScrollHandler( yoffset ) )
+	if( AppManager::GetGUI()->MouseScrollHandler( window, xoffset, yoffset ) )
 		return;
 }
 
@@ -57,7 +57,7 @@ static void scrollCallback( GLFWwindow* window, double xoffset, double yoffset )
 static void keyCallback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
 	// Handle AntTweakBar
-	AppManager::GetGUI()->KeyHandler( key, action );
+	AppManager::GetGUI()->KeyHandler( window, key, scancode, action, mods );
 	AppManager::GetInput()->PostKeyEvent( key, scancode, action, mods );
 
 	// Quit on escape
@@ -67,10 +67,10 @@ static void keyCallback( GLFWwindow* window, int key, int scancode, int action, 
 }
 
 // Define the unicode input callback
-static void characterCallback( GLFWwindow* window, unsigned int codepoint )
+static void characterCallback( GLFWwindow* window, unsigned int codepoint, int mod )
 {
 	// Handle AntTweakBar
-	if( AppManager::GetGUI()->CharHandler( codepoint ) )
+	if( AppManager::GetGUI()->CharHandler( window, codepoint, mod ) )
 		return;
 }
 
@@ -121,7 +121,7 @@ int main( void )
 	glfwSetCursorPosCallback( window, cursorPositionCallback );
 	glfwSetScrollCallback( window, scrollCallback );
 	glfwSetKeyCallback( window, keyCallback );
-	glfwSetCharCallback( window, characterCallback );
+	glfwSetCharModsCallback( window, characterCallback );
 	glfwSetWindowFocusCallback( window, winFocusCallback );
 
 	// Initialize GLEW 
