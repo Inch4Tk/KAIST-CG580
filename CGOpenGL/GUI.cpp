@@ -39,15 +39,15 @@ GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 	TwAddVarRW( mainBar, "C Gridsize X", TW_TYPE_INT32, &cubes[0], "group='C Gridsize' min=0" );
 	TwAddVarRW( mainBar, "C Gridsize Y", TW_TYPE_INT32, &cubes[1], "group='C Gridsize' min=0" );
 	TwAddVarRW( mainBar, "C Gridsize Z", TW_TYPE_INT32, &cubes[2], "group='C Gridsize' min=0" );
-	TwAddVarRW( mainBar, "C Spacing X", TW_TYPE_FLOAT, &cubeSpacing[0], "group='C Spacing' min=0.1" );
-	TwAddVarRW( mainBar, "C Spacing Y", TW_TYPE_FLOAT, &cubeSpacing[1], "group='C Spacing' min=0.1" );
-	TwAddVarRW( mainBar, "C Spacing Z", TW_TYPE_FLOAT, &cubeSpacing[2], "group='C Spacing' min=0.1" );
-	TwAddVarRW( mainBar, "C Rand Offset X", TW_TYPE_FLOAT, &cubeOffsets[0], "group='C Rand Offset' min=0.0" );
-	TwAddVarRW( mainBar, "C Rand Offset Y", TW_TYPE_FLOAT, &cubeOffsets[1], "group='C Rand Offset' min=0.0" );
-	TwAddVarRW( mainBar, "C Rand Offset Z", TW_TYPE_FLOAT, &cubeOffsets[2], "group='C Rand Offset' min=0.0" );
-	TwAddVarRW( mainBar, "C Rand Scale X", TW_TYPE_FLOAT, &cubeScale[0], "group='C Rand Scale' min=0.0 max=1.0" );
-	TwAddVarRW( mainBar, "C Rand Scale Y", TW_TYPE_FLOAT, &cubeScale[1], "group='C Rand Scale' min=0.0 max=1.0" );
-	TwAddVarRW( mainBar, "C Rand Scale Z", TW_TYPE_FLOAT, &cubeScale[2], "group='C Rand Scale' min=0.0 max=1.0" );
+	TwAddVarRW( mainBar, "C Spacing X", TW_TYPE_FLOAT, &cubeSpacing[0], "group='C Spacing' min=0.1 step=0.5" );
+	TwAddVarRW( mainBar, "C Spacing Y", TW_TYPE_FLOAT, &cubeSpacing[1], "group='C Spacing' min=0.1 step=0.5" );
+	TwAddVarRW( mainBar, "C Spacing Z", TW_TYPE_FLOAT, &cubeSpacing[2], "group='C Spacing' min=0.1 step=0.5" );
+	TwAddVarRW( mainBar, "C Rand Offset X", TW_TYPE_FLOAT, &cubeOffsets[0], "group='C Rand Offset' min=0.0 step=0.5" );
+	TwAddVarRW( mainBar, "C Rand Offset Y", TW_TYPE_FLOAT, &cubeOffsets[1], "group='C Rand Offset' min=0.0 step=0.5" );
+	TwAddVarRW( mainBar, "C Rand Offset Z", TW_TYPE_FLOAT, &cubeOffsets[2], "group='C Rand Offset' min=0.0 step=0.5" );
+	TwAddVarRW( mainBar, "C Rand Scale X", TW_TYPE_FLOAT, &cubeScale[0], "group='C Rand Scale' min=0.0 max=1.0 step=0.02" );
+	TwAddVarRW( mainBar, "C Rand Scale Y", TW_TYPE_FLOAT, &cubeScale[1], "group='C Rand Scale' min=0.0 max=1.0 step=0.02" );
+	TwAddVarRW( mainBar, "C Rand Scale Z", TW_TYPE_FLOAT, &cubeScale[2], "group='C Rand Scale' min=0.0 max=1.0 step=0.02" );
 	TwAddVarRW( mainBar, "C Rand Rotation", TW_TYPE_BOOLCPP, &cubeRandRot, "" );
 	TwAddSeparator( mainBar, "Sep1", "" );
 
@@ -55,12 +55,12 @@ GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 	TwAddVarRW( mainBar, "L Gridsize X", TW_TYPE_INT32, &lights[0], "group='L Gridsize' min=0" );
 	TwAddVarRW( mainBar, "L Gridsize Y", TW_TYPE_INT32, &lights[1], "group='L Gridsize' min=0" );
 	TwAddVarRW( mainBar, "L Gridsize Z", TW_TYPE_INT32, &lights[2], "group='L Gridsize' min=0" );
-	TwAddVarRW( mainBar, "L Spacing X", TW_TYPE_FLOAT, &lightSpacing[0], "group='L Spacing' min=0.1" );
-	TwAddVarRW( mainBar, "L Spacing Y", TW_TYPE_FLOAT, &lightSpacing[1], "group='L Spacing' min=0.1" );
-	TwAddVarRW( mainBar, "L Spacing Z", TW_TYPE_FLOAT, &lightSpacing[2], "group='L Spacing' min=0.1" );
-	TwAddVarRW( mainBar, "L Rand Offset X", TW_TYPE_FLOAT, &lightSpacing[0], "group='L Rand Offset' min=0.0" );
-	TwAddVarRW( mainBar, "L Rand Offset Y", TW_TYPE_FLOAT, &lightSpacing[1], "group='L Rand Offset' min=0.0" );
-	TwAddVarRW( mainBar, "L Rand Offset Z", TW_TYPE_FLOAT, &lightSpacing[2], "group='L Rand Offset' min=0.0" );
+	TwAddVarRW( mainBar, "L Spacing X", TW_TYPE_FLOAT, &lightSpacing[0], "group='L Spacing' min=0.1 step=0.5" );
+	TwAddVarRW( mainBar, "L Spacing Y", TW_TYPE_FLOAT, &lightSpacing[1], "group='L Spacing' min=0.1 step=0.5" );
+	TwAddVarRW( mainBar, "L Spacing Z", TW_TYPE_FLOAT, &lightSpacing[2], "group='L Spacing' min=0.1 step=0.5" );
+	TwAddVarRW( mainBar, "L Rand Offset X", TW_TYPE_FLOAT, &lightOffsets[0], "group='L Rand Offset' min=0.0 step=0.5" );
+	TwAddVarRW( mainBar, "L Rand Offset Y", TW_TYPE_FLOAT, &lightOffsets[1], "group='L Rand Offset' min=0.0 step=0.5" );
+	TwAddVarRW( mainBar, "L Rand Offset Z", TW_TYPE_FLOAT, &lightOffsets[2], "group='L Rand Offset' min=0.0 step=0.5" );
 	TwAddVarRW( mainBar, "L Color", TW_TYPE_COLOR3F, &lightColor[0], "" );
 	TwAddVarRW( mainBar, "L Range", TW_TYPE_FLOAT, &lightRange, "min=0.0" );
 	TwAddVarRW( mainBar, "L Range variance", TW_TYPE_FLOAT, &lightRangeVariance, "min=0.0" );
@@ -73,6 +73,13 @@ GUI::GUI( uint32_t windowWidth, uint32_t windowHeight )
 	TwAddButton( mainBar, "Regenerate", [](void* clientData)
 	{
 		GUI* g = reinterpret_cast<GUI*>(clientData);
+		if( g->lights.x * g->lights.y * g->lights.z > CONFIG_MAX_LIGHTS )
+		{
+			g->lights.x = 10;
+			g->lights.y = 20;
+			g->lights.z = 10;
+			Debug::Log( "Too many lights, set to some default values" );
+		}
 		// Regen scene
 		AppManager::GetScene()->RegenerateScene();
 	}, this, "" );
@@ -95,6 +102,14 @@ void GUI::Draw()
 	fpsRunning = AppManager::GetTime()->GetFpsRunning();
 	movespeed = AppManager::GetScene()->GetActiveCamera()->GetMovespeed();
 	clustering = AppManager::GetObjectManager()->IsClusteringActive();
+
+	if( lights.x * lights.y * lights.z > CONFIG_MAX_LIGHTS )
+	{
+		lights.x = 10;
+		lights.y = 20;
+		lights.z = 10;
+		Debug::Log( "Too many lights, set to some default values" );
+	}
 
 	// Check for scene autoregeneration
 	if( autoRegenerate )

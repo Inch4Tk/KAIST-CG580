@@ -384,7 +384,7 @@ void Scene::RegenerateScene()
 			}
 		}
 
-		// Create scene objects
+		// Update scene objects
 		for( int z = cubeLowBounds.z; z < cubeHighBounds.z; ++z )
 		{
 			for( int y = cubeLowBounds.y; y < cubeHighBounds.y; ++y )
@@ -400,6 +400,7 @@ void Scene::RegenerateScene()
 												 gui->cubeScale.z * randFloat( -1.0f ) );
 					SceneObject* obj = *it;
 					obj->position = pos * gui->cubeSpacing + randOffsets;
+					obj->scale = glm::vec3( 1 );
 					obj->scale += scale;
 					if( gui->cubeRandRot )
 					{
