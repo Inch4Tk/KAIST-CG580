@@ -1,5 +1,5 @@
 #KAIST-CG580
-This project was created as part of the Computer Graphics Master course (CG580) at KAIST.
+This project was created as part of the Computer Graphics Master course (CG580) at KAIST. It is an implementation of a CPU version of Clustered Forward Shading, embedded in a small rendering engine.
 
 ## Original Development Environment
 * Windows 8.1 64 bit
@@ -29,5 +29,5 @@ This project was created as part of the Computer Graphics Master course (CG580) 
 * Numpad/ - Divide Movementspeed
 
 ## Contact
-If there are any problems with compiling, email me at:
+If there are any problems with compiling or running the project, email me at:
 tobias.gottwald@kaist.ac.kr
