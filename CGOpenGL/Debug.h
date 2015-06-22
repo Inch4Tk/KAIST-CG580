@@ -37,9 +37,9 @@ public:
 	static void Log( uint64_t i, LogType::LogType type = LogType::None );
 	static void Log( float f, LogType::LogType type = LogType::None );
 	static void Log( double d, LogType::LogType type = LogType::None );
-	static void Log( glm::vec2 v, LogType::LogType type = LogType::None );
-	static void Log( glm::vec3 v, LogType::LogType type = LogType::None );
-	static void Log( glm::vec4 v, LogType::LogType type = LogType::None );
+	static void Log( const glm::vec2& v, LogType::LogType type = LogType::None );
+	static void Log( const glm::vec3& v, LogType::LogType type = LogType::None );
+	static void Log( const glm::vec4& v, LogType::LogType type = LogType::None );
 
 	// Quick and dirty default failure log type log
 	static void LogFailure( const char* file, const int line, const char* error );

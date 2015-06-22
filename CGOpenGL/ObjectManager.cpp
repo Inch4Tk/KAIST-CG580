@@ -213,14 +213,7 @@ void ObjectManager::BuildCluster( float invNear, float invLogSubDiv )
 	CHECK_GL_ERROR();
 
 	// Perform clustering
-	if( cudaClustering )
-	{
-
-	}
-	else
-	{
-		CalcClusterCPU( invNear, invLogSubDiv );
-	}
+	CalcClusterCPU( invNear, invLogSubDiv );
 }
 
 /// <summary>

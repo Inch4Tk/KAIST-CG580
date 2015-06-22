@@ -40,7 +40,6 @@ private:
 
 	// Clustered lighting
 	bool clusteringActive = true;
-	bool cudaClustering = false;
 	void BuildCluster( float invNear, float invLogSubDiv );
 	void CalcClusterCPU( float invNear, float invLogSubDiv );
 	GLBuffer<uint32_t>* uniTexBufUsedClusters;

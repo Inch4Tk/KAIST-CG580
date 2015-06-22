@@ -101,8 +101,8 @@ int main( void )
 	GLFWwindow* window;
 
 	// Create a window and create its OpenGL context
-	uint32_t windowWidth = 1920;
-	uint32_t windowHeight = 1080;
+	uint32_t windowWidth = 1440;
+	uint32_t windowHeight = 810;
 	window = glfwCreateWindow( windowWidth, windowHeight, "Clustered Forward Shading", NULL, NULL );
 
 	// If the window couldn't be created  
